@@ -25,6 +25,8 @@
           highlight?: "要强调的那一类构成"（其余置灰）
   units   单位图。groups: [{label, count, source:[n], highlight?:bool}]（总数 ≤100）
   kpi     数据卡。tiles: [{label, value:"文本", note?, source:[n]}]（2—4 张）
+  timeline 分类时间线。events: [{date:"2023-02" 或 "2023", label, kind, source:[n]}]（≤14 个），kind 最多 4 种，
+          颜色加形状区分类型；事件等距排开、日期写在标签里；用来回答「转折来自哪类力量」（资本 / 监管 / 产品 / 模型）
 公共字段：type, title, subtitle?, kicker?, note?, theme?
 
 编码规则（脚本强制，违反就报错）：
@@ -35,6 +37,7 @@
 - 数值轴：条形、柱状、堆叠从 0 起；折线不从 0 起时，脚本在页脚自动注明「纵轴从 X 起」。
 """
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -551,8 +554,79 @@ def render_kpi(spec):
     return fig
 
 
+def render_timeline(spec):
+    """分类时间线：事件按先后等距排开（日期写在标签里），上下交替；类型用颜色加形状双重区分。"""
+    events = spec["events"]
+    for i, e in enumerate(events):
+        need_source(e.get("source"), f"events[{i}] {e.get('label')}")
+        if not e.get("kind"):
+            raise SpecError(f"events[{i}] 缺 kind（事件类型）")
+    kinds = list(dict.fromkeys(e["kind"] for e in events))
+    if len(kinds) > 4:
+        raise SpecError("timeline 的事件类型最多 4 种，合并相近的类型")
+    if len(events) > 14:
+        raise SpecError("timeline 最多 14 个事件，挑最能说明转折的")
+    palette = list(dict.fromkeys(list(T["series"]) + [T["ink"], T["ink2"], T["muted"]]))
+    shapes = ["s", "o", "^", "D"]
+    glyph = {"s": "■", "o": "●", "^": "▲", "D": "◆"}
+
+    def key(d):
+        parts = str(d).replace("/", "-").split("-")
+        return (int(parts[0]), int(parts[1]) if len(parts) > 1 and parts[1].isdigit() else 0)
+
+    def wrap(t, width=10.0):
+        """按词折行：英文单词、数字整体不拆，中文逐字。"""
+        lines, cur, w = [], "", 0.0
+        for tok in re.findall(r"[A-Za-z0-9.+\-/]+|\s+|.", t):
+            tw = sum(0.55 if ord(ch) < 0x2E80 else 1.0 for ch in tok)
+            if w + tw > width and cur.strip():
+                lines.append(cur.strip())
+                cur, w = "", 0.0
+                if tok.isspace():
+                    continue
+            cur += tok
+            w += tw
+        if cur.strip():
+            lines.append(cur.strip())
+        if len(lines) > 1 and len(lines[-1]) <= 1:  # 不留单字孤行
+            last = lines.pop()
+            lines[-1] += last
+        return lines[:3]
+
+    evs = sorted(events, key=lambda e: key(e["date"]))
+    n = len(evs)
+    top = header_height(spec) + 0.3
+    h = top + 3.2
+    fig = new_fig(h)
+    ax = fig.add_axes([0.03, 0.42 / h, 0.94, (h - top - 0.42) / h])
+    ax.set_facecolor(T["paper"])
+    ax.axis("off")
+    ax.set_xlim(-0.6, n - 0.4)
+    ax.set_ylim(-2.4, 2.4)
+    ax.plot([-0.4, n - 0.6], [0, 0], color=T["dim"], linewidth=1.2, zorder=1)
+    levels = [1.0, -1.0] if n <= 9 else [1.0, -1.0, 1.75, -1.75]
+    for i, e in enumerate(evs):
+        k = kinds.index(e["kind"])
+        c = palette[k % len(palette)]
+        lv = levels[i % len(levels)]
+        ax.plot([i, i], [0, lv * 0.85], color=c, linewidth=0.9, zorder=1)
+        ax.scatter([i], [0], s=52, color=c, marker=shapes[k], edgecolors=T["paper"], linewidths=1.2, zorder=3)
+        body = "\n".join(wrap(e["label"]))
+        txt = f"{e['date']}\n{body}" if lv > 0 else f"{body}\n{e['date']}"
+        ax.text(i, lv * 0.9, txt, ha="center", va="bottom" if lv > 0 else "top", linespacing=1.3,
+                **F("body", 8, color=T["ink"]))
+    x = 0.04
+    y = 1 - (header_height(spec) + 0.08) / h
+    for k, kind in enumerate(kinds):
+        fig.text(x, y, glyph[shapes[k]], va="center", **F("body", 9, color=palette[k % len(palette)]))
+        fig.text(x + 0.02, y, kind, va="center", **F("body", 8.5, color=T["ink2"]))
+        x += 0.05 + len(kind) * 0.017
+    header_footer(fig, spec)
+    return fig
+
+
 RENDER = {"bar": render_bar, "stack": render_stack, "grouped": render_grouped, "line": render_line,
-          "units": render_units, "kpi": render_kpi}
+          "units": render_units, "kpi": render_kpi, "timeline": render_timeline}
 
 
 def encoding_rules(spec):
