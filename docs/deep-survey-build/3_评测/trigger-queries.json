@@ -1,0 +1,32 @@
+{
+  "skill_name": "deep-survey",
+  "runs_per_query": 3,
+  "split": { "train": 0.6, "test": 0.4 },
+  "_note": "2026-10-10 造，待用户逐条确认后再跑。跑法：claude -p --output-format stream-json --max-turns 1，放开只读工具（Read/Grep/Glob/WebSearch），抓 tool_use(Skill) 是否命中 deep-survey。",
+
+  "should_trigger": [
+    { "id": "t1", "query": "调研一下 AI 陪伴型产品，Character.AI、Replika、星野这几个，我想知道这个赛道现在值不值得进，重点看留存和付费", "why": "标准强意图：对象 + 问题", "split": "train" },
+    { "id": "t2", "query": "帮我做个竞品分析 c.ai replika talkie 这仨 哪个商业化做得好 要有来源别瞎编", "why": "口语版，缩写，要来源", "split": "train" },
+    { "id": "t3", "query": "Agent-Reach 这个项目 6 千多星了，评估一下能不能替代我们 twitter-watchdog 里的 twitterapi.io，风险是什么", "why": "AI 工具类，没说调研二字", "split": "train" },
+    { "id": "t4", "query": "帮我出一份 MiniMax 的公司调研，商业化、融资、主要产品线，口径只要 2025 年之后的", "why": "公司类，带口径", "split": "train" },
+    { "id": "t5", "query": "具身智能这个行业现在什么格局，国内外头部玩家、融资、商业化进展，要带数据和来源，我在考虑要不要往这个方向做内容", "why": "行业类 + 读者立场", "split": "train" },
+    { "id": "t6", "query": "这几个 Claude skill 哪个值得装 https://github.com/daymade/claude-code-skills https://github.com/standardhuman/deep-research-skill https://github.com/borghei/Claude-Skills 跟我现有的重不重叠", "why": "AI 工具多对象，贴链接", "split": "test" },
+    { "id": "t7", "query": "微信小微你帮我查一下，我想知道它对小程序生态意味着什么，抖音如果做类似的该怎么做", "why": "弱意图 + 立场，应触发并先出确认单", "split": "test" },
+    { "id": "t8", "query": "我要做选型，Notion AI 和飞书多维表格的 AI 字段哪个更适合做个人知识库，别光说感受，给我能查证的依据", "why": "隐式触发：选型 + 要依据，没说调研", "split": "test" },
+    { "id": "t9", "query": "出一份 Cursor 和 Claude Code 的对比报告，定价、能力边界、用户口碑、团队背景，我下周要跟团队讨论用哪个", "why": "与 deep-research 抢活，本 skill 该赢（要矩阵与来源）", "split": "test" },
+    { "id": "t10", "query": "AI 耳机这个品类（Plaud、讯飞、字节 Ola Friend）值不值得做，帮我摸一遍", "why": "硬件产品类，口语", "split": "train" }
+  ],
+
+  "should_not_trigger": [
+    { "id": "n1", "query": "把 WaytoAGI 那 15 篇 Seedance 2.0 文档整理成一份总览，按功能模块归类", "why": "共享关键词“整理/总览”，无问题无判断 → 知识整理 SOP", "split": "train" },
+    { "id": "n2", "query": "帮我总结一下这篇讲 AI 陪伴赛道的文章 https://mp.weixin.qq.com/s/xxxx", "why": "单篇总结，共享“AI 陪伴”", "split": "train" },
+    { "id": "n3", "query": "我想做个 AI 陪伴产品，帮我头脑风暴一下切入点，越发散越好", "why": "想法阶段 → forge-brainstorm", "split": "train" },
+    { "id": "n4", "query": "分析一下 CodePilot 这个仓库的架构，数据流和模块划分是怎样的", "why": "代码架构 → project-learner；注意与问题驱动的 CodePilot 调研区分", "split": "train" },
+    { "id": "n5", "query": "Replika 的官网和定价页在哪，给我链接就行", "why": "一步查询", "split": "test" },
+    { "id": "n6", "query": "看看这份 PRD 和这几张界面截图有什么问题 /Users/dbwu/Desktop/prd/", "why": "PRD 评审 → prd-analyzer", "split": "test" },
+    { "id": "n7", "query": "抓一下最近 24 小时的 AI 新闻出个日报", "why": "定时资讯 → twitter-watchdog", "split": "test" },
+    { "id": "n8", "query": "我已经搜好了 20 篇关于 AI 陪伴的文章放在 知识/调研/陪伴素材/，帮我把它们整理成一份报告，不用再搜了", "why": "有材料只要整理，不需要找来源 → 知识整理", "split": "train" },
+    { "id": "n9", "query": "写一段 prompt 让模型给竞品分析打分", "why": "共享“竞品分析”，实际是写 prompt → prompt-craft", "split": "train" },
+    { "id": "n10", "query": "把这本《定位》做成思维导图", "why": "共享“定位”一词，实际是导图 → book-to-mindmap", "split": "test" }
+  ]
+}
