@@ -6,7 +6,7 @@
 
 Practical, production-tested skills for content workflows, product analysis, and knowledge management — built and maintained by [@yike-gunshi](https://github.com/yike-gunshi).
 
-![Skills](https://img.shields.io/badge/skills-17-blue)
+![Skills](https://img.shields.io/badge/skills-18-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Platform](https://img.shields.io/badge/Claude%20Code-compatible-8A2BE2)
 
@@ -42,6 +42,7 @@ This repository is where I keep my own reusable skills under version control, so
 | **[pm-doc-write](./skills/pm-doc-write/)** | Ghost-write PM work docs the way the user writes them: conclusion-first, table-borne, numbers with baselines, owners on every item. Nine scenario templates (weekly report, OKR, project retro, metric request, strategy iteration, eval verdict, launch review, survey report) plus universal writing constraints and a final-review checklist; outputs Feishu-ready markdown. | `写周报`, `出个文档`, `按我的风格捋一遍` |
 | **[paper-card](./skills/paper-card/)** | Read a paper, official best-practice doc, or cookbook end to end and produce a study card: every number carries a how-to-read note, every term is explained by analogy, every takeaway lands on an executable action. Ships a layered-panel SVG diagram with a headless-render self-check. Structure adapts to the source material instead of forcing a fixed template. | `读一下这篇论文`, `整理成卡片`, `这批参考资料做成学习资料` |
 | **[codex-delegate](./skills/codex-delegate/)** | Claude Code hands code implementation to local Codex CLI background jobs: write a task brief → submit → liveness checks → accept against the brief → fix rounds resume the same session (max two) → take back → commit; includes blind arbitration. `delegate.sh` manages job state and resume; needs the Codex CLI bundled with the ChatGPT app. | `派给codex`, `delegate to codex` |
+| **[deep-survey](./skills/deep-survey/)** | Research a product, industry, company, or AI tool and produce a long-form report a newcomer can read and act on: information-needs list with a coverage gate → parallel research (your own feeds first; dedicated channels for Zhihu, Jike, and 36Kr) → adversarial review → claim-by-claim verification of sources and metrics → argument map → report with themed charts → final check. Every number carries a source number; unknowns are stated, never estimated. Build notes: [docs/deep-survey-build](./docs/deep-survey-build/). | `调研一下`, `竞品分析`, `值不值得做` |
 
 ## Installation
 
@@ -75,6 +76,7 @@ Some skills call third-party APIs and need credentials. **No secrets are committ
 | lark-export | `FEISHU_APP_ID`, `FEISHU_APP_SECRET`, `FEISHU_EXPORT_HOME` | Environment variables (see the skill's `SKILL.md`) |
 | twitter-watchdog | X API keys, twitterapi.io key, Anthropic key, Telegram token | Copy `config/config.example.yaml` → `config/config.yaml` and fill in |
 | wechat-publisher | `WECHAT_APP_ID`, `WECHAT_APP_SECRET`, `OSS_ACCESS_KEY_ID`, `OSS_ACCESS_KEY_SECRET`, `OSS_BUCKET` | Environment variables |
+| deep-survey | `ZHIHU_ACCESS_SECRET` (optional, Zhihu open platform); `INFO2ACTION_REPO` (optional, the author's own feed system) | Environment variables, or `~/.config/deep-survey/secrets.env`; falls back to web search when absent |
 
 `config/config.yaml`, `.env`, and other local secret files are git-ignored.
 
@@ -84,6 +86,7 @@ Some skills call third-party APIs and need credentials. **No secrets are committ
 yikegunshi-skill/
 ├── skills/
 │   ├── codex-delegate/
+│   ├── deep-survey/
 │   ├── knowledge-canvas/
 │   ├── lark-export/
 │   ├── paper-card/
@@ -98,6 +101,7 @@ yikegunshi-skill/
 │   ├── wechat-publisher/
 │   ├── work-logger/
 │   └── xhs-note/
+├── docs/            # design and evaluation notes for some skills
 ├── LICENSE
 └── README.md
 ```
