@@ -9,7 +9,8 @@
   2. 同一页面的多个旧编号合并成一个：App Store 页按「国家 + 应用编号」认（带不带应用名、
      带不带 ?see-all=reviews 都算同一页），36 氪桌面页与移动端页算同一页，其他网址去掉锚点后相同即同一页。
   3. 改写正文和推荐阅读里的 [n]、[a,b]：合并后去重，保持原顺序。
-  4. 重写「口径与来源」的编号列表：`n. 标题 — URL（日期）`；弱来源（sources.json 的 weak 字段）在行尾标出。
+  4. 重写「口径与来源」的编号列表：沿用报告里原有的条目文字（报告员写的标题、日期、弱来源标记），
+     只换编号；报告里没列的编号才用 sources.json 生成 `n. 标题 — URL（日期）`，弱来源（weak 字段）在行尾标出。
      列表之前的口径说明保留不动。
   5. 给了 --charts 时，同步改写 charts/data/*.json 的 source 字段，并提示重跑 make_chart.py（图的页脚编号要更新）。
   6. 新旧对照写到 sources.json 同目录的 sources-renumber.json；改写前的报告备份为同目录的 report-编号前.md。
@@ -119,9 +120,21 @@ def main() -> int:
         keep.append(l)
     while keep and not keep[-1].strip():
         keep.pop()
+    # 报告员写的原条目（旧编号 → 编号之后的文字）。sources.json 的标题是脚本解析的，常残缺，只作兜底
+    written: dict[int, str] = {}
+    for l in sec:
+        m = re.match(r"^\s*(?:\[(\d{1,3})\]|(\d{1,3})[.、])\s+(.*)$", l)
+        if m:
+            written[int(m.group(1) or m.group(2))] = m.group(3).rstrip()
     out_list = []
+    reused = 0
     for nn in range(1, len(new_src) + 1):
         s = new_src[nn]
+        old_text = next((written[o] for o in s["old"] if o in written), None)
+        if old_text:
+            out_list.append(f"{nn}. {old_text}")
+            reused += 1
+            continue
         title = s.get("title") or "（无标题）"
         date = f"（{s['date']}）" if s.get("date") else ""
         weak = f"（弱来源：{s['weak']}）" if s.get("weak") else ""
@@ -131,13 +144,17 @@ def main() -> int:
 
     merged = {nn: s["old"] for nn, s in new_src.items() if len(s["old"]) > 1}
     # 标题可疑：解析残留（以数字或标点开头、含「笔记」）、只有站名、太短。交付前人工改成文章名
-    suspicious = [nn for nn, s in new_src.items()
-                  if re.match(r"^[0-9，,；;）)、:：（(]", s.get("title") or "") or "笔记" in (s.get("title") or "")
-                  or len(s.get("title") or "") < 6
-                  or re.fullmatch(r"App Store.{0,6}|维基百科|iTunes Search API", s.get("title") or "")
-                  or (not re.search(r"[《「\"“]", s.get("title") or "") and len((s.get("title") or "").split()) <= 2
-                      and len(s.get("title") or "") <= 14 and len(urlsplit(s["url"]).path) > 20)]
-    print(f"引用的来源 {len(order)} 个 → 合并同页后 {len(new_src)} 个，编号 1—{len(new_src)}")
+    def bad_title(text):
+        t = text.split(" — ")[0]
+        opens = sum(t.count(c) for c in "（(《「")
+        closes = sum(t.count(c) for c in "）)》」")
+        return (re.match(r"^[，,；;）)、:：]|^\d+[，,；;）)]", t) or "笔记" in t or len(t) < 6 or opens != closes
+                or re.search(r"\[新\d\]|来源缩写", t)
+                or re.fullmatch(r"App Store.{0,6}|维基百科|iTunes Search API", t)
+                or (not re.search(r"[《「\"“]", t) and len(t.split()) <= 2 and len(t) <= 14))
+    suspicious = [i + 1 for i, line in enumerate(out_list) if bad_title(line.split(". ", 1)[1])]
+    print(f"引用的来源 {len(order)} 个 → 合并同页后 {len(new_src)} 个，编号 1—{len(new_src)}；"
+          f"沿用报告原条目 {reused} 条，按 sources.json 生成 {len(new_src) - reused} 条")
     if suspicious:
         print(f"标题可疑的新编号（只有站名或解析残留，交付前改成文章名）：{suspicious}")
     for nn, olds in merged.items():
