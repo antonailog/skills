@@ -130,7 +130,16 @@ def main() -> int:
     new_lines = new_body + keep + [""] + out_list + [""] + lines[s1:]
 
     merged = {nn: s["old"] for nn, s in new_src.items() if len(s["old"]) > 1}
+    # 标题可疑：解析残留（以数字或标点开头、含「笔记」）、只有站名、太短。交付前人工改成文章名
+    suspicious = [nn for nn, s in new_src.items()
+                  if re.match(r"^[0-9，,；;）)、:：（(]", s.get("title") or "") or "笔记" in (s.get("title") or "")
+                  or len(s.get("title") or "") < 6
+                  or re.fullmatch(r"App Store.{0,6}|维基百科|iTunes Search API", s.get("title") or "")
+                  or (not re.search(r"[《「\"“]", s.get("title") or "") and len((s.get("title") or "").split()) <= 2
+                      and len(s.get("title") or "") <= 14 and len(urlsplit(s["url"]).path) > 20)]
     print(f"引用的来源 {len(order)} 个 → 合并同页后 {len(new_src)} 个，编号 1—{len(new_src)}")
+    if suspicious:
+        print(f"标题可疑的新编号（只有站名或解析残留，交付前改成文章名）：{suspicious}")
     for nn, olds in merged.items():
         print(f"  合并 {olds} → {nn}：{new_src[nn]['url'][:70]}")
 
