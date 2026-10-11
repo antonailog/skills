@@ -51,7 +51,6 @@ FILLERS = ("值得注意的是", "综上所述", "不难看出", "由此可见")
 NUM_RE = re.compile(r"\d+(?:\.\d+)?")
 REQUIRED = [
     ("一分钟看懂", r"一分钟看懂"),
-    ("如果你是", r"^如果你是"),
     ("一", r"^一[、.]"),
     ("二", r"^二[、.]"),
     ("三", r"^三[、.]"),
@@ -91,7 +90,7 @@ def main() -> int:
         pos.append(hit)
     found = [p for p in pos if p is not None]
     if found != sorted(found):
-        errors.append("E3 小节顺序不对，应为 一分钟看懂 / 如果你是 / 一 … 八 / 留给你的问题 / 附录 / 推荐阅读 / 口径与来源")
+        errors.append("E3 小节顺序不对，应为 一分钟看懂 / 一 … 八 / 留给你的问题 / 附录 / 推荐阅读 / 口径与来源")
 
     src_idx = next((i for i, t in reversed(h2) if "来源" in t and not t.startswith("推荐")), len(lines))
     body = lines[:src_idx]
