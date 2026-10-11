@@ -29,6 +29,9 @@
   W13 来源编号不是从 1 开始连续：交付前跑 scripts/renumber_sources.py
   W14 「留给你的问题」不是 3—7 条
   W15 反例名单里的事件、数据没有按原名出现：它们常被改写，逐条确认已写进正文、第六节或第八节
+  W16 「第二梯队」一节没写明数字未逐条核查（这类线索表的数字多取自研究笔记）
+  W17 来源列表里的标题可疑：只有站名、括号不闭合、带解析残留或内部占位符（如 [新1]）
+  W18 正文出现内部工具名（Info2Action、lingowhale 等），读者不认识
 """
 import json
 import re
@@ -276,6 +279,36 @@ def main() -> int:
     # —— 编号连续 ——
     if cited and sorted(cited) != list(range(1, len(cited) + 1)):
         warns.append(f"W13 来源编号不连续（引用 {len(cited)} 个，最大编号 {max(cited)}）：交付前跑 scripts/renumber_sources.py")
+
+    # —— 第二梯队要标未核 ——
+    tier_lines = [i for i, l in enumerate(lines) if l.startswith("#") and "第二梯队" in l]
+    if tier_lines:
+        a = tier_lines[0]
+        b = next((i for i in range(a + 1, len(lines)) if lines[i].startswith("#")), len(lines))
+        intro = [l for l in lines[a + 1:b] if not l.lstrip().startswith("|")]
+        if not re.search(r"未核|未经核查|未逐条核查|未核实", "\n".join(intro)):
+            warns.append("W16 「第二梯队」一节没写明数字未逐条核查")
+
+    # —— 来源标题 ——
+    for l in lines[src_idx:]:
+        m = re.match(r"^\s*(\d{1,3})[.、]\s+(.*)$", l)
+        if not m:
+            continue
+        t = m.group(2).split(" — ")[0].strip()
+        opens = sum(t.count(c) for c in "（(《「")
+        closes = sum(t.count(c) for c in "）)》」")
+        if (re.match(r"^[，,；;）)、:：]|^\d+[，,；;）)]", t) or "笔记" in t or len(t) < 6 or opens != closes
+                or re.search(r"\[新\d\]|来源缩写", t)
+                or re.fullmatch(r"App Store.{0,6}|维基百科|Wikipedia|iTunes Search API", t)
+                or (not re.search(r"[《「\"“]", t) and len(t.split()) <= 2 and len(t) <= 14)):
+            warns.append(f"W17 来源 {m.group(1)} 标题可疑：{t[:30]}")
+
+    # —— 内部工具名 ——
+    for i, l in enumerate(body, 1):
+        hit = re.search(r"Info2Action|lingowhale|own_feed_recall|research_notes", l)
+        if hit and not l.lstrip().startswith("#"):
+            warns.append(f"W18 第 {i} 行出现内部工具名「{hit.group(0)}」")
+            break
 
     n_tab = sum(1 for k, l in enumerate(body) if l.strip().startswith("|") and (k == 0 or not body[k - 1].strip().startswith("|")))
     chars = zh_len(body_text)

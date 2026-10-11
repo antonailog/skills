@@ -22,8 +22,10 @@ from urllib.parse import urlsplit, urlunsplit
 URL_RE = re.compile(r"https?://[^\s<>()\[\]\"'`）】」，、；：]+")
 MD_LINK_RE = re.compile(r"\[([^\]]{1,200})\]\((https?://[^)\s]+)\)")
 # 研究员常用格式：标题（URL ，日期）或 标题 (URL, date)，括号全角半角都认
+# 标题里允许带完整的小括号段（如「年度报告（2025 版）」），但括号里是链接的不算
 PAREN_CITE_RE = re.compile(
-    r"([^（(\[\]—；;、]{2,160}?)\s*[（(]\s*(https?://[^\s）),，]+)\s*(?:[，,]\s*([^）)]{0,40}))?\s*[）)]"
+    r"((?:[^（(\[\]—；;、]|[（(](?!\s*https?://)[^（()）]{0,40}[）)]){2,160}?)"
+    r"\s*[（(]\s*(https?://[^\s）),，]+)\s*(?:[，,]\s*([^）)]{0,40}))?\s*[）)]"
 )
 DATE_RE = re.compile(r"(20\d{2}[-/.年]\d{1,2}(?:[-/.月]\d{1,2})?日?)")
 MULTI_LABEL_TLDS = {"com.cn", "net.cn", "org.cn", "gov.cn", "co.uk", "co.jp", "com.au", "com.hk", "com.tw", "co.kr"}
@@ -56,6 +58,24 @@ def weak_domains() -> dict[str, str]:
         for d in re.findall(r"[a-z0-9-]+(?:\.[a-z0-9-]+)+", cells[0].lower()):
             out[d.removeprefix("www.")] = reason
     return out
+
+
+def clean_title(t: str) -> str:
+    """去掉夹带的 URL、首尾标点，以及不成对的首尾括号；成对的括号（如「报告（2025 版）」）保留。"""
+    t = re.sub(r"[（(]?\s*https?://\S+", "", t).strip(" 　:：,，;；、")
+    def opens(x):
+        return x.count("（") + x.count("(")
+    def closes(x):
+        return x.count("）") + x.count(")")
+    while t and t[-1] in "）)" and closes(t) > opens(t):
+        t = t[:-1].rstrip(" 　:：,，;；、")
+    while t and t[0] in "（(" and opens(t) > closes(t):
+        t = t[1:].lstrip(" 　:：,，;；、")
+    while t and t[-1] in "（(":
+        t = t[:-1].rstrip(" 　:：,，;；、")
+    while t and t[0] in "）)":
+        t = t[1:].lstrip(" 　:：,，;；、")
+    return t
 
 
 def normalize(url: str) -> str:
@@ -177,9 +197,7 @@ def main() -> int:
             s["weak"] = "只读到搜索摘要"
         s["cited_in"] = sorted(set(s["cited_in"]))
         # 标题清理：去掉夹带的 URL 与残缺括号
-        t = re.sub(r"[（(]?\s*https?://\S+", "", s["title"])
-        t = t.strip(" 　（()）:：,，;；、")
-        s["title"] = t
+        s["title"] = clean_title(s["title"])
     (notes_dir / "sources.json").write_text(json.dumps(items, ensure_ascii=False, indent=2), encoding="utf-8")
 
     lines = ["| 编号 | 标题 | URL | 日期 | 类型 | family | 标记 |", "|---|---|---|---|---|---|---|"]
