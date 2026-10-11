@@ -22,6 +22,8 @@
   W7 连续 600 字以上没有表、图、列表或引语
   W8 截图下一行没有带来源编号的图注；数据图缺 charts/data/<同名>.json
   W9 图片和文字挤在同一段（图片下一行不是空行），部分编辑器会显示成空白
+  W10 「推荐阅读」不是 5—10 条，或有条目缺推荐原因（「：」之后的说明）或缺来源编号
+  W11 「一分钟看懂」里没有导引图
 """
 import json
 import re
@@ -53,6 +55,7 @@ REQUIRED = [
     ("七", r"^七[、.]"),
     ("八", r"^八[、.]"),
     ("附录", r"^附录"),
+    ("推荐阅读", r"^推荐阅读"),
     ("口径与来源", r"来源"),
 ]
 
@@ -81,9 +84,9 @@ def main() -> int:
         pos.append(hit)
     found = [p for p in pos if p is not None]
     if found != sorted(found):
-        errors.append("E3 小节顺序不对，应为 一分钟看懂 / 一 … 八 / 附录 / 口径与来源")
+        errors.append("E3 小节顺序不对，应为 一分钟看懂 / 一 … 八 / 附录 / 推荐阅读 / 口径与来源")
 
-    src_idx = next((i for i, t in reversed(h2) if "来源" in t), len(lines))
+    src_idx = next((i for i, t in reversed(h2) if "来源" in t and not t.startswith("推荐")), len(lines))
     body = lines[:src_idx]
     body_text = "\n".join(body)
 
@@ -125,6 +128,8 @@ def main() -> int:
         items = [l.strip() for l in lines[a:b] if re.match(r"^\s*(\d+[.、]|[-*])\s+", l)]
         if not 5 <= len(items) <= 7:
             errors.append(f"E5 「一分钟看懂」要点应为 5—7 条，现为 {len(items)} 条")
+        if not any(IMG_RE.search(l) for l in lines[a:b]):
+            warns.append("W11 「一分钟看懂」里没有导引图（scripts/make_guide.py）")
         for it in items:
             t = re.sub(r"^\s*(\d+[.、]|[-*])\s+", "", it).replace("**", "")
             if CITE_RE.search(t):
@@ -194,8 +199,22 @@ def main() -> int:
                 nxt = next((x for x in body[i + 1:i + 4] if x.strip()), "")
                 if not CITE_RE.search(nxt):
                     warns.append(f"W8 截图 {src} 下一行缺带编号的图注")
-            elif not (p.parent / "data" / f"{stem}.json").exists() and not (p.parent / f"{stem}.mmd").exists():
+            elif not any((p.parent / x).exists() for x in (f"data/{stem}.json", f"{stem}.mmd", f"{stem}.json")):
                 warns.append(f"W8 图 {src} 没有对应的 data/{stem}.json 或 {stem}.mmd")
+
+    # —— 推荐阅读 ——
+    rec = next((k for k, (_, t) in enumerate(h2) if t.startswith("推荐阅读")), None)
+    if rec is not None:
+        a = h2[rec][0]
+        b = h2[rec + 1][0] if rec + 1 < len(h2) else len(lines)
+        recs = [l.strip() for l in lines[a:b] if re.match(r"^\s*[-*]\s+", l)]
+        if not 5 <= len(recs) <= 10:
+            warns.append(f"W10 推荐阅读应为 5—10 条，现为 {len(recs)} 条")
+        for r in recs:
+            if "：" not in r or len(r.split("：", 1)[1].strip()) < 8:
+                warns.append(f"W10 推荐阅读缺推荐原因: {r[:40]}")
+            if not CITE_RE.search(r) and "http" not in r:
+                warns.append(f"W10 推荐阅读缺来源编号: {r[:40]}")
 
     n_tab = sum(1 for k, l in enumerate(body) if l.strip().startswith("|") and (k == 0 or not body[k - 1].strip().startswith("|")))
     chars = zh_len(body_text)

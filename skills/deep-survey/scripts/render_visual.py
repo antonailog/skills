@@ -5,7 +5,7 @@
 图片在哪都能看。Mermaid 源文件留在旁边，方便以后改。
 
 用法：
-  python3 render_visual.py mermaid <图.mmd> [--out <图.png>] [--width 1200]
+  python3 render_visual.py mermaid <图.mmd> --theme <主题名> [--out <图.png>] [--width 1200]
   python3 render_visual.py shot <URL> --out <截图.png> [--width 1280] [--height 800] [--selector CSS] [--full]
 
 依赖：Python playwright 与 Chromium（本机已装）。Mermaid 脚本从 cdn.jsdelivr.net 加载；
@@ -43,15 +43,40 @@ def launch(p):
     return p.chromium.launch(**kw)
 
 
-def mermaid(src: Path, out: Path, width: int):
+THEMES_PATH = Path(__file__).resolve().parent.parent / "assets" / "chart-themes.json"
+
+
+def theme_vars(name):
+    """从图表主题取 Mermaid 配色：节点用浅底 + 主题色描边，时间线各段统一用浅底，不用彩虹色。"""
+    import json
+    data = json.loads(THEMES_PATH.read_text(encoding="utf-8"))
+    if name not in data["themes"]:
+        raise SystemExit(f"未知主题「{name}」，可选：{'、'.join(data['themes'])}")
+    t = data["themes"][name]
+    fam = data["families"][t["family"]]
+    font = ",".join(f"'{f}'" for f in fam["font_body"]) + ",sans-serif"
+    border = t["hi"] if t["family"] != "magazine" else t["ink"]
+    v = {"background": t["paper"], "primaryColor": t["card"], "primaryBorderColor": border,
+         "primaryTextColor": t["ink"], "secondaryColor": t["card"], "tertiaryColor": t["paper"],
+         "lineColor": t["muted"], "textColor": t["ink"], "titleColor": t["ink"], "fontSize": "20px",
+         "edgeLabelBackground": t["paper"], "clusterBkg": t["paper"], "clusterBorder": t["grid"]}
+    for i in range(12):
+        v[f"cScale{i}"] = t["card"]
+        v[f"cScaleLabel{i}"] = t["ink"]
+        v[f"cScaleInv{i}"] = t["ink"]
+    return v, font, t["paper"]
+
+
+def mermaid(src: Path, out: Path, width: int, theme: str):
+    import json
     code = src.read_text(encoding="utf-8")
+    tv, font, paper = theme_vars(theme)
     html = f"""<!doctype html><html><head><meta charset="utf-8">
-<style>body{{margin:0;background:#fcfcfb;font-family:{FONT}}}#c{{padding:24px;display:inline-block}}</style>
+<style>body{{margin:0;background:{paper};font-family:{font}}}#c{{padding:24px;display:inline-block;background:{paper}}}</style>
 <script src="{MERMAID_CDN}"></script></head><body><div id="c"><pre class="mermaid">{code}</pre></div>
-<script>mermaid.initialize({{startOnLoad:false,theme:"base",fontFamily:'{FONT}',
-flowchart:{{useMaxWidth:false}},timeline:{{useMaxWidth:false}},
-themeVariables:{{primaryColor:"#e8f0fb",primaryBorderColor:"#2a78d6",primaryTextColor:"#0b0b0b",
-lineColor:"#898781",secondaryColor:"#f3f2ef",tertiaryColor:"#fcfcfb",fontSize:"20px"}}}});
+<script>mermaid.initialize({{startOnLoad:false,theme:"base",fontFamily:{json.dumps(font)},
+flowchart:{{useMaxWidth:false}},timeline:{{useMaxWidth:false,disableMulticolor:false}},
+themeVariables:{json.dumps(tv, ensure_ascii=False)}}});
 mermaid.run().then(()=>document.body.setAttribute("data-done","1"))
 .catch(e=>{{document.body.setAttribute("data-err",String(e));}});</script></body></html>"""
     with sync_playwright() as p:
@@ -102,7 +127,11 @@ def main():
     if a[0] == "mermaid":
         src = Path(a[1])
         out = Path(arg(a, "--out", str(src.with_suffix(".png"))))
-        mermaid(src, out, int(arg(a, "--width", 1200)))
+        th = arg(a, "--theme")
+        if not th:
+            print("mermaid 需要 --theme <主题名>，与数据图用同一套")
+            return 2
+        mermaid(src, out, int(arg(a, "--width", 1200)), th)
     elif a[0] == "shot":
         out = arg(a, "--out")
         if not out:

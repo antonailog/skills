@@ -1,5 +1,5 @@
 {
-  "_说明": "图表主题。make_chart.py 按 --theme <名称> 或图表 JSON 里的 \"theme\" 字段取用。三个风格家族：clean（干净信息图）、magazine（电子杂志：衬线标题、纸感底色、墨色单色）、swiss（瑞士国际主义：无衬线、直角、单一高亮色）。杂志与瑞士两族的颜色取自 op7418/guizang-ppt-skill 的主题预设。一份报告只用一套主题。",
+  "_说明": "图表主题。make_chart.py 按 --theme <名称> 或图表 JSON 里的 \"theme\" 字段取用。三个风格家族：clean（干净信息图）、magazine（电子杂志：衬线标题、纸感底色、墨色单色）、swiss（瑞士国际主义：无衬线、直角、单一高亮色）。杂志与瑞士两族的颜色取自 op7418/guizang-ppt-skill 的主题预设。一份报告只用一套主题。不设默认：每次按文档风格自行选择，蓝色系、橙色系优先（标了 \"优先\": true 的几套）。",
   "families": {
     "clean": {
       "font_title": [
@@ -125,11 +125,12 @@
         "#eb6834",
         "#1baf7a"
       ],
-      "hi_on": "#ffffff"
+      "hi_on": "#ffffff",
+      "优先": true
     },
     "杂志-墨水经典": {
       "family": "magazine",
-      "适合": "不知道选什么时的默认；商业、产品、通用",
+      "适合": "商业、产品、通用",
       "paper": "#f1efea",
       "ink": "#0a0a0b",
       "ink2": "#3d3c39",
@@ -161,7 +162,8 @@
         "#5a6f8f",
         "#b3c0d0"
       ],
-      "hi_on": "#f1f3f5"
+      "hi_on": "#f1f3f5",
+      "优先": true
     },
     "杂志-森林墨": {
       "family": "magazine",
@@ -237,7 +239,7 @@
     },
     "瑞士-克莱因蓝": {
       "family": "swiss",
-      "适合": "不知道选什么时的默认；AI、科技、设计",
+      "适合": "通用首选；AI、科技、设计、数据",
       "paper": "#fafaf8",
       "ink": "#0a0a0a",
       "ink2": "#3a3a3a",
@@ -251,7 +253,8 @@
         "#0a0a0a",
         "#a3a3a1"
       ],
-      "hi_on": "#ffffff"
+      "hi_on": "#ffffff",
+      "优先": true
     },
     "瑞士-柠檬黄": {
       "family": "swiss",
@@ -305,7 +308,8 @@
         "#0a0a0a",
         "#a3a3a1"
       ],
-      "hi_on": "#ffffff"
+      "hi_on": "#ffffff",
+      "优先": true
     }
   }
 }

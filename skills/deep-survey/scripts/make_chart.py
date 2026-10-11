@@ -9,7 +9,8 @@
 主题：
 - 定义在 assets/chart-themes.json：三个风格家族（clean 干净信息图 / magazine 电子杂志 / swiss 瑞士国际主义），
   共 11 套。颜色、字体、条形粗细、圆角、标题样式、数据卡样式、单位图形状都由主题决定，脚本里不写死。
-- 优先级：图表 JSON 的 "theme" 字段 > 命令行 --theme > 默认 clean-默认。一份报告只用一套主题。
+- 优先级：图表 JSON 的 "theme" 字段 > 命令行 --theme。不设默认，没给主题会报错：每份报告按文档风格自选一套，
+  蓝色系、橙色系优先（--themes 里标 ★ 的），全报告统一。
 
 规则：
 - 每个数值都必须带 source（来源编号列表），缺一个就报错退出。
@@ -39,7 +40,6 @@ from matplotlib.patches import FancyBboxPatch, Rectangle, Circle  # noqa: E402
 from matplotlib.lines import Line2D  # noqa: E402
 
 THEMES_PATH = Path(__file__).resolve().parent.parent / "assets" / "chart-themes.json"
-DEFAULT_THEME = "clean-默认"
 DPI = 200
 WIDTH_IN = 8.0
 _INSTALLED = {f.name for f in font_manager.fontManager.ttflist}
@@ -552,7 +552,10 @@ def render_file(spec_path: Path, out: Path, theme):
             raise SpecError(f"缺字段 {k}")
     if spec["type"] not in RENDER:
         raise SpecError(f"未知类型 {spec['type']}，可选：{', '.join(RENDER)}")
-    T = load_theme(spec.get("theme") or theme or DEFAULT_THEME)
+    chosen = spec.get("theme") or theme
+    if not chosen:
+        raise SpecError("没有指定主题：用 --theme <主题名> 按文档风格选一套，蓝色系、橙色系优先（python3 make_chart.py --themes 查看）")
+    T = load_theme(chosen)
     fit_title(spec)
     header_height_cache = header_height(spec)
     fig = RENDER[spec["type"]](spec)
@@ -573,8 +576,11 @@ def main():
         return 2
     if a[0] == "--themes":
         data = json.loads(THEMES_PATH.read_text(encoding="utf-8"))
-        for name, t in data["themes"].items():
-            print(f"{name:12s} {t['family']:9s} {t.get('适合', '')}")
+        items = sorted(data["themes"].items(), key=lambda kv: not kv[1].get("优先"))
+        for name, t in items:
+            star = "★" if t.get("优先") else " "
+            print(f"{star} {name:12s} {t['family']:9s} {t.get('适合', '')}")
+        print("★ = 优先（蓝色系、橙色系）。不设默认，按文档风格选一套，全报告统一。")
         return 0
     theme = arg(a, "--theme")
     try:
@@ -585,7 +591,7 @@ def main():
             for p in sorted(d.glob("*.json")):
                 render_file(p, out_dir / (p.stem + ".png"), theme)
                 n += 1
-            print(f"— 渲染 {n} 张（主题：{theme or '各图自带或默认'}）")
+            print(f"— 渲染 {n} 张（主题：{theme or '各图自带'}）")
         else:
             p = Path(a[0])
             out = Path(arg(a, "--out", str(p.parent.parent / (p.stem + ".png"))))
