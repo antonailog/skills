@@ -18,11 +18,12 @@ description: 调研一个产品、行业、公司或 AI 工具，产出一份像
 | 文件 | 什么时候读 |
 |---|---|
 | `references/frameworks/<type>.md` | S2：按对象类型读一份（product / industry / company / ai-tool / generic），含维度和信息需求清单 |
-| `references/source-whitelist.md` | S2 列来源建议时 |
+| `references/source-whitelist.md`；本机有就先读 `知识/调研/_信源库/信源库.md` | S2 列来源建议时 |
 | `assets/dossier-fields.md` | S2 分配竞品档案表时 |
 | `references/researcher-brief.md` | 研究员读，协调者不读 |
 | `references/adversary-brief.md` | 对抗分析员读 |
 | `references/verifier-brief.md`、`references/confidence-rules.md` | 验证者读 |
+| `assets/argument-map.md` | S6 后协调者写论证地图 |
 | `references/writer-brief.md`、`references/report-style.md`、`assets/report-template.md` | 报告员读；协调者终审时对照 report-style 第 1—4 条 |
 | `assets/intake-form.md` | S1 |
 
@@ -45,28 +46,30 @@ description: 调研一个产品、行业、公司或 AI 工具，产出一份像
 
 协调者（当前上下文）只做确认单、计划、派工、门禁判断、终审、交付，不自己搜索、不自己写报告——几百行笔记会把上下文填满。子 agent 用 Agent 工具、subagent_type 固定 general-purpose；同一阶段的研究员一批并行（run_in_background=true）。每份任务书末句写"结束时只回复数量，不回复研究内容"：协调者在核查前接触到结论，会不自觉地采信未核的数字。
 
-预算按"搜索 + 抓取"次数计，WebFetch、curl、浏览器抓取都算，读规程、落盘不计：研究员单对象 15 次，每多一个对象 +3，上限 25；补研每人 10—15 次；对抗 8 次；核查总计 40 次（逐字核对原话、价格、样本量要打开原文）。
+预算按"搜索 + 抓取"次数计，WebFetch、curl、浏览器抓取、`fetch_article.py` 都算，`zhihu_search.py` 每次算 2 次，读规程、读自有信源池、落盘不计：研究员单对象 15 次，每多一个对象 +3，上限 25；补研每人 10—15 次；对抗 8 次；核查总计 40 次（逐字核对原话、价格、样本量要打开原文）。
 
 工作目录：`research_notes/<课题>/`；报告与 `charts/` 放在它的上一级。S8 用户选定落点后整体移过去。
 
 ## S1 确认单
 
-先从 query 和材料里填 `assets/intake-form.md`，只问填不出来且最影响产出的项，一次 AskUserQuestion ≤3 问，默认项放第一位：对象与范围、要回答的问题、口径与读者立场、模式。非交互或用户说"按默认"时按默认继续，报告导读行注明"确认单未经用户确认"。落盘 `00-intake.md`。
+先从 query 和材料里填 `assets/intake-form.md`，只问填不出来且最影响产出的项，一次 AskUserQuestion ≤3 问，默认项放第一位。读者三项（是谁、读完要做什么决定、能投入多少）优先问：它们决定「如果你是 X」、结论表的放弃线和成本账的规模。非交互或用户说"按默认"时按默认继续，报告导读行注明"确认单未经用户确认"。落盘 `00-intake.md`。
 
 ## S2 计划：信息需求清单 + 分工
 
-1. 读框架文件，按其「信息需求清单」写 `02-needs.json`：每项 id、模块、需求、市场、min_sources、min_families、note。面向多个市场的消费产品，标「分市场」的需求每个市场各一项。
+1. 读框架文件，按其「信息需求清单」写 `02-needs.json`：每项 id、模块、需求、市场、min_sources、min_families、note。面向多个市场的消费产品，标「分市场」的需求每个市场各一项。对象清单写 `02-objects.json`（`["Character.AI/C.AI", "猫箱"]`，别名用 / 隔开）。
 2. 把需求分给研究员：完整模式按维度 × 市场分，轻量模式合并成 3 组；每人拿到需求编号与门槛、关键问题、建议来源、口径，以及要填的竞品档案表（`assets/dossier-fields.md`）。
 3. 预先写明哪些数字预期查不到或只能到第三方估算（流量、收入、下载量在无付费接口时）。
 4. 落盘 `01-plan.md`，一次 AskUserQuestion 请用户批准；不批就改，最多两轮。
 
 ## S3 并行研究
 
-任务书第一句"先读 `<skill 目录>/references/researcher-brief.md`"，并给出：需求编号与门槛、关键问题、来源建议、口径、笔记路径 `10-<维度>[-<市场>].md`、档案表路径。所有研究员同一轮派出。
+先召回自有信息流：从信息需求清单拆 5—15 个关键词（品类、产品、公司名及中英文别名，不用整句），跑 `python3 scripts/own_feed_recall.py research_notes/<课题> --keywords ...`。退出码 3 表示本机没有 Info2Action，跳过，报告「口径与来源」注明。
+
+任务书第一句"先读 `<skill 目录>/references/researcher-brief.md`"，并给出：需求编号与门槛、关键问题、来源建议、口径、自有信源池路径 `05-自有信源池.md`、笔记路径 `10-<维度>[-<市场>].md`、档案表路径。所有研究员同一轮派出。
 
 ## S4 覆盖率门禁（最多三轮）
 
-跑 `python3 scripts/build_source_table.py research_notes/<课题> [--existing sources.json]`，再跑 `python3 scripts/coverage_report.py research_notes/<课题>`，得到 `25-coverage.md`。
+跑 `python3 scripts/build_source_table.py research_notes/<课题> [--existing sources.json]`，再跑 `python3 scripts/coverage_report.py research_notes/<课题>`，得到 `25-coverage.md`。它还做对象清单复核：笔记点名、却不在 `02-objects.json` 里的玩家，多份笔记提到的补研，其余进报告的「第二梯队」表。
 
 - 全部达标 → 进 S5。
 - 有未达标 → 按未达标需求派定向补研（每 1—3 项需求一人），笔记写 `11-<需求>.md`，再跑一遍。最多三轮。
@@ -74,19 +77,23 @@ description: 调研一个产品、行业、公司或 AI 工具，产出一份像
 
 ## S5 对抗分析（完整模式）
 
-派对抗分析员读全部笔记，先读 `adversary-brief.md`，落盘 `20-counter.md`。轻量模式并入 S6 的核查员。
+派对抗分析员读全部笔记，先读 `adversary-brief.md`，落盘 `20-counter.md`，末尾必须有「反例名单」。轻量模式并入 S6 的核查员。
 
 ## S6 独立核查
 
-重跑 `build_source_table.py`（`--existing` 保留编号）。派验证者读 `verifier-brief.md` 与 `confidence-rules.md`：逐条核对候选结论与竞品档案，定置信度，打回不符的，落盘 `30-verified.md`。打回过半回 S4 补一轮。
+重跑 `build_source_table.py`（`--existing` 保留编号）。派验证者读 `verifier-brief.md` 与 `confidence-rules.md`：逐条核对候选结论与竞品档案，既核「来源说没说」，也核「口径撑不撑得住结论」，定置信度，打回不符的，落盘 `30-verified.md`。打回过半回 S4 补一轮。
+
+核查后协调者按 `assets/argument-map.md` 写论证地图 `33-argument-map.md`：3—5 个核心判断，各配证据、反证、对读者的含义和位置；对抗反例和第二梯队各有去处。只用通过表里的事实。
 
 ## S7 报告与图表
 
-派报告员，任务书写"先读 `<skill 目录>/references/writer-brief.md`"，给出工作目录、报告路径、`charts/` 路径。报告员按模板写正文，按文档风格选一套图表主题（不设默认，蓝色系、橙色系优先，`make_chart.py --themes` 查看），用 `make_chart.py`（数据图）、`render_visual.py`（结构图、截图）、`make_guide.py`（导引图）、`render_table.py`（竞品表）出图出表，跑 `check_report.py` 修到零错误。
+派报告员，任务书写"先读 `<skill 目录>/references/writer-brief.md`"，给出工作目录、报告路径、`charts/` 路径。报告员按论证地图和模板写正文，按文档风格选一套图表主题（不设默认，蓝色系、橙色系优先，`make_chart.py --themes` 查看），用 `make_chart.py`（数据图）、`render_visual.py`（结构图、截图）、`make_guide.py`（导引图）、`render_table.py`（竞品表）出图出表，跑 `check_report.py --counter 20-counter.md` 修到零错误。
+
+终稿核查：再派验证者按 `verifier-brief.md`「终稿核查」一节，只核第六节洞见和每张数据图，落盘 `35-final-check.md`；报告员据此改完。然后协调者跑 `python3 scripts/renumber_sources.py <报告> --sources sources.json --charts charts`，把编号改成 1—N 并合并同页来源，再重跑 `make_chart.py --all` 更新图上的编号。
 
 协调者终审：
 
-1. 重跑 `check_report.py`。
+1. 重跑 `check_report.py`，W13（编号不连续）必须消失。
 2. 打开每张图看一眼：重叠、截断、标题不是判断句的退回。
 3. 分层阅读检查：只读标题、加粗句和图表，故事是否完整；只读「一分钟看懂」，外行能否复述。
 4. 以外行身份通读：看不懂、可删、口径没交代的地方退回报告员改。
@@ -98,6 +105,8 @@ description: 调研一个产品、行业、公司或 AI 工具，产出一份像
 
 AskUserQuestion 问落点：默认建议 `知识/调研/` 下最贴的现有子目录，文件名 `<对象>-<日期>.md`，`charts/` 与 `research_notes/` 一起移过去。已有同名文件加序号，不覆盖。回复：一句话结论、文件路径。
 
+本机有固定信源库时，把这次「好用」和「踩坑」的来源写回 `知识/调研/_信源库/信源库.md`：好用的更新「上次可用」和「课题」，踩坑的（常 403、导购站、数字写反、只有摘要）进踩坑名单。
+
 ## 输出骨架
 
 完整结构见 `assets/report-template.md`，顺序锁死：
@@ -105,14 +114,16 @@ AskUserQuestion 问落点：默认建议 `知识/调研/` 下最贴的现有子�
 ```
 标题 + 导读行
 一分钟看懂   一句话定义 + 一个反差 + 5—7 条要点（含带走的知识）+ 导引图 + 读法导航
+如果你是 X   3—5 条按先后排的行动：先做什么、先验证什么、何时放弃
 一 这是什么    新旧对比、产品截图、市场地图、时间线
-二 格局       汇总表、规模与趋势图、玩家小节
+二 格局       汇总表、规模与趋势图、玩家小节、第二梯队表
 三 用户       画像数据卡、动机、强度对比、原话、口碑表
-四 钱        价格权益表 + 分析、流向图、可复算的账
+四 钱        价格权益表 + 分析、流向图、按读者规模算的账 + 敏感性表、获客与上线门槛
 五 主线案例    时间轴 + 阶段 + 对照表
 六 分析       4—6 条洞见（归纳 / 对比归因 / 机制 / 反直觉 / 二阶推演）+ 风险表
-七 结论       选项 / 适合谁 / 代价 / 先验证什么 + 信号
+七 结论       选项 / 适合谁 / 代价 / 先验证什么 / 通过或放弃线 / 周期 / 预算 + 信号
 八 还不知道的   问题清单
+留给你的问题   3—7 件只有亲自试才知道的事
 附录 竞品档案总结
 推荐阅读     5—10 条好信源，分三组，每条写推荐原因
 口径与来源
@@ -129,4 +140,4 @@ AskUserQuestion 问落点：默认建议 `知识/调研/` 下最贴的现有子�
 
 ## 失败处理
 
-WebSearch 不可用 → 只用 WebFetch 打白名单 URL；两者都不可用 → 停止并告知，不凭记忆补数。无 Agent 工具 → 协调者串行执行各角色，导读行标"单线程模式"。网页被拦截 → 按研究员规程的降级链走，截图换应用商店页。Mermaid 渲染失败（离线） → 改用表格。来源复核时打不开 → 结论降一级并记录可达时间。用户中途改需求 → 保留仍成立的笔记，只重派受影响部分。
+WebSearch 不可用 → 只用 WebFetch 打白名单 URL；两者都不可用 → 停止并告知，不凭记忆补数。无 Agent 工具 → 协调者串行执行各角色，导读行标"单线程模式"。网页被拦截 → 按研究员规程的站点取数表和降级链走，截图换应用商店页。没有知乎密钥 → 改用 WebSearch 限定知乎域名，只拿标题和链接。自有信息流不可用 → 跳过，只做网页搜索。Mermaid 渲染失败（离线） → 改用表格。来源复核时打不开 → 结论降一级并记录可达时间。用户中途改需求 → 保留仍成立的笔记，只重派受影响部分。

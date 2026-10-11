@@ -2,7 +2,7 @@
 """检查调研报告的结构、引用、可读性与图表。
 
 用法：
-  python3 check_report.py report.md [--sources sources.json]
+  python3 check_report.py report.md [--sources sources.json] [--counter 20-counter.md]
 
 错误（E，退出码 1）：
   E1 正文引用的 [n] 不在「口径与来源」节或 sources.json
@@ -12,6 +12,7 @@
   E5 「一分钟看懂」不合规：要点不是 5—7 条，或有要点超 45 字、含 2 个以上数字、带引用编号
   E6 图片文件不存在
   E7 两个编号方括号紧挨着（如 [38][17]），会被 Markdown 渲染成链接；应合并写成 [38,17]
+  E8 对抗分析「反例名单」里的玩家没有在报告里出现（给了 --counter 时检查）
 警告（W）：
   W1 正文含估算词（约 / 大约 / 估计 / 大概 / 据说）却没有来源编号
   W2 一句话里超过 2 个来源编号
@@ -24,6 +25,10 @@
   W9 图片和文字挤在同一段（图片下一行不是空行），部分编辑器会显示成空白
   W10 「推荐阅读」不是 5—10 条，或有条目缺推荐原因（「：」之后的说明）或缺来源编号
   W11 「一分钟看懂」里没有导引图
+  W12 第七节结论表缺「通过 / 放弃」「周期」「预算」列
+  W13 来源编号不是从 1 开始连续：交付前跑 scripts/renumber_sources.py
+  W14 「留给你的问题」不是 3—7 条
+  W15 反例名单里的事件、数据没有按原名出现：它们常被改写，逐条确认已写进正文、第六节或第八节
 """
 import json
 import re
@@ -46,6 +51,7 @@ FILLERS = ("值得注意的是", "综上所述", "不难看出", "由此可见")
 NUM_RE = re.compile(r"\d+(?:\.\d+)?")
 REQUIRED = [
     ("一分钟看懂", r"一分钟看懂"),
+    ("如果你是", r"^如果你是"),
     ("一", r"^一[、.]"),
     ("二", r"^二[、.]"),
     ("三", r"^三[、.]"),
@@ -54,6 +60,7 @@ REQUIRED = [
     ("六", r"^六[、.]"),
     ("七", r"^七[、.]"),
     ("八", r"^八[、.]"),
+    ("留给你的问题", r"^留给你的问题"),
     ("附录", r"^附录"),
     ("推荐阅读", r"^推荐阅读"),
     ("口径与来源", r"来源"),
@@ -84,7 +91,7 @@ def main() -> int:
         pos.append(hit)
     found = [p for p in pos if p is not None]
     if found != sorted(found):
-        errors.append("E3 小节顺序不对，应为 一分钟看懂 / 一 … 八 / 附录 / 推荐阅读 / 口径与来源")
+        errors.append("E3 小节顺序不对，应为 一分钟看懂 / 如果你是 / 一 … 八 / 留给你的问题 / 附录 / 推荐阅读 / 口径与来源")
 
     src_idx = next((i for i, t in reversed(h2) if "来源" in t and not t.startswith("推荐")), len(lines))
     body = lines[:src_idx]
@@ -215,6 +222,61 @@ def main() -> int:
                 warns.append(f"W10 推荐阅读缺推荐原因: {r[:40]}")
             if not CITE_RE.search(r) and "http" not in r:
                 warns.append(f"W10 推荐阅读缺来源编号: {r[:40]}")
+
+    # —— 反例名单 ——
+    if "--counter" in sys.argv:
+        cp = Path(sys.argv[sys.argv.index("--counter") + 1])
+        names, on = [], False
+        for l in cp.read_text(encoding="utf-8").splitlines():
+            if l.startswith("## "):
+                on = l.strip().startswith("## 反例名单")
+                continue
+            if on and l.lstrip().startswith("-"):
+                parts = [x.strip(" *") for x in l.lstrip()[1:].split("|")]
+                if parts[0]:
+                    names.append((parts[0], parts[1] if len(parts) > 1 else "玩家"))
+        def present(alias):
+            # 英文名按整词匹配（Nomi 不能算进 economics），中文名按子串
+            if re.fullmatch(r"[\x00-\x7f]+", alias):
+                return re.search(rf"(?<![A-Za-z0-9]){re.escape(alias)}(?![A-Za-z0-9])", body_text, re.I)
+            return alias in body_text
+        soft = []
+        for nm, kind in names:
+            alts = [a.strip() for a in re.split(r"[/／]", nm) if a.strip()]
+            if any(present(a) for a in alts):
+                continue
+            if "玩家" in kind:
+                errors.append(f"E8 反例玩家「{nm}」没有出现在报告里：核实的进正文或第二梯队表，未核实的进第六或第八节并注明")
+            else:
+                soft.append(nm)
+        if soft:
+            warns.append(f"W15 反例名单里的事件、数据没有按原名出现（{len(soft)} 条），逐条确认已写进报告：{'；'.join(soft)}")
+
+    # —— 第七节结论表 ——
+    sec7 = next((k for k, (_, t) in enumerate(h2) if re.match(r"^七[、.]", t)), None)
+    if sec7 is not None:
+        a = h2[sec7][0]
+        b = h2[sec7 + 1][0] if sec7 + 1 < len(h2) else len(lines)
+        heads = [l for l in lines[a:b] if l.strip().startswith("|") and not re.match(r"^\|\s*:?-", l.strip())]
+        if heads:
+            hd = heads[0]
+            missing = [c for c, pat in (("通过 / 放弃", r"通过|放弃"), ("周期", r"周期"), ("预算", r"预算|投入"))
+                       if not re.search(pat, hd)]
+            if missing:
+                warns.append(f"W12 第七节结论表缺列：{'、'.join(missing)}")
+
+    # —— 留给你的问题 ——
+    leave = next((k for k, (_, t) in enumerate(h2) if t.startswith("留给你的问题")), None)
+    if leave is not None:
+        a = h2[leave][0]
+        b = h2[leave + 1][0] if leave + 1 < len(h2) else len(lines)
+        qs = [l for l in lines[a:b] if re.match(r"^\s*(\d+[.、]|[-*])\s+", l)]
+        if not 3 <= len(qs) <= 7:
+            warns.append(f"W14 「留给你的问题」应为 3—7 条，现为 {len(qs)} 条")
+
+    # —— 编号连续 ——
+    if cited and sorted(cited) != list(range(1, len(cited) + 1)):
+        warns.append(f"W13 来源编号不连续（引用 {len(cited)} 个，最大编号 {max(cited)}）：交付前跑 scripts/renumber_sources.py")
 
     n_tab = sum(1 for k, l in enumerate(body) if l.strip().startswith("|") and (k == 0 or not body[k - 1].strip().startswith("|")))
     chars = zh_len(body_text)

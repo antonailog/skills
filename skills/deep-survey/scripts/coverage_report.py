@@ -11,9 +11,13 @@
     可选 min_findings：按条目数计的门槛。用户原声这类需求用它（一个评论页可有多条原话，按网页数会低估）。
   1*.md          研究员笔记。Cited Findings 每条行首用 {N1} 或 {N1,N4-中国} 标注它服务哪个需求（编号可带市场后缀）。
 
+  02-objects.json 可选，对象清单：["Character.AI/C.AI", "猫箱", ...]，一个对象的别名用 / 隔开。
+  笔记里的「## 新发现的玩家」节、20-counter.md 的「## 反例名单」节（若已有）。
+
 输出：
-  25-coverage.md 每个需求的来源数、独立证据族数、最新日期、是否达标，以及未达标清单。
-  退出码：全部达标 0；有未达标 1（协调者据此派定向补研）。
+  25-coverage.md 每个需求的来源数、独立证据族数、最新日期、是否达标，以及未达标清单；
+                 有 02-objects.json 时再加「对象清单复核」：被笔记点名、却不在对象清单里的玩家，按提及次数排。
+  退出码：全部达标 0；有未达标 1（协调者据此派定向补研）。对象清单复核不影响退出码，由协调者判断补研还是列入第二梯队。
 """
 import json
 import re
@@ -85,6 +89,7 @@ def main() -> int:
         )
         if not ok:
             unmet.append(n)
+    review = object_review(d)
     out = ["# 覆盖率报表", "",
            f"未打需求标签的 finding：{untagged} 条；只有搜索摘要的 finding：{weak} 条。两者都不计入统计。", "",
            "脚本只数数量。协调者还要抽查每个「✓」背后的条目是否满足 note 里的质量要求（样本量、时效、一手），不满足的改判为 ✗。", ""] + rows
@@ -92,11 +97,71 @@ def main() -> int:
         out += ["", "## 未达标，需定向补研", ""]
         for n in unmet:
             out.append(f"- {n['id']} {n['need']}（{n.get('market', '—')}）：{n.get('note', '')}")
+    if review is not None:
+        out += ["", "## 对象清单复核", "",
+                "笔记点名、却不在 02-objects.json 里的玩家。被 2 份以上笔记提到、或全文提及 3 次以上的，"
+                "补研或列入报告的「第二梯队」表；不纳入的写一句理由。", ""]
+        if review:
+            out += ["| 名称 | 提到它的笔记 | 全文提及 | 来自 | 理由（摘自笔记） |", "|---|---|---|---|---|"]
+            for r in review:
+                out.append(f"| {r['name']} | {r['notes']} | {r['mentions']} | {r['origin']} | {r['why'][:60]} |")
+        else:
+            out.append("没有新玩家。")
     (d / "25-coverage.md").write_text("\n".join(out) + "\n", encoding="utf-8")
     print(f"需求 {len(needs)} 项，数量达标 {len(needs) - len(unmet)}，未达标 {len(unmet)}；未打标签 {untagged} 条、仅摘要 {weak} 条不计 → 25-coverage.md")
     for n in unmet:
         print(f"  ✗ {n['id']} {n['need']}")
+    if review:
+        flag = [r["name"] for r in review if r["notes"] >= 2 or r["mentions"] >= 3]
+        print(f"对象清单复核：新玩家 {len(review)} 个，建议补研或列第二梯队 {len(flag)} 个：{'、'.join(flag[:12])}")
     return 1 if unmet else 0
+
+
+def section_items(text: str, heading: str) -> list[str]:
+    out, on = [], False
+    for line in text.splitlines():
+        if line.startswith("## "):
+            on = line.strip().startswith(heading)
+            continue
+        if on and line.lstrip().startswith("-"):
+            out.append(line.lstrip()[1:].strip())
+    return out
+
+
+def object_review(d: Path):
+    """对象清单复核：返回 None（没有 02-objects.json）或新玩家列表。"""
+    op = d / "02-objects.json"
+    if not op.exists():
+        return None
+    objs = json.loads(op.read_text(encoding="utf-8"))
+    names = [a.strip().lower() for o in objs for a in str(o).split("/") if a.strip()]
+    notes = {md.name: md.read_text(encoding="utf-8", errors="replace") for md in sorted(d.glob("1*.md"))}
+    cands: dict[str, dict] = {}
+    for fn, text in notes.items():
+        for it in section_items(text, "## 新发现的玩家"):
+            name = re.split(r"[：:|（(]", it, maxsplit=1)[0].strip(" *")
+            if not name or name in ("无", "暂无"):
+                continue
+            c = cands.setdefault(name, {"name": name, "origin": "研究员", "why": it.split("：", 1)[-1]})
+    counter = d / "20-counter.md"
+    if counter.exists():
+        for it in section_items(counter.read_text(encoding="utf-8", errors="replace"), "## 反例名单"):
+            parts = [x.strip() for x in it.split("|")]
+            if parts and parts[0] and (len(parts) < 2 or "玩家" in parts[1]):
+                c = cands.setdefault(parts[0], {"name": parts[0], "origin": "对抗", "why": parts[2] if len(parts) > 2 else ""})
+                if c["origin"] == "研究员":
+                    c["origin"] = "研究员、对抗"
+    out = []
+    for c in cands.values():
+        low = c["name"].lower()
+        if any(low == n or low in n or n in low for n in names):
+            continue
+        nm = re.escape(c["name"])
+        pat = re.compile(rf"(?<![A-Za-z0-9]){nm}(?![A-Za-z0-9])" if c["name"].isascii() else nm, re.I)
+        c["notes"] = sum(1 for t in notes.values() if pat.search(t))
+        c["mentions"] = sum(len(pat.findall(t)) for t in notes.values())
+        out.append(c)
+    return sorted(out, key=lambda c: (-c["notes"], -c["mentions"]))
 
 
 if __name__ == "__main__":

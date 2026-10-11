@@ -26,6 +26,13 @@
   units   单位图。groups: [{label, count, source:[n], highlight?:bool}]（总数 ≤100）
   kpi     数据卡。tiles: [{label, value:"文本", note?, source:[n]}]（2—4 张）
 公共字段：type, title, subtitle?, kicker?, note?, theme?
+
+编码规则（脚本强制，违反就报错）：
+- 期间：数据项可带 period（如 "2025 全年"、"2025H1"）。同一张图里出现不同的 period 就报错：
+  长短不同的期间不能并排比，换算成同口径或拆图。
+- 比率：unit 含 % 或写了 "ratio": true 的图，必须给 "denominator"（分母是什么，如「陪伴产品收入」），
+  脚本把它加进副标题；分母换了口径就拆图。
+- 数值轴：条形、柱状、堆叠从 0 起；折线不从 0 起时，脚本在页脚自动注明「纵轴从 X 起」。
 """
 import json
 import sys
@@ -424,7 +431,11 @@ def render_line(spec):
     vals = [v for s in series for v in s["values"] if v is not None]
     lo, hi = min(vals), max(vals)
     pad = (hi - lo) * 0.25 or hi * 0.1
-    ax.set_ylim(0 if spec.get("zero_base") else max(0, lo - pad), hi + pad)
+    y0 = 0 if spec.get("zero_base") else max(0, lo - pad)
+    ax.set_ylim(y0, hi + pad)
+    if y0 > 0:  # 不从 0 起要说出来，读者才不会把小波动看成大起落
+        axis_note = f"注意：纵轴不从 0 起（底部约为 {fmt(round(y0, 1))}）"
+        spec["note"] = f"{spec['note']}　{axis_note}" if spec.get("note") else axis_note
     unit = spec.get("unit", "")
     lw = T["line_px"] * 72 / 100
     for k, s in enumerate(series):
@@ -544,6 +555,37 @@ RENDER = {"bar": render_bar, "stack": render_stack, "grouped": render_grouped, "
           "units": render_units, "kpi": render_kpi}
 
 
+def encoding_rules(spec):
+    """出图编码规则：期间不并排、比率写清分母。违反就报错（run-1 有三张图因此误导读者）。"""
+    periods = set()
+
+    def walk(o, top=False):
+        if isinstance(o, dict):
+            if not top and o.get("period"):
+                periods.add(str(o["period"]).strip())
+            for k, v in o.items():
+                walk(v)
+        elif isinstance(o, list):
+            for v in o:
+                walk(v)
+
+    walk(spec, top=True)
+    if len(periods) > 1 and spec["type"] != "kpi":
+        raise SpecError(f"不同的期间不能并排比较：{'、'.join(sorted(periods))}。换算成同口径，或拆成两张图")
+    if spec["type"] != "kpi" and ("%" in str(spec.get("unit", "")) or spec.get("ratio")):
+        den = spec.get("denominator")
+        if not den:
+            raise SpecError("比率图要写清分母：加 \"denominator\": \"<分母是什么>\"；分母换了口径就拆图")
+        sub = spec.get("subtitle", "")
+        if den not in sub:
+            add = f"分母：{den}"
+            cand = f"{sub}；{add}" if sub else add
+            if text_width_in(cand, "body", 8.5) <= WIDTH_IN * 0.92:
+                spec["subtitle"] = cand
+            else:
+                spec["note"] = f"{spec['note']}　{add}" if spec.get("note") else add
+
+
 def render_file(spec_path: Path, out: Path, theme):
     global T, header_height_cache
     spec = json.loads(spec_path.read_text(encoding="utf-8"))
@@ -556,6 +598,7 @@ def render_file(spec_path: Path, out: Path, theme):
     if not chosen:
         raise SpecError("没有指定主题：用 --theme <主题名> 按文档风格选一套，蓝色系、橙色系优先（python3 make_chart.py --themes 查看）")
     T = load_theme(chosen)
+    encoding_rules(spec)
     fit_title(spec)
     header_height_cache = header_height(spec)
     fig = RENDER[spec["type"]](spec)
