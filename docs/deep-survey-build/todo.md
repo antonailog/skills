@@ -8,7 +8,7 @@
 - [x] v4 三处设计已定（10-10）：带走的知识并进一分钟看懂；只出 md；竞品数据拆进正文、附录放总结
 - [x] 合并 [PR #6](https://github.com/yike-gunshi/yikegunshi-skill/pull/6)（10-11 已合并；本机主分支已快进，真源受 git 管理）
 - [x] ~~过一眼 trigger-queries 跑触发评测~~：用户定不做（10-11）
-- [x] 专项改名 `工具/deep-survey`，独立私有仓库 https://github.com/yike-gunshi/deep-survey ，大仓库已忽略（10-11）
+- [x] 专项改名 `工具/deep-survey`，并入 yikegunshi-skill 的 `docs/deep-survey-build/`（本机入口是指向它的链接）；中途单独建的私有仓库已删除（10-11）
 
 ## v4 实施（10-10 完成；快照 `4_迭代/snapshot-v4-pre-2026-10-10/`）
 
