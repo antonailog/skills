@@ -38,6 +38,19 @@
 | **[codex-delegate](./skills/codex-delegate/)** | Claude Code 把代码实现派给本机 Codex CLI 后台作业：写任务书 → 派活 → 判活 → 按任务书验收 → 返工接回原会话（最多两轮）→ 收回 → 提交；附盲解仲裁。脚本 `delegate.sh` 管作业状态与 resume，需本机装有 ChatGPT App 内置的 Codex CLI。 | `派给codex`、`让codex实现你验收`、`codex后台跑` |
 | **[deep-survey](./skills/deep-survey/)** | 调研产品、行业、公司或 AI 工具，产出外行读得懂、读完能做决定的深度报告：信息需求清单与覆盖率门禁 → 并行研究（先查自有信息流，知乎、即刻、36 氪走专用通道）→ 对抗分析 → 逐条核查来源与口径 → 论证地图 → 报告与主题图表 → 终稿核查。每个数字带来源编号，查不到写明而不估算。设计与评测记录见 [docs/deep-survey-build](./docs/deep-survey-build/)。 | `调研一下`、`竞品分析`、`值不值得做` |
 
+### 每个 Skill 怎么运转
+
+每个 Skill 一张结构图：阶段、门禁、回退和产出。点图进 Skill 目录，看说明和完整的 SKILL.md。
+
+<table>
+<tr><td width="50%" valign="top"><a href="skills/book-to-mindmap/"><img src="docs/diagrams/book-to-mindmap.jpg" alt="book-to-mindmap 结构图"></a><br><a href="skills/book-to-mindmap/"><b>book-to-mindmap</b></a> · 书和长文转思维导图</td><td width="50%" valign="top"><a href="skills/codex-delegate/"><img src="docs/diagrams/codex-delegate.jpg" alt="codex-delegate 结构图"></a><br><a href="skills/codex-delegate/"><b>codex-delegate</b></a> · 派活给 Codex，Claude 验收</td></tr>
+<tr><td width="50%" valign="top"><a href="skills/deep-survey/"><img src="docs/diagrams/deep-survey.jpg" alt="deep-survey 结构图"></a><br><a href="skills/deep-survey/"><b>deep-survey</b></a> · 带来源的深度调研报告</td><td width="50%" valign="top"><a href="skills/knowledge-canvas/"><img src="docs/diagrams/knowledge-canvas.jpg" alt="knowledge-canvas 结构图"></a><br><a href="skills/knowledge-canvas/"><b>knowledge-canvas</b></a> · 资料整理成可缩放的知识画布</td></tr>
+<tr><td width="50%" valign="top"><a href="skills/lark-export/"><img src="docs/diagrams/lark-export.jpg" alt="lark-export 结构图"></a><br><a href="skills/lark-export/"><b>lark-export</b></a> · 飞书 wiki 镜像到本地 Markdown</td><td width="50%" valign="top"><a href="skills/paper-card/"><img src="docs/diagrams/paper-card.jpg" alt="paper-card 结构图"></a><br><a href="skills/paper-card/"><b>paper-card</b></a> · 一篇论文读成一张学习卡片</td></tr>
+<tr><td width="50%" valign="top"><a href="skills/pm-doc-write/"><img src="docs/diagrams/pm-doc-write.jpg" alt="pm-doc-write 结构图"></a><br><a href="skills/pm-doc-write/"><b>pm-doc-write</b></a> · 按本人写法写周报、OKR、项目总结</td><td width="50%" valign="top"><a href="skills/prompt-craft/"><img src="docs/diagrams/prompt-craft.jpg" alt="prompt-craft 结构图"></a><br><a href="skills/prompt-craft/"><b>prompt-craft</b></a> · 生产级 prompt 与对抗审查</td></tr>
+<tr><td width="50%" valign="top"><a href="skills/skill-build/"><img src="docs/diagrams/skill-build.jpg" alt="skill-build 结构图"></a><br><a href="skills/skill-build/"><b>skill-build</b></a> · 造 Skill：设计、评测、迭代</td><td width="50%" valign="top"><a href="skills/wechat-publisher/"><img src="docs/diagrams/wechat-publisher.jpg" alt="wechat-publisher 结构图"></a><br><a href="skills/wechat-publisher/"><b>wechat-publisher</b></a> · Markdown 推成公众号草稿</td></tr>
+<tr><td width="50%" valign="top"><a href="skills/xhs-note/"><img src="docs/diagrams/xhs-note.jpg" alt="xhs-note 结构图"></a><br><a href="skills/xhs-note/"><b>xhs-note</b></a> · 写小红书笔记，含封面</td></tr>
+</table>
+
 ## 已归档
 
 暂时不维护的 skill 移到了 [`archive/`](./archive/)：不随 `install.sh` 安装，代码和文档原样保留，以后优化后可能移回 `skills/`。
