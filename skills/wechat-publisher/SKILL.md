@@ -1,3 +1,8 @@
+---
+name: wechat-publisher
+description: 把写好的 Markdown 文章推到微信公众号草稿箱：图片压缩后传阿里云 OSS，生成发布版、校对完等你确认，再套排版主题推进草稿箱（3 个自定义 + 8 个内置主题，可多选，每个主题一篇草稿）；推完主动给朋友圈和群聊两版推广文案、发布时间与投放建议，最后 git 提交归档。只推草稿，不替你点发表。用户说「发布微信」「发公众号」「推到草稿箱」「微信排版」「/wechat」时用；拿着一篇写好的 md 说想发公众号，也用。不处理：写文章本身、小红书笔记（走 xhs-note）、公众号后台的数据分析。
+---
+
 # 微信公众号文章发布 (WeChat Publisher)
 
 将 Markdown 文章一键发布到微信公众号草稿箱，支持图片压缩上传 OSS、自定义排版主题、自动校对。
@@ -14,7 +19,7 @@
 
 ## 完整工作流
 
-当用户要求发布微信公众号文章时，按以下步骤操作：
+当用户要求发布微信公众号文章时，按以下步骤操作。下面的命令都在本 skill 目录下运行（install.sh 安装后是 `~/.claude/skills/wechat-publisher` 或 `~/.agents/skills/wechat-publisher`）。
 
 ### Step 1: 解析文章
 
@@ -25,7 +30,7 @@
 运行图片处理脚本：提取 Markdown 中的远程图片和本地图片 → 用 macOS sips 压缩（max 1600px, JPEG 80%）→ 上传到阿里云 OSS。
 
 ```bash
-python3 ~/.Codex/skills/wechat-publisher/wechat-publisher/scripts/process_images.py <md_file> <folder_name>
+python3 scripts/process_images.py <md_file> <folder_name>
 ```
 
 参数说明：
@@ -40,7 +45,7 @@ import oss2, subprocess, tempfile, os
 # 压缩
 tmp = tempfile.mktemp(suffix='.jpg')
 subprocess.run(['sips', '-s', 'format', 'jpeg', '-s', 'formatOptions', '80', '-Z', '1600', '<src>', '--out', tmp])
-# 上传（凭据见 process_images.py 顶部）
+# 上传（凭据从环境变量读，见文末「凭据」）
 auth = oss2.Auth('<KEY_ID>', '<KEY_SECRET>')
 bucket = oss2.Bucket(auth, '<ENDPOINT>', '<BUCKET>')
 bucket.put_object_from_file('<oss_key>', tmp)
@@ -51,7 +56,7 @@ bucket.put_object_from_file('<oss_key>', tmp)
 运行文章准备脚本：替换图片 URL 为 OSS URL + 添加 `{width=340}` + 生成 frontmatter。
 
 ```bash
-python3 ~/.Codex/skills/wechat-publisher/wechat-publisher/scripts/prepare_article.py <md_file> <url_mapping_json> [output_path]
+python3 scripts/prepare_article.py <md_file> <url_mapping_json> [output_path]
 ```
 
 输出：`xxx_发布版.md`
@@ -98,7 +103,7 @@ default, orangeheart, rainbow, lapis, pie, maize, purple, phycat
 运行发布脚本：注册自定义主题 → 渲染 HTML → 推送到微信草稿箱。
 
 ```bash
-node ~/.Codex/skills/wechat-publisher/wechat-publisher/scripts/publish.mjs <md_发布版_file> <theme_ids>
+node scripts/publish.mjs <md_发布版_file> <theme_ids>
 ```
 
 参数说明：
@@ -206,7 +211,7 @@ git push
 ## 目录结构
 
 ```
-~/.Codex/skills/wechat-publisher/wechat-publisher/
+wechat-publisher/
 ├── SKILL.md                          # 本文件
 ├── scripts/
 │   ├── process_images.py             # 图片下载、压缩、上传 OSS
@@ -227,5 +232,7 @@ git push
 
 ## 凭据
 
-- 阿里云 OSS: 硬编码在 `process_images.py` 中
-- 微信公众号: 硬编码在 `publish.mjs` 中（通过 process.env）
+都从环境变量读，仓库里不放任何密钥：
+
+- 阿里云 OSS：`OSS_ACCESS_KEY_ID`、`OSS_ACCESS_KEY_SECRET`，可选 `OSS_ENDPOINT`、`OSS_BUCKET`（`process_images.py` 读取）
+- 微信公众号：`WECHAT_APP_ID`、`WECHAT_APP_SECRET`（`publish.mjs` 读取）；当前出口 IP 要先加进公众号后台的 IP 白名单
