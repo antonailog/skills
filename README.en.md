@@ -38,6 +38,19 @@ This repository is where I keep my own reusable skills under version control, so
 | **[codex-delegate](./skills/codex-delegate/)** | Claude Code hands code implementation to local Codex CLI background jobs: write a task brief → submit → liveness checks → accept against the brief → fix rounds resume the same session (max two) → take back → commit; includes blind arbitration. `delegate.sh` manages job state and resume; needs the Codex CLI bundled with the ChatGPT app. | `派给codex`, `delegate to codex` |
 | **[deep-survey](./skills/deep-survey/)** | Research a product, industry, company, or AI tool and produce a long-form report a newcomer can read and act on: information-needs list with a coverage gate → parallel research (your own feeds first; dedicated channels for Zhihu, Jike, and 36Kr) → adversarial review → claim-by-claim verification of sources and metrics → argument map → report with themed charts → final check. Every number carries a source number; unknowns are stated, never estimated. Build notes: [docs/deep-survey-build](./docs/deep-survey-build/). | `调研一下`, `竞品分析`, `值不值得做` |
 
+### How each skill works
+
+One diagram per skill: stages, gates, loops and outputs. Click a diagram to open the skill folder (explanation in Chinese, plus the full SKILL.md).
+
+<table>
+<tr><td width="50%" valign="top"><a href="skills/book-to-mindmap/"><img src="docs/diagrams/book-to-mindmap.jpg" alt="book-to-mindmap 结构图"></a><br><a href="skills/book-to-mindmap/"><b>book-to-mindmap</b></a></td><td width="50%" valign="top"><a href="skills/codex-delegate/"><img src="docs/diagrams/codex-delegate.jpg" alt="codex-delegate 结构图"></a><br><a href="skills/codex-delegate/"><b>codex-delegate</b></a></td></tr>
+<tr><td width="50%" valign="top"><a href="skills/deep-survey/"><img src="docs/diagrams/deep-survey.jpg" alt="deep-survey 结构图"></a><br><a href="skills/deep-survey/"><b>deep-survey</b></a></td><td width="50%" valign="top"><a href="skills/knowledge-canvas/"><img src="docs/diagrams/knowledge-canvas.jpg" alt="knowledge-canvas 结构图"></a><br><a href="skills/knowledge-canvas/"><b>knowledge-canvas</b></a></td></tr>
+<tr><td width="50%" valign="top"><a href="skills/lark-export/"><img src="docs/diagrams/lark-export.jpg" alt="lark-export 结构图"></a><br><a href="skills/lark-export/"><b>lark-export</b></a></td><td width="50%" valign="top"><a href="skills/paper-card/"><img src="docs/diagrams/paper-card.jpg" alt="paper-card 结构图"></a><br><a href="skills/paper-card/"><b>paper-card</b></a></td></tr>
+<tr><td width="50%" valign="top"><a href="skills/pm-doc-write/"><img src="docs/diagrams/pm-doc-write.jpg" alt="pm-doc-write 结构图"></a><br><a href="skills/pm-doc-write/"><b>pm-doc-write</b></a></td><td width="50%" valign="top"><a href="skills/prompt-craft/"><img src="docs/diagrams/prompt-craft.jpg" alt="prompt-craft 结构图"></a><br><a href="skills/prompt-craft/"><b>prompt-craft</b></a></td></tr>
+<tr><td width="50%" valign="top"><a href="skills/skill-build/"><img src="docs/diagrams/skill-build.jpg" alt="skill-build 结构图"></a><br><a href="skills/skill-build/"><b>skill-build</b></a></td><td width="50%" valign="top"><a href="skills/wechat-publisher/"><img src="docs/diagrams/wechat-publisher.jpg" alt="wechat-publisher 结构图"></a><br><a href="skills/wechat-publisher/"><b>wechat-publisher</b></a></td></tr>
+<tr><td width="50%" valign="top"><a href="skills/xhs-note/"><img src="docs/diagrams/xhs-note.jpg" alt="xhs-note 结构图"></a><br><a href="skills/xhs-note/"><b>xhs-note</b></a></td></tr>
+</table>
+
 ## Archived
 
 Skills that are not maintained for now live in [`archive/`](./archive/). `install.sh` does not install them; code and docs are kept as-is and may move back to `skills/` after a rework.
