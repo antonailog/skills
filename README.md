@@ -6,7 +6,7 @@
 
 面向内容工作流、产品分析与知识管理的实用 skill，由 [@yike-gunshi](https://github.com/yike-gunshi) 构建与维护。
 
-![Skills](https://img.shields.io/badge/skills-18-blue)
+![Skills](https://img.shields.io/badge/skills-11-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Platform](https://img.shields.io/badge/Claude%20Code-compatible-8A2BE2)
 
@@ -28,12 +28,6 @@
 |-------|------|--------|
 | **[knowledge-canvas](./skills/knowledge-canvas/)** | 把代码、PDF、书籍、课程与文档整理为可缩放、可平移的中文 HTML 知识画布，展开关键节点与关系，悬停查看说明和原始输入输出样例。附交互模板、浏览器回归脚本与飞书正文交付指引。 | `梳理完整链路`、`做一张能交互的全图`、`$knowledge-canvas` |
 | **[lark-export](./skills/lark-export/)** | 把飞书/Lark 知识库或单篇文档镜像成本地 Markdown，图片和附件一并下载到本地。重复运行即同步更新。 | `同步飞书`、`导出飞书知识库` |
-| **[prd-analyzer](./skills/prd-analyzer/)** | 分析 PRD 文档（PDF）与产品界面截图，输出结构化评审，暴露缺口与风险。 | `分析PRD`、`/prd` |
-| **[project-learner](./skills/project-learner/)** | 系统性学习任意代码库，产出分模块的结构化知识库（架构 / 数据模型 / 前后端 / 业务流）+ AI 开发指导，跨会话增量更新。接下来要在这个项目上动手改代码时用。 | `学习项目`、`/learn-project` |
-| **[project-context](./skills/project-context/)** | 全文资料与详细解释组成可交给 ChatGPT 网页版的项目底稿；手动增量刷新代码、飞书、Issue/PR、部署与已约定生产资料，单独附加本次议题。 | `整理整个项目给网页版`、`更新项目底稿`、`$project-context` |
-| **[repo-study](./skills/repo-study/)** | 读懂一个陌生仓库：侦察建骨架 → 选定的重点维度下到机制层（打开函数体读，讲清取舍与代价）→ 产出单篇给人读的深度理解文档，多张 Mermaid 图自动渲染成 SVG 插入。可选跟另一个项目逐维度对比，出三档结论与落地动作。 | `读一下这个仓库`、`这个项目怎么实现的`、`学习这个框架` |
-| **[work-logger](./skills/work-logger/)** | 把当前会话完成的工作总结成一份按日期命名的 Markdown 工作日志。 | `记录工作`、`/work-log` |
-| **[twitter-watchdog](./skills/twitter-watchdog/)** | 通过「抓取 → 分析 → 报告」三层流水线监控 Twitter/X 上的 AI 动态，生成日报/周报/月报。 | `抓取AI推文`、`AI日报` |
 | **[wechat-publisher](./skills/wechat-publisher/)** | 把 Markdown 文章发布到微信公众号草稿箱：图片压缩 → OSS 上传 → 排版 → 草稿箱。 | `发布微信`、`/wechat` |
 | **[prompt-craft](./skills/prompt-craft/)** | 写、改、评审任何 LLM prompt：问清需求 → 按九模块架构撰写 → 对抗审查，产出可验收、可回归、防注入的生产级 prompt（基于 14 组外部框架调研）。 | `写prompt`、`优化prompt`、`评审prompt` |
 | **[book-to-mindmap](./skills/book-to-mindmap/)** | 把书籍、长笔记转成高信息密度的思维导图：判断式枝干 + 图面短句 + notes 长解释 + 默认折叠，产出 .xmind 与多级 bullet。 | `做成思维导图`、`转导图`、`生成xmind` |
@@ -43,6 +37,18 @@
 | **[paper-card](./skills/paper-card/)** | 把论文、官方最佳实践、cookbook 读透，产出学习卡片：每个数字带读法、术语用类比讲透、结论落到可执行动作，配一张分层底板风 SVG 结构图并渲染自查。结构随资料形态调整，不套固定模板。 | `读一下这篇论文`、`整理成卡片`、`这批参考资料做成学习资料` |
 | **[codex-delegate](./skills/codex-delegate/)** | Claude Code 把代码实现派给本机 Codex CLI 后台作业：写任务书 → 派活 → 判活 → 按任务书验收 → 返工接回原会话（最多两轮）→ 收回 → 提交；附盲解仲裁。脚本 `delegate.sh` 管作业状态与 resume，需本机装有 ChatGPT App 内置的 Codex CLI。 | `派给codex`、`让codex实现你验收`、`codex后台跑` |
 | **[deep-survey](./skills/deep-survey/)** | 调研产品、行业、公司或 AI 工具，产出外行读得懂、读完能做决定的深度报告：信息需求清单与覆盖率门禁 → 并行研究（先查自有信息流，知乎、即刻、36 氪走专用通道）→ 对抗分析 → 逐条核查来源与口径 → 论证地图 → 报告与主题图表 → 终稿核查。每个数字带来源编号，查不到写明而不估算。设计与评测记录见 [docs/deep-survey-build](./docs/deep-survey-build/)。 | `调研一下`、`竞品分析`、`值不值得做` |
+
+## 已归档
+
+暂时不维护的 skill 移到了 [`archive/`](./archive/)：不随 `install.sh` 安装，代码和文档原样保留，以后优化后可能移回 `skills/`。
+
+- [prd-analyzer](./archive/prd-analyzer/)
+- [project-context](./archive/project-context/)
+- [project-learner](./archive/project-learner/)
+- [repo-study](./archive/repo-study/)
+- [staged-file-review](./archive/staged-file-review/)
+- [twitter-watchdog](./archive/twitter-watchdog/)
+- [work-logger](./archive/work-logger/)
 
 ## 安装
 
@@ -74,7 +80,6 @@ Codex 用户加 `--target codex`（装到 `~/.agents/skills`），`--target both
 | Skill | 需要设置 | 方式 |
 |-------|----------|------|
 | lark-export | `FEISHU_APP_ID`、`FEISHU_APP_SECRET`、`FEISHU_EXPORT_HOME` | 环境变量（见该 skill 的 `SKILL.md`） |
-| twitter-watchdog | X API key、twitterapi.io key、Anthropic key、Telegram token | 复制 `config/config.example.yaml` → `config/config.yaml` 后填入 |
 | wechat-publisher | `WECHAT_APP_ID`、`WECHAT_APP_SECRET`、`OSS_ACCESS_KEY_ID`、`OSS_ACCESS_KEY_SECRET`、`OSS_BUCKET` | 环境变量 |
 | deep-survey | `ZHIHU_ACCESS_SECRET`（可选，知乎数据开放平台）；`INFO2ACTION_REPO`（可选，作者自用的信息流） | 环境变量，或写进 `~/.config/deep-survey/secrets.env`；都没有时自动退回网页搜索 |
 
@@ -92,16 +97,11 @@ yikegunshi-skill/
 │   ├── lark-export/
 │   ├── paper-card/
 │   ├── pm-doc-write/
-│   ├── prd-analyzer/
-│   ├── project-context/
-│   ├── project-learner/
-│   ├── repo-study/
 │   ├── prompt-craft/
 │   ├── skill-build/
-│   ├── twitter-watchdog/
 │   ├── wechat-publisher/
-│   ├── work-logger/
 │   └── xhs-note/
+├── archive/         # 已归档、暂不维护的 skill（不随 install.sh 安装）
 ├── docs/            # 部分 skill 的设计与评测记录
 ├── LICENSE
 └── README.md

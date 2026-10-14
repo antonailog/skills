@@ -6,7 +6,7 @@
 
 Practical, production-tested skills for content workflows, product analysis, and knowledge management — built and maintained by [@yike-gunshi](https://github.com/yike-gunshi).
 
-![Skills](https://img.shields.io/badge/skills-18-blue)
+![Skills](https://img.shields.io/badge/skills-11-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Platform](https://img.shields.io/badge/Claude%20Code-compatible-8A2BE2)
 
@@ -28,12 +28,6 @@ This repository is where I keep my own reusable skills under version control, so
 |-------|--------------|---------|
 | **[knowledge-canvas](./skills/knowledge-canvas/)** | Turn code, PDFs, books, courses, and documents into a zoomable, pannable Chinese HTML knowledge canvas, with explicit key nodes and relationships plus hover details and raw input/output examples. Includes an interactive template, browser regression checks, and Feishu inline delivery guidance. | `梳理完整链路`, `做一张能交互的全图`, `$knowledge-canvas` |
 | **[lark-export](./skills/lark-export/)** | Mirror a Feishu/Lark wiki or single doc to local Markdown, with images and attachments downloaded locally. Re-run to sync/update. | `同步飞书`, `导出飞书知识库` |
-| **[prd-analyzer](./skills/prd-analyzer/)** | Analyze PRD documents (PDF) and product UI screenshots, then output a structured review that surfaces gaps and risks. | `分析PRD`, `/prd` |
-| **[project-learner](./skills/project-learner/)** | Systematically learn any codebase and produce a per-module knowledge base (architecture / data model / frontend / backend / business flows) plus AI development guidance, updated incrementally across sessions. Use it when you are about to change the code. | `学习项目`, `/learn-project` |
-| **[project-context](./skills/project-context/)** | Preserve full project materials and detailed explanations for ChatGPT handoff, with manual incremental refreshes and an optional discussion brief. Includes configured external documents, issues, deployment and runtime evidence. | `整理整个项目给网页版`, `更新项目底稿`, `$project-context` |
-| **[repo-study](./skills/repo-study/)** | Read an unfamiliar repository: survey it into a skeleton, take the chosen dimensions down to the mechanism level (open the function bodies, explain the trade-off and its cost), and produce one deep write-up meant for a human, with Mermaid diagrams auto-rendered to SVG. Optionally compares it against another project. | `读一下这个仓库`, `这个项目怎么实现的` |
-| **[work-logger](./skills/work-logger/)** | Summarize the current session's work into a dated Markdown work log. | `记录工作`, `/work-log` |
-| **[twitter-watchdog](./skills/twitter-watchdog/)** | Monitor Twitter/X for AI news via a three-layer scrape → analyze → report pipeline; generates daily/weekly/monthly digests. | `抓取AI推文`, `AI日报` |
 | **[wechat-publisher](./skills/wechat-publisher/)** | Publish a Markdown article to a WeChat Official Account draft: image compression → OSS upload → theming → draft box. | `发布微信`, `/wechat` |
 | **[prompt-craft](./skills/prompt-craft/)** | Write, revise, and review any LLM prompt: clarify requirements → draft against a 9-module architecture → adversarial review. Produces production-grade prompts that are verifiable, regression-testable, and injection-resistant (distilled from a survey of 14 external frameworks). | `写prompt`, `优化prompt`, `评审prompt` |
 | **[book-to-mindmap](./skills/book-to-mindmap/)** | Turn books and long notes into high-density mind maps: claim-bearing branches, short on-canvas judgments, long explanations in notes, collapsed by default. Outputs `.xmind` and nested bullets. | `做成思维导图`, `转导图`, `生成xmind` |
@@ -43,6 +37,18 @@ This repository is where I keep my own reusable skills under version control, so
 | **[paper-card](./skills/paper-card/)** | Read a paper, official best-practice doc, or cookbook end to end and produce a study card: every number carries a how-to-read note, every term is explained by analogy, every takeaway lands on an executable action. Ships a layered-panel SVG diagram with a headless-render self-check. Structure adapts to the source material instead of forcing a fixed template. | `读一下这篇论文`, `整理成卡片`, `这批参考资料做成学习资料` |
 | **[codex-delegate](./skills/codex-delegate/)** | Claude Code hands code implementation to local Codex CLI background jobs: write a task brief → submit → liveness checks → accept against the brief → fix rounds resume the same session (max two) → take back → commit; includes blind arbitration. `delegate.sh` manages job state and resume; needs the Codex CLI bundled with the ChatGPT app. | `派给codex`, `delegate to codex` |
 | **[deep-survey](./skills/deep-survey/)** | Research a product, industry, company, or AI tool and produce a long-form report a newcomer can read and act on: information-needs list with a coverage gate → parallel research (your own feeds first; dedicated channels for Zhihu, Jike, and 36Kr) → adversarial review → claim-by-claim verification of sources and metrics → argument map → report with themed charts → final check. Every number carries a source number; unknowns are stated, never estimated. Build notes: [docs/deep-survey-build](./docs/deep-survey-build/). | `调研一下`, `竞品分析`, `值不值得做` |
+
+## Archived
+
+Skills that are not maintained for now live in [`archive/`](./archive/). `install.sh` does not install them; code and docs are kept as-is and may move back to `skills/` after a rework.
+
+- [prd-analyzer](./archive/prd-analyzer/)
+- [project-context](./archive/project-context/)
+- [project-learner](./archive/project-learner/)
+- [repo-study](./archive/repo-study/)
+- [staged-file-review](./archive/staged-file-review/)
+- [twitter-watchdog](./archive/twitter-watchdog/)
+- [work-logger](./archive/work-logger/)
 
 ## Installation
 
@@ -74,7 +80,6 @@ Some skills call third-party APIs and need credentials. **No secrets are committ
 | Skill | What to set | How |
 |-------|-------------|-----|
 | lark-export | `FEISHU_APP_ID`, `FEISHU_APP_SECRET`, `FEISHU_EXPORT_HOME` | Environment variables (see the skill's `SKILL.md`) |
-| twitter-watchdog | X API keys, twitterapi.io key, Anthropic key, Telegram token | Copy `config/config.example.yaml` → `config/config.yaml` and fill in |
 | wechat-publisher | `WECHAT_APP_ID`, `WECHAT_APP_SECRET`, `OSS_ACCESS_KEY_ID`, `OSS_ACCESS_KEY_SECRET`, `OSS_BUCKET` | Environment variables |
 | deep-survey | `ZHIHU_ACCESS_SECRET` (optional, Zhihu open platform); `INFO2ACTION_REPO` (optional, the author's own feed system) | Environment variables, or `~/.config/deep-survey/secrets.env`; falls back to web search when absent |
 
@@ -91,16 +96,11 @@ yikegunshi-skill/
 │   ├── lark-export/
 │   ├── paper-card/
 │   ├── pm-doc-write/
-│   ├── prd-analyzer/
-│   ├── project-context/
-│   ├── project-learner/
-│   ├── repo-study/
 │   ├── prompt-craft/
 │   ├── skill-build/
-│   ├── twitter-watchdog/
 │   ├── wechat-publisher/
-│   ├── work-logger/
 │   └── xhs-note/
+├── archive/         # archived skills, not installed by install.sh
 ├── docs/            # design and evaluation notes for some skills
 ├── LICENSE
 └── README.md
