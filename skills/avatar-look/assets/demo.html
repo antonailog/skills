@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>头像跟随演示</title>
+<style>
+:root { --bg: #fafaf8; --fg: #1a1a1a; --mute: #6b6b6b; --line: #d9d9d4; --dot: #d6d6d0; }
+@media (prefers-color-scheme: dark) { :root { --bg: #141413; --fg: #ededea; --mute: #9a9a95; --line: #3a3a37; --dot: #2c2c2a; } }
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body { background: var(--bg) radial-gradient(var(--dot) 1px, transparent 1.2px) 0 0 / 22px 22px; color: var(--fg);
+  font: 14px/1.6 -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif; overflow: hidden; }
+.ava { position: absolute; border-radius: 50%; overflow: hidden; background: #fff; border: 1.5px solid var(--line); }
+.ava img { width: 100%; height: 100%; display: block; object-fit: cover; }
+.a1 { left: 32px; top: 32px; width: 136px; height: 136px; }
+.a2 { left: 50%; top: 50%; width: 240px; height: 240px; margin: -120px 0 0 -120px; }
+.a3 { right: 40px; bottom: 40px; width: 88px; height: 88px; }
+.tip { position: absolute; left: 50%; top: calc(50% + 140px); transform: translateX(-50%); color: var(--mute); text-align: center; }
+#dbg { position: absolute; right: 16px; top: 16px; display: none; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px; font: 12px ui-monospace, monospace; color: var(--mute); }
+@media (max-width: 600px) { .a2 { width: 180px; height: 180px; margin: -90px 0 0 -90px; } .tip { top: calc(50% + 110px); } }
+</style>
+</head>
+<body>
+<div class="ava a1" data-avatar-look><img src="poster.webp" alt="3D 头像"></div>
+<div class="ava a2" data-avatar-look><img src="poster.webp" alt=""></div>
+<div class="ava a3" data-avatar-look><img src="poster.webp" alt=""></div>
+<p class="tip">移动鼠标，三个头像都会看向它。鼠标移出窗口，回到正脸。<br>网址后加 <code>?debug</code> 显示播放头和视频帧</p>
+<div id="dbg"><div id="dbg-t"></div></div>
+<script src="poses.js"></script>
+<script src="avatar-look.js"></script>
+<script>
+// 调试面板：中间大头像的播放头位置、目标位置、视频当前帧
+if (/[?&]debug/.test(location.search)) {
+  var box = document.getElementById('dbg'), t = document.getElementById('dbg-t'), big = document.querySelector('.a2');
+  box.style.display = 'block';
+  (function loop() {
+    var it = big.__avatarLook, M = AvatarLook.model;
+    if (it) t.textContent = '播放头 ' + it.p.toFixed(1) + ' / ' + M.L.toFixed(0) + '  目标 ' + (it.target === null ? '—' : it.target.toFixed(1)) +
+      '  帧 ' + it.frame + (it.seeking ? '  跳转中' : '') + (it.faceOn ? '  正脸' : '') + (it.ready ? '' : '  加载中');
+    requestAnimationFrame(loop);
+  })();
+}
+</script>
+</body>
+</html>
