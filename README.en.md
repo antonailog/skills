@@ -6,7 +6,7 @@
 
 Practical, production-tested skills for content workflows, product analysis, and knowledge management — built and maintained by [@yike-gunshi](https://github.com/yike-gunshi).
 
-![Skills](https://img.shields.io/badge/skills-11-blue)
+![Skills](https://img.shields.io/badge/skills-12-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Platform](https://img.shields.io/badge/Claude%20Code-compatible-8A2BE2)
 
@@ -26,6 +26,7 @@ This repository is where I keep my own reusable skills under version control, so
 
 | Skill | What it does | Trigger |
 |-------|--------------|---------|
+| **[avatar-look](./skills/avatar-look/)** | Turn a photo or an idea into a 3D avatar that looks at the mouse cursor: generate a 3D portrait → hand the user a Jimeng prompt for a "head circles once" video → scripts auto-crop, encode every frame as a keyframe, measure head direction with MediaPipe, and self-check → a web component driven by video seeks chained on `seeked` → automated Chrome acceptance. Works at any position and size on the page. Build notes: [docs/avatar-look-design.md](./docs/avatar-look-design.md). | `头像跟着鼠标转`, `3D头像看向鼠标`, `/avatar-look` |
 | **[knowledge-canvas](./skills/knowledge-canvas/)** | Turn code, PDFs, books, courses, and documents into a zoomable, pannable Chinese HTML knowledge canvas, with explicit key nodes and relationships plus hover details and raw input/output examples. Includes an interactive template, browser regression checks, and Feishu inline delivery guidance. | `梳理完整链路`, `做一张能交互的全图`, `$knowledge-canvas` |
 | **[lark-export](./skills/lark-export/)** | Mirror a Feishu/Lark wiki or single doc to local Markdown, with images and attachments downloaded locally. Re-run to sync/update. | `同步飞书`, `导出飞书知识库` |
 | **[wechat-publisher](./skills/wechat-publisher/)** | Publish a Markdown article to a WeChat Official Account draft: image compression → OSS upload → theming → draft box. | `发布微信`, `/wechat` |
@@ -103,6 +104,8 @@ Some skills call third-party APIs and need credentials. **No secrets are committ
 ```
 yikegunshi-skill/
 ├── skills/
+│   ├── avatar-look/
+│   ├── book-to-mindmap/
 │   ├── codex-delegate/
 │   ├── deep-survey/
 │   ├── knowledge-canvas/
