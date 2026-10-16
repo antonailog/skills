@@ -6,7 +6,7 @@
 
 面向内容工作流、产品分析与知识管理的实用 skill，由 [@yike-gunshi](https://github.com/yike-gunshi) 构建与维护。
 
-![Skills](https://img.shields.io/badge/skills-11-blue)
+![Skills](https://img.shields.io/badge/skills-12-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Platform](https://img.shields.io/badge/Claude%20Code-compatible-8A2BE2)
 
@@ -26,6 +26,7 @@
 
 | Skill | 作用 | 触发词 |
 |-------|------|--------|
+| **[avatar-look](./skills/avatar-look/)** | 把一张照片或一个想法做成会看向鼠标的 3D 头像组件：出 3D 头像图 → 给即梦生成「头绕一圈」视频的提示词 → 脚本自动裁切、全关键帧编码、MediaPipe 量朝向并自检 → 视频 + seeked 串联的网页组件 → Chrome 自动验收。放在页面任意位置、任意尺寸都能用。设计与构建记录见 [docs/avatar-look-design.md](./docs/avatar-look-design.md)。 | `头像跟着鼠标转`、`3D头像看向鼠标`、`/avatar-look` |
 | **[knowledge-canvas](./skills/knowledge-canvas/)** | 把代码、PDF、书籍、课程与文档整理为可缩放、可平移的中文 HTML 知识画布，展开关键节点与关系，悬停查看说明和原始输入输出样例。附交互模板、浏览器回归脚本与飞书正文交付指引。 | `梳理完整链路`、`做一张能交互的全图`、`$knowledge-canvas` |
 | **[lark-export](./skills/lark-export/)** | 把飞书/Lark 知识库或单篇文档镜像成本地 Markdown，图片和附件一并下载到本地。重复运行即同步更新。 | `同步飞书`、`导出飞书知识库` |
 | **[wechat-publisher](./skills/wechat-publisher/)** | 把 Markdown 文章发布到微信公众号草稿箱：图片压缩 → OSS 上传 → 排版 → 草稿箱。 | `发布微信`、`/wechat` |
@@ -103,6 +104,7 @@ Codex 用户加 `--target codex`（装到 `~/.agents/skills`），`--target both
 ```
 yikegunshi-skill/
 ├── skills/
+│   ├── avatar-look/
 │   ├── book-to-mindmap/
 │   ├── codex-delegate/
 │   ├── deep-survey/
