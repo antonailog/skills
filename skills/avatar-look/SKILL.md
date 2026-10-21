@@ -62,13 +62,13 @@ uv run --no-project --python 3.12 --with "mediapipe==0.10.14" --with "opencv-pyt
     python <本 skill 目录>/scripts/process_video.py <视频> --out <产出目录>
 ```
 
-它自动按人脸裁方形，输出 `avatar.mp4`（全关键帧）、`poster.webp`、`poses.js`、`check.png`、`report.json`，并自检：
+它自动按人脸裁方形，输出 `avatar.mp4`（全关键帧）、`poster.webp`、`poses.js`、`check.png`、`report.json`，并自检。视频转了不止一圈时会自动裁成正好一圈（报告里的 `trimmed`）：不裁的话同一方向在时间轴上出现两次，转到接缝头会抢跑一段再切回来。`smoothness` 是沿一圈相邻帧的画面差，中位数为 1，接缝和最大值在 2 左右正常；某处远超 2.5 会列进 problems：
 
 - 退出码 0：打开 `check.png`（九宫格，8 个方向 + 正脸）自己先看方向对不对，再给用户看
 - 退出码 2：视频不合格（没转满一圈、识别率低、幅度太小）。把原因翻译成挑选标准里的哪一条没过，带上备选提示词，回第 2 步
 - 裁切不理想（帽子被切、人偏）：用 `--crop W:H:X:Y` 手动指定重跑
 
-打印出来的眨眼帧号对照视频确认一下；它们不会进绕圈段，不影响效果。
+打印出来的眨眼帧号对照视频确认一下：剔掉的帧不进时间轴，真眨眼剔掉没影响；剔的若是往下看的帧（眼皮下垂），正下方的画面就没了，绕圈还会跳，`smoothness.jumps` 会报出来。
 
 ## 第 4 步 产出组件
 
@@ -93,7 +93,7 @@ uv run --no-project --python 3.12 --with "mediapipe==0.10.14" --with "opencv-pyt
 python3 <本 skill 目录>/scripts/verify.py <产出目录>/demo.html
 ```
 
-它开 Chrome 测 8 个方向是否在 ±45° 内、快速画圈时每秒跳转次数、控制台报错。接入了页面的话，再对那个页面截一张图看头像框里的样子。
+它开 Chrome 测 8 个方向是否在 ±45° 内、快速画圈时每秒跳转次数、慢转一圈时头有没有一路跟住鼠标（`slow_track_err_max` 偏差、`slow_reverse` 倒退、`slow_step_max` 单步帧数）、控制台报错。接入了页面的话，再对那个页面截一张图看头像框里的样子。
 
 自动测试只证明能用，顺不顺要人手感判断；Safari 没测就说没测。
 

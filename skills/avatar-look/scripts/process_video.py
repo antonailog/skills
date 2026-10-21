@@ -86,10 +86,26 @@ def build_poses(rows):
         vals = [r[key] for r in rows]
         for i, r in enumerate(rows):
             w = vals[max(0, i - 2):i + 3]; r[key + '_s'] = sum(w) / len(w)
-    # 眨眼 = 开合度低于前后 6 帧中位数的 85%（低头时眼睑整体下垂，不能用绝对阈值）
+    # 眨眼候选 = 开合度低于前后 6 帧中位数的 85%（低头时眼睑整体下垂，不能用绝对阈值）
     eyes = [r['eye'] for r in rows]
-    blink = {rows[i]['f'] for i in range(len(rows))
-             if eyes[i] < sorted(eyes[max(0, i - 6):i + 7])[len(eyes[max(0, i - 6):i + 7]) // 2] * 0.85}
+    low = [i for i in range(len(rows))
+           if eyes[i] < sorted(eyes[max(0, i - 6):i + 7])[len(eyes[max(0, i - 6):i + 7]) // 2] * 0.85]
+    # 低头往下看时眼皮也会连续几帧垂下，那不是眨眼，剔掉就丢了「看正下方」的画面，绕圈还会跳几帧（10-20 实测）。
+    # 真眨眼短促（≤ 5 帧，约 0.2 秒），而且头没有明显朝下：只剔这种。
+    downs = sorted(r['hy_s'] for r in rows if r['hy_s'] > 0)
+    down_ext = downs[int(len(downs) * .95)] if downs else 1
+    runs = []
+    for i in low:
+        if runs and i - runs[-1][-1] <= 2:
+            runs[-1].append(i)
+        else:
+            runs.append([i])
+    blink = set()
+    for run in runs:
+        short = run[-1] - run[0] + 1 <= 5
+        looking_down = max(rows[i]['hy_s'] for i in run) > 0.5 * down_ext
+        if short and not looking_down:
+            blink.update(rows[i]['f'] for i in run)
     keep = [r for r in rows if r['f'] not in blink]
     ext = lambda v: sorted(v)[int(len(v) * .95)] if v else 1
     xr = ext([r['hx_s'] for r in keep if r['hx_s'] > 0]); xl = ext([-r['hx_s'] for r in keep if r['hx_s'] < 0])
@@ -119,6 +135,52 @@ def build_ring(poses):
     for i in range(1, len(ang)):
         ang[i] = max(ang[i], ang[i - 1])
     return [[p[0], round(a, 2)] for p, a in zip(seg, ang)]
+
+
+def _thumbs(crop_dir):
+    cache = {}
+    def get(f):
+        if f not in cache:
+            im = cv2.imread(str(crop_dir / f'f{f:03d}.png'), cv2.IMREAD_GRAYSCALE)
+            cache[f] = cv2.resize(im, (96, 96), interpolation=cv2.INTER_AREA).astype(np.float32)
+        return cache[f]
+    return lambda a, b: float(np.mean(np.abs(get(a) - get(b))))
+
+
+def trim_ring(ring, crop_dir):
+    """视频转了不止一圈时裁成正好一圈。不裁的话同一方向在时间轴上出现两次，组件把首尾当成相接的环，
+    鼠标越过起点时头会先多扫一段、再切回起点，转一圈到这里就跳。
+    在所有跨度约 360° 的裁法 [i, j) 里，挑环尾 j-1 接回环头 i 时画面差最小的一种（这就是转过接缝时看到的变化），
+    差不多时取帧数多的。"""
+    if len(ring) < 3 or ring[-1][1] - ring[0][1] <= 360:
+        return ring, None
+    step = (ring[-1][1] - ring[0][1]) / (len(ring) - 1)
+    diff = _thumbs(crop_dir)
+    best = None
+    for i in range(len(ring)):
+        for j in range(i + 1, len(ring)):
+            span = ring[j][1] - ring[i][1]
+            if span < 360 - step:
+                continue
+            if span > 360 + step:
+                break
+            d = round(diff(ring[j - 1][0], ring[i][0]), 1)
+            if best is None or (d, -(j - i)) < (best[0], -(best[2] - best[1])):
+                best = (d, i, j)
+    if best is None:
+        return ring, None
+    _, i, j = best
+    return ring[i:j], {'start': ring[i][0], 'end': ring[j - 1][0], 'dropped_frames': len(ring) - (j - i)}
+
+
+def ring_smoothness(ring, crop_dir):
+    """沿时间轴走一圈（含首尾接缝）相邻两帧的画面差，以中位数为 1。远大于 1 的地方转到那里会跳。"""
+    diff = _thumbs(crop_dir)
+    pairs = [(ring[k][0], ring[(k + 1) % len(ring)][0]) for k in range(len(ring))]
+    ds = [diff(a, b) for a, b in pairs]
+    med = sorted(ds)[len(ds) // 2] or 1
+    jumps = [[a, b, round(d / med, 2)] for (a, b), d in zip(pairs, ds) if d > med * 2.5]
+    return {'seam_vs_median': round(ds[-1] / med, 2), 'max_vs_median': round(max(ds) / med, 2), 'jumps': jumps}
 
 
 def check_grid(ring, front, crop_dir, out):
@@ -166,11 +228,16 @@ def main():
             sys.exit('第 0 帧识别不到人脸：视频应从正脸开始（即梦首帧用正脸图）')
         poses, blink = build_poses(rows)
         ring = build_ring(poses)
+        ring, trimmed = trim_ring(ring, crop_dir)
+        smooth = ring_smoothness(ring, crop_dir) if len(ring) > 2 else None
         gap = (ring[0][1] + 360 - ring[-1][1]) if len(ring) > 1 else 360
         if len(ring) < 30:
             problems.append(f'绕圈段只有 {len(ring)} 帧：头转动幅度太小，或只在左右摆没有上下')
         elif gap > MAX_GAP_DEG:
             problems.append(f'绕圈缺口 {gap:.0f}°（上限 {MAX_GAP_DEG}°）：头没转满一圈')
+        if smooth and smooth['jumps']:
+            problems.append('绕圈段有画面跳变（帧对与倍数：' + '，'.join(f'{a}→{b} ×{r}' for a, b, r in smooth['jumps'])
+                            + '）：转到那里会跳，多半是视频那几帧走样，建议重新生成')
 
         cv2.imwrite(str(out / 'poster.webp'), cv2.resize(cv2.imread(str(crop_dir / 'f000.png')), (a.size, a.size),
                     interpolation=cv2.INTER_AREA), [cv2.IMWRITE_WEBP_QUALITY, 82])
@@ -188,12 +255,16 @@ def main():
 
     report = {'video': str(video), 'frames': n_all, 'fps': fps, 'crop': crop, 'detected': len(rows),
               'blink_frames': blink, 'ring': [ring[0][0], ring[-1][0]] if ring else None, 'ring_frames': len(ring),
-              'gap_deg': round(gap, 1), 'mp4_kb': round((out / 'avatar.mp4').stat().st_size / 1024),
+              'gap_deg': round(gap, 1), 'trimmed': trimmed, 'smoothness': smooth, 'mp4_kb': round((out / 'avatar.mp4').stat().st_size / 1024),
               'ok': not problems, 'problems': problems}
     (out / 'report.json').write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf-8')
-    print(f'裁切 {crop}；人脸识别 {len(rows)}/{n_all}；剔除眨眼帧 {blink}（不进绕圈段，请对照视频确认）')
+    print(f'裁切 {crop}；人脸识别 {len(rows)}/{n_all}；剔除眨眼帧 {blink}（这些帧不进时间轴，请对照视频确认是真眨眼）')
     if ring:
         print(f'绕圈段 第 {ring[0][0]}—{ring[-1][0]} 帧共 {len(ring)} 帧，{ring[0][1]:.0f}° → {ring[-1][1]:.0f}°，缺口 {gap:.0f}°')
+        if trimmed:
+            print(f'视频转了不止一圈，已裁成一圈：去掉 {trimmed["dropped_frames"]} 帧，环从第 {trimmed["start"]} 帧到第 {trimmed["end"]} 帧，接缝 {trimmed["end"]} → {trimmed["start"]}')
+        if smooth:
+            print(f'连贯度（相邻帧画面差，中位数为 1）：接缝 ×{smooth["seam_vs_median"]}，最大 ×{smooth["max_vs_median"]}')
     print(f'avatar.mp4 {report["mp4_kb"]} KB；核对图 {out / "check.png"}')
     if problems:
         print('自检不通过，建议重新生成视频：\n  - ' + '\n  - '.join(problems))
