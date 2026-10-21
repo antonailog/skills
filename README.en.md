@@ -4,7 +4,7 @@
 
 **A curated collection of Agent Skills for Claude Code / Codex.**
 
-Practical, production-tested skills for content workflows, product analysis, and knowledge management — built and maintained by [@yike-gunshi](https://github.com/yike-gunshi).
+Practical, production-tested skills for content workflows, product analysis, and knowledge management — built and maintained by [@antonailog](https://github.com/antonailog).
 
 ![Skills](https://img.shields.io/badge/skills-12-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
@@ -69,7 +69,7 @@ Skills that are not maintained for now live in [`archive/`](./archive/). `instal
 Clone the repo and install via `install.sh`, which symlinks skills into your agent's skills directory (avoid manual `cp` — copies drift as the repo updates):
 
 ```bash
-git clone https://github.com/yike-gunshi/yikegunshi-skill.git
+git clone https://github.com/antonailog/yikegunshi-skill.git
 cd yikegunshi-skill
 
 # Install all skills into ~/.claude/skills
