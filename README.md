@@ -4,7 +4,7 @@
 
 **一套精选的 Claude Code / Codex Agent Skill 合集。**
 
-面向内容工作流、产品分析与知识管理的实用 skill，由 [@yike-gunshi](https://github.com/yike-gunshi) 构建与维护。
+面向内容工作流、产品分析与知识管理的实用 skill，由 [@antonailog](https://github.com/antonailog) 构建与维护。
 
 ![Skills](https://img.shields.io/badge/skills-12-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
@@ -69,7 +69,7 @@
 克隆仓库，用 `install.sh` 以 symlink 方式安装（不要手动 cp——复制副本会随源仓库更新而漂移）：
 
 ```bash
-git clone https://github.com/yike-gunshi/yikegunshi-skill.git
+git clone https://github.com/antonailog/yikegunshi-skill.git
 cd yikegunshi-skill
 
 # 安装全部 skill 到 ~/.claude/skills
