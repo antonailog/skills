@@ -56,7 +56,7 @@
 所有图按下面四步出。约束来自维护者的《出图规范》，执行要用到的部分都已写在本文件和 `_shared/figkit/README.md` 里：
 
 1. **写图稿**：从正文单元抽，填 task、type、title、items（文本、数字、单位、口径）、relations、notes、source（字段见 `_shared/figkit/README.md`）；图上每个数字先在正文里有。图稿放工作区 `figs/图稿-<名>.json`。
-2. **选主题**：默认 Editorial Forest；用户点名 beautiful-feishu-whiteboard 里的主题时换（已录入 grove、avocado-press、long-table、monochrome，色值原样取自该仓库 templates/<slug>/design.md）。主题只定画布、四种面（base／strong／accent／plain）和跟随面的文字色；每个模块最多一张 strong、一张 accent，其余 base。
+2. **选主题**：默认 Editorial Forest；用户点名 beautiful-feishu-whiteboard 里的主题时换（已录入 grove、avocado-press、long-table、monochrome，色值原样取自该仓库 templates/<slug>/design.md）。主题只定画布、四种面（base／strong／accent／plain）和跟随面的文字色；每个模块最多一张 strong、一张 accent，其余 base。用户说配色不好看又没给参照时，不自造新方案：把同一张图稿用全部已录入主题各渲染一张并排给他挑；他给了参照图或仓库，就把参照原样录入成新主题再渲染。
 3. **渲染并校验**：`scripts/make_figure.sh 图稿.json 输出.svg [主题]`。它调 `../_shared/figkit/figkit.py` 出 SVG，再跑 `check_figure.py --wb`：最小字号 16、卡内行长 30 字、只用主题颜色、strong／accent 用量、文字超出所在形状、数字被拆到两行、画板转换的文字溢出。不过不进下一步。已有模板：信息图（总结图）、层级图（骨架图，一章超过 3 个单元自动分行）、条件汇合、流程图（`branch_link: false` 时分支行变成不连线的「对照」行，适合「现状流程 vs 我们的做法」）、组成条、柱状图。
 4. **转画板并看**：按下面「转飞书画板」写入，导出云端预览逐区看；箭头用 `marker-end` 原生连接器，不手画箭头。
 
