@@ -1,0 +1,27 @@
+[
+  {
+    "id": "P01",
+    "run": 1,
+    "split": "train",
+    "expected": true,
+    "observed_skill_read": true,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 13143,
+    "usage": {
+      "input_tokens": 44190,
+      "cached_input_tokens": 32896,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 524,
+      "reasoning_output_tokens": 330
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat /private/var/folders/_k/dtckbnf53p1fsxzy1ff016_r0000gn/T/podcast-routing-v92ypyjz/.agents/skills/podcast-summary/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  }
+]

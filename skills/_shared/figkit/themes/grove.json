@@ -1,0 +1,58 @@
+{
+ "name": "Grove",
+ "source": "zarazhangrui/beautiful-feishu-whiteboard templates/grove/design.md（MIT）",
+ "canvas": "#e8e4d6",
+ "radius": 4,
+ "rule": "#192b1b",
+ "rule_width": 2,
+ "text": {
+  "body": "#192b1b",
+  "heading": "#192b1b",
+  "muted": "#192b1b"
+ },
+ "surfaces": {
+  "base": {
+   "fill": "#dedad0",
+   "border": null,
+   "text": "#192b1b",
+   "heading": "#192b1b",
+   "big": "#192b1b"
+  },
+  "strong": {
+   "fill": "#192b1b",
+   "border": null,
+   "text": "#d4cfbf",
+   "heading": "#d4cfbf",
+   "big": "#d4cfbf"
+  },
+  "accent": {
+   "fill": "#dedad0",
+   "border": "#c8524a",
+   "text": "#192b1b",
+   "heading": "#c8524a",
+   "big": "#c8524a"
+  },
+  "plain": {
+   "fill": null,
+   "border": null,
+   "text": "#192b1b",
+   "heading": "#192b1b",
+   "big": "#c8524a"
+  }
+ },
+ "marks": {
+  "number_fill": "#c8524a",
+  "number_text": "#e8e4d6",
+  "route_on": "#192b1b",
+  "route_on_text": "#d4cfbf",
+  "route_off": "#dedad0",
+  "route_off_text": "#192b1b",
+  "arrow": "#192b1b"
+ },
+ "data": [
+  "#192b1b",
+  "#c8524a",
+  "#1e3221",
+  "#dedad0"
+ ]
+}

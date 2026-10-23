@@ -1,0 +1,66 @@
+{
+  "all": {
+    "runs": 60,
+    "completed": 60,
+    "tp": 30,
+    "fp": 2,
+    "fn": 0,
+    "tn": 28,
+    "precision": 0.9375,
+    "recall": 1.0,
+    "accuracy": 0.9666666666666667,
+    "median_duration_ms": 14328.0,
+    "total_tokens": 2735344,
+    "mean_tokens": 45589.066666666666,
+    "mismatches": [
+      {
+        "id": "N09",
+        "run": 1
+      },
+      {
+        "id": "N09",
+        "run": 3
+      }
+    ]
+  },
+  "train": {
+    "runs": 36,
+    "completed": 36,
+    "tp": 18,
+    "fp": 0,
+    "fn": 0,
+    "tn": 18,
+    "precision": 1.0,
+    "recall": 1.0,
+    "accuracy": 1.0,
+    "median_duration_ms": 14289.5,
+    "total_tokens": 1617527,
+    "mean_tokens": 44931.305555555555,
+    "mismatches": []
+  },
+  "test": {
+    "runs": 24,
+    "completed": 24,
+    "tp": 12,
+    "fp": 2,
+    "fn": 0,
+    "tn": 10,
+    "precision": 0.8571428571428571,
+    "recall": 1.0,
+    "accuracy": 0.9166666666666666,
+    "median_duration_ms": 14518.0,
+    "total_tokens": 1117817,
+    "mean_tokens": 46575.708333333336,
+    "mismatches": [
+      {
+        "id": "N09",
+        "run": 1
+      },
+      {
+        "id": "N09",
+        "run": 3
+      }
+    ]
+  },
+  "limits": "Controlled first-preparation-step read-only task, not a production routing rate. A successful SKILL.md read counts as a trigger even if the assistant later decides not to apply the workflow."
+}

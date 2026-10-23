@@ -6,7 +6,7 @@
 
 面向内容工作流、产品分析与知识管理的实用 skill，由 [@antonailog](https://github.com/antonailog) 构建与维护。
 
-![Skills](https://img.shields.io/badge/skills-12-blue)
+![Skills](https://img.shields.io/badge/skills-13-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Platform](https://img.shields.io/badge/Claude%20Code-compatible-8A2BE2)
 
@@ -32,6 +32,7 @@
 | **[wechat-publisher](./skills/wechat-publisher/)** | 把 Markdown 文章发布到微信公众号草稿箱：图片压缩 → OSS 上传 → 排版 → 草稿箱。 | `发布微信`、`/wechat` |
 | **[prompt-craft](./skills/prompt-craft/)** | 写、改、评审任何 LLM prompt：问清需求 → 按九模块架构撰写 → 对抗审查，产出可验收、可回归、防注入的生产级 prompt（基于 14 组外部框架调研）。 | `写prompt`、`优化prompt`、`评审prompt` |
 | **[book-to-mindmap](./skills/book-to-mindmap/)** | 把书籍、长笔记转成高信息密度的思维导图：判断式枝干 + 图面短句 + notes 长解释 + 默认折叠，产出 .xmind 与多级 bullet。 | `做成思维导图`、`转导图`、`生成xmind` |
+| **[podcast-summary](./skills/podcast-summary/)**（播客总结skill） | 把听完的一期播客整理成能学、能复习、能回顾的图文笔记：播客信息表 → 关键内容 + 骨架图 + 总结图 → 按问题组织的 AI 总结 → 带答案的问答 → 个人思考。题从转写出、只拿正文盲测查漏；图由图稿经共享渲染库 figkit 出 SVG 并转可编辑飞书画板。设计与评测见 [docs/podcast-summary-build](./docs/podcast-summary-build/)。 | `整理这期播客`、`播客笔记重写`、`$podcast-summary` |
 | **[xhs-note](./skills/xhs-note/)** | 写小红书笔记：收料 → 读范文起草 → 去 AI 味终审 → Codex 生封面 → 归档。范文优先，不编造作者没经历过的事。 | `写小红书`、`发小红书`、`/xhs-note` |
 | **[skill-build](./skills/skill-build/)** | 造 skill 的 skill：判该不该做 → 访谈收料 → 设计文档 → 完备性门禁 → 写 SKILL.md → 评测跑基线对照 → 归因迭代。自带包体检与考点区分度审计脚本。 | `做个skill`、`建个skill`、`skill不触发` |
 | **[pm-doc-write](./skills/pm-doc-write/)** | 写 PM 工作文档：结论先行、表格承载、数字带基线、责任到人。覆盖周报、OKR、项目总结、指标需求、策略迭代说明、评测结论、LR 评审、调研报告 9 类场景模板 + 通用写法约束与终审清单，产出飞书就绪 markdown。 | `写周报`、`出个文档`、`按我的风格捋一遍` |
@@ -41,7 +42,7 @@
 
 ### 每个 Skill 怎么运转
 
-每个 Skill 一张结构图：阶段、门禁、回退和产出。点图进 Skill 目录，看说明和完整的 SKILL.md。
+下列结构图展示部分 Skill 的阶段、门禁、回退和产出。点图进 Skill 目录，看说明和完整的 SKILL.md。
 
 <table>
 <tr><td width="50%" valign="top"><a href="skills/avatar-look/"><img src="docs/diagrams/avatar-look.jpg" alt="avatar-look 结构图"></a><br><a href="skills/avatar-look/"><b>avatar-look</b></a> · 会看向鼠标的 3D 头像组件</td><td width="50%" valign="top"><a href="skills/book-to-mindmap/"><img src="docs/diagrams/book-to-mindmap.jpg" alt="book-to-mindmap 结构图"></a><br><a href="skills/book-to-mindmap/"><b>book-to-mindmap</b></a> · 书和长文转思维导图</td></tr>
@@ -104,6 +105,7 @@ Codex 用户加 `--target codex`（装到 `~/.agents/skills`），`--target both
 ```
 yikegunshi-skill/
 ├── skills/
+│   ├── _shared/     # 共享代码：figkit（图稿渲染成飞书画板 SVG 并校验），不是 skill，不随 install.sh 安装
 │   ├── avatar-look/
 │   ├── book-to-mindmap/
 │   ├── codex-delegate/
@@ -112,6 +114,7 @@ yikegunshi-skill/
 │   ├── lark-export/
 │   ├── paper-card/
 │   ├── pm-doc-write/
+│   ├── podcast-summary/
 │   ├── prompt-craft/
 │   ├── skill-build/
 │   ├── wechat-publisher/

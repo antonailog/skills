@@ -1,0 +1,46 @@
+[
+  {
+    "case": "discussion",
+    "condition": "with",
+    "duration_ms": 321186,
+    "input_tokens": 334518,
+    "cached_input_tokens": 277504,
+    "output_tokens": 26676,
+    "total_tokens": 361194,
+    "skill_read": true,
+    "valid_output": true
+  },
+  {
+    "case": "discussion",
+    "condition": "without",
+    "duration_ms": 232496,
+    "input_tokens": 245074,
+    "cached_input_tokens": 194048,
+    "output_tokens": 21303,
+    "total_tokens": 266377,
+    "skill_read": false,
+    "valid_output": true
+  },
+  {
+    "case": "narrative",
+    "condition": "with",
+    "duration_ms": 261089,
+    "input_tokens": 285178,
+    "cached_input_tokens": 232064,
+    "output_tokens": 23115,
+    "total_tokens": 308293,
+    "skill_read": true,
+    "valid_output": true
+  },
+  {
+    "case": "narrative",
+    "condition": "without",
+    "duration_ms": 213560,
+    "input_tokens": 131933,
+    "cached_input_tokens": 96384,
+    "output_tokens": 17331,
+    "total_tokens": 149264,
+    "skill_read": false,
+    "valid_output": true
+  }
+]

@@ -1,0 +1,182 @@
+{
+  "summary": {
+    "with_total_mean": 64.5,
+    "without_total_mean": 62.5,
+    "with_runs": 2,
+    "without_runs": 2,
+    "queries": 2,
+    "total_delta": 2.0
+  },
+  "criteria": [
+    {
+      "criterion": "R1",
+      "with": {
+        "n": 2,
+        "mean": 10.0,
+        "std": 0.0,
+        "min": 10.0,
+        "max": 10.0
+      },
+      "without": {
+        "n": 2,
+        "mean": 9.0,
+        "std": 0.0,
+        "min": 9.0,
+        "max": 9.0
+      },
+      "delta": 1.0,
+      "flags": []
+    },
+    {
+      "criterion": "R2",
+      "with": {
+        "n": 2,
+        "mean": 10.0,
+        "std": 0.0,
+        "min": 10.0,
+        "max": 10.0
+      },
+      "without": {
+        "n": 2,
+        "mean": 10.0,
+        "std": 0.0,
+        "min": 10.0,
+        "max": 10.0
+      },
+      "delta": 0.0,
+      "flags": [
+        "NO-SIGNAL"
+      ]
+    },
+    {
+      "criterion": "R3",
+      "with": {
+        "n": 2,
+        "mean": 9.5,
+        "std": 0.5,
+        "min": 9.0,
+        "max": 10.0
+      },
+      "without": {
+        "n": 2,
+        "mean": 9.0,
+        "std": 1.0,
+        "min": 8.0,
+        "max": 10.0
+      },
+      "delta": 0.5,
+      "flags": [
+        "NO-SIGNAL"
+      ]
+    },
+    {
+      "criterion": "R4",
+      "with": {
+        "n": 2,
+        "mean": 10.0,
+        "std": 0.0,
+        "min": 10.0,
+        "max": 10.0
+      },
+      "without": {
+        "n": 2,
+        "mean": 10.0,
+        "std": 0.0,
+        "min": 10.0,
+        "max": 10.0
+      },
+      "delta": 0.0,
+      "flags": [
+        "NO-SIGNAL"
+      ]
+    },
+    {
+      "criterion": "R5",
+      "with": {
+        "n": 2,
+        "mean": 10.0,
+        "std": 0.0,
+        "min": 10.0,
+        "max": 10.0
+      },
+      "without": {
+        "n": 2,
+        "mean": 10.0,
+        "std": 0.0,
+        "min": 10.0,
+        "max": 10.0
+      },
+      "delta": 0.0,
+      "flags": [
+        "NO-SIGNAL"
+      ]
+    },
+    {
+      "criterion": "R6",
+      "with": {
+        "n": 2,
+        "mean": 5.0,
+        "std": 0.0,
+        "min": 5.0,
+        "max": 5.0
+      },
+      "without": {
+        "n": 2,
+        "mean": 4.5,
+        "std": 0.5,
+        "min": 4.0,
+        "max": 5.0
+      },
+      "delta": 0.5,
+      "flags": [
+        "NO-SIGNAL"
+      ]
+    },
+    {
+      "criterion": "R7",
+      "with": {
+        "n": 2,
+        "mean": 5.0,
+        "std": 0.0,
+        "min": 5.0,
+        "max": 5.0
+      },
+      "without": {
+        "n": 2,
+        "mean": 5.0,
+        "std": 0.0,
+        "min": 5.0,
+        "max": 5.0
+      },
+      "delta": 0.0,
+      "flags": [
+        "NO-SIGNAL"
+      ]
+    },
+    {
+      "criterion": "R8",
+      "with": {
+        "n": 2,
+        "mean": 5.0,
+        "std": 0.0,
+        "min": 5.0,
+        "max": 5.0
+      },
+      "without": {
+        "n": 2,
+        "mean": 5.0,
+        "std": 0.0,
+        "min": 5.0,
+        "max": 5.0
+      },
+      "delta": 0.0,
+      "flags": [
+        "NO-SIGNAL"
+      ]
+    }
+  ],
+  "per_query_total": {
+    "narrative": 65.0,
+    "discussion": 64.0
+  }
+}

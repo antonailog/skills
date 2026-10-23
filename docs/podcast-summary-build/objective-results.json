@@ -1,0 +1,118 @@
+[
+  {
+    "case": "narrative",
+    "R6": 5,
+    "R7": 5,
+    "format_checks": {
+      "headings_spaced": true,
+      "shownotes_image": true,
+      "overview_embedded": true,
+      "core_sections": true,
+      "metadata": true
+    },
+    "protection_checks": {
+      "personal_slot_empty": true
+    },
+    "spacing_error_lines": [],
+    "svg_xml_valid": true,
+    "svg_text_elements": 63,
+    "svg_rendered": true,
+    "render_error": "",
+    "emphasis_counts": {
+      "bold": 6,
+      "highlight": 0,
+      "underline": 1
+    },
+    "label": "A",
+    "condition": "with"
+  },
+  {
+    "case": "narrative",
+    "R6": 4,
+    "R7": 5,
+    "format_checks": {
+      "headings_spaced": true,
+      "shownotes_image": false,
+      "overview_embedded": true,
+      "core_sections": true,
+      "metadata": true
+    },
+    "protection_checks": {
+      "personal_slot_empty": true
+    },
+    "spacing_error_lines": [],
+    "svg_xml_valid": true,
+    "svg_text_elements": 68,
+    "svg_rendered": true,
+    "render_error": "",
+    "emphasis_counts": {
+      "bold": 12,
+      "highlight": 0,
+      "underline": 0
+    },
+    "label": "B",
+    "condition": "without"
+  },
+  {
+    "case": "discussion",
+    "R6": 5,
+    "R7": 5,
+    "format_checks": {
+      "headings_spaced": true,
+      "shownotes_image": true,
+      "overview_embedded": true,
+      "core_sections": true,
+      "metadata": true
+    },
+    "protection_checks": {
+      "title": true,
+      "order": true,
+      "personal": true,
+      "shownotes": true,
+      "other": true
+    },
+    "spacing_error_lines": [],
+    "svg_xml_valid": true,
+    "svg_text_elements": 101,
+    "svg_rendered": true,
+    "render_error": "",
+    "emphasis_counts": {
+      "bold": 11,
+      "highlight": 0,
+      "underline": 0
+    },
+    "label": "A",
+    "condition": "without"
+  },
+  {
+    "case": "discussion",
+    "R6": 5,
+    "R7": 5,
+    "format_checks": {
+      "headings_spaced": true,
+      "shownotes_image": true,
+      "overview_embedded": true,
+      "core_sections": true,
+      "metadata": true
+    },
+    "protection_checks": {
+      "title": true,
+      "order": true,
+      "personal": true,
+      "shownotes": true,
+      "other": true
+    },
+    "spacing_error_lines": [],
+    "svg_xml_valid": true,
+    "svg_text_elements": 93,
+    "svg_rendered": true,
+    "render_error": "",
+    "emphasis_counts": {
+      "bold": 23,
+      "highlight": 0,
+      "underline": 3
+    },
+    "label": "B",
+    "condition": "with"
+  }
+]

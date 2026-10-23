@@ -1,0 +1,1511 @@
+[
+  {
+    "id": "P01",
+    "run": 1,
+    "split": "train",
+    "expected": true,
+    "observed_skill_read": true,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 13143,
+    "usage": {
+      "input_tokens": 44190,
+      "cached_input_tokens": 32896,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 524,
+      "reasoning_output_tokens": 330
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat /private/var/folders/_k/dtckbnf53p1fsxzy1ff016_r0000gn/T/podcast-routing-v92ypyjz/.agents/skills/podcast-summary/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "P02",
+    "run": 1,
+    "split": "train",
+    "expected": true,
+    "observed_skill_read": true,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 12206,
+    "usage": {
+      "input_tokens": 44215,
+      "cached_input_tokens": 32896,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 393,
+      "reasoning_output_tokens": 175
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat /private/var/folders/_k/dtckbnf53p1fsxzy1ff016_r0000gn/T/podcast-routing-7r6sre4z/.agents/skills/podcast-summary/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "P03",
+    "run": 1,
+    "split": "train",
+    "expected": true,
+    "observed_skill_read": true,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 13672,
+    "usage": {
+      "input_tokens": 44217,
+      "cached_input_tokens": 32896,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 409,
+      "reasoning_output_tokens": 188
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat /private/var/folders/_k/dtckbnf53p1fsxzy1ff016_r0000gn/T/podcast-routing-z4wcs9zu/.agents/skills/podcast-summary/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "P04",
+    "run": 1,
+    "split": "train",
+    "expected": true,
+    "observed_skill_read": true,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 13137,
+    "usage": {
+      "input_tokens": 44206,
+      "cached_input_tokens": 32896,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 495,
+      "reasoning_output_tokens": 292
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat /private/var/folders/_k/dtckbnf53p1fsxzy1ff016_r0000gn/T/podcast-routing-zf9pu3cg/.agents/skills/podcast-summary/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "P05",
+    "run": 1,
+    "split": "train",
+    "expected": true,
+    "observed_skill_read": true,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 15803,
+    "usage": {
+      "input_tokens": 44186,
+      "cached_input_tokens": 32768,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 532,
+      "reasoning_output_tokens": 317
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat /private/var/folders/_k/dtckbnf53p1fsxzy1ff016_r0000gn/T/podcast-routing-qzxdgve_/.agents/skills/podcast-summary/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "P06",
+    "run": 1,
+    "split": "train",
+    "expected": true,
+    "observed_skill_read": true,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 13107,
+    "usage": {
+      "input_tokens": 44194,
+      "cached_input_tokens": 32896,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 512,
+      "reasoning_output_tokens": 311
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat /private/var/folders/_k/dtckbnf53p1fsxzy1ff016_r0000gn/T/podcast-routing-uhjle9j_/.agents/skills/podcast-summary/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "P07",
+    "run": 1,
+    "split": "test",
+    "expected": true,
+    "observed_skill_read": true,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 13378,
+    "usage": {
+      "input_tokens": 44171,
+      "cached_input_tokens": 32768,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 489,
+      "reasoning_output_tokens": 286
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat /private/var/folders/_k/dtckbnf53p1fsxzy1ff016_r0000gn/T/podcast-routing-v514sce_/.agents/skills/podcast-summary/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "P08",
+    "run": 1,
+    "split": "test",
+    "expected": true,
+    "observed_skill_read": true,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 14334,
+    "usage": {
+      "input_tokens": 44202,
+      "cached_input_tokens": 32896,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 548,
+      "reasoning_output_tokens": 343
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat /private/var/folders/_k/dtckbnf53p1fsxzy1ff016_r0000gn/T/podcast-routing-ctnoda6j/.agents/skills/podcast-summary/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "P09",
+    "run": 1,
+    "split": "test",
+    "expected": true,
+    "observed_skill_read": true,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 15460,
+    "usage": {
+      "input_tokens": 44204,
+      "cached_input_tokens": 32896,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 555,
+      "reasoning_output_tokens": 316
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat /private/var/folders/_k/dtckbnf53p1fsxzy1ff016_r0000gn/T/podcast-routing-cf42cnfu/.agents/skills/podcast-summary/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "P10",
+    "run": 1,
+    "split": "test",
+    "expected": true,
+    "observed_skill_read": true,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 11847,
+    "usage": {
+      "input_tokens": 44187,
+      "cached_input_tokens": 32768,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 388,
+      "reasoning_output_tokens": 191
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat /private/var/folders/_k/dtckbnf53p1fsxzy1ff016_r0000gn/T/podcast-routing-n0vgqog7/.agents/skills/podcast-summary/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "N01",
+    "run": 1,
+    "split": "train",
+    "expected": false,
+    "observed_skill_read": false,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 15071,
+    "usage": {
+      "input_tokens": 41844,
+      "cached_input_tokens": 32768,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 601,
+      "reasoning_output_tokens": 430
+    },
+    "commands": [
+      "/bin/zsh -lc \"rg --files -g '\"'!node_modules'\"' -g '\"'!.git'\"' -g '\"'!vendor'\"' -g '\"'!dist'\"' -g '\"'!build'\"'\""
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "N02",
+    "run": 1,
+    "split": "train",
+    "expected": false,
+    "observed_skill_read": false,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 15455,
+    "usage": {
+      "input_tokens": 41995,
+      "cached_input_tokens": 32896,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 616,
+      "reasoning_output_tokens": 347
+    },
+    "commands": [
+      "/bin/zsh -lc \"rg --files --hidden -g '\"'!'\"\\\\.git/**' -g '\"'!node_modules/**'\"' -g '\"'!'\"\\\\.agents/skills/**'\""
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "N03",
+    "run": 1,
+    "split": "train",
+    "expected": false,
+    "observed_skill_read": false,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 13071,
+    "usage": {
+      "input_tokens": 42031,
+      "cached_input_tokens": 32768,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 493,
+      "reasoning_output_tokens": 235
+    },
+    "commands": [
+      "/bin/zsh -lc 'command -v ffmpeg ffprobe sox'",
+      "/bin/zsh -lc \"rg --files -g 'AGENTS.md' -g '*.mp3' -g '*.MP3' -g '*.wav' -g '*.m4a' -g '*.flac' -g '*.ogg' -g '*.aac'\""
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "N04",
+    "run": 1,
+    "split": "train",
+    "expected": false,
+    "observed_skill_read": false,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 14829,
+    "usage": {
+      "input_tokens": 45610,
+      "cached_input_tokens": 32896,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 596,
+      "reasoning_output_tokens": 430
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat ~/.agents/skills/book-to-mindmap/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "N05",
+    "run": 1,
+    "split": "train",
+    "expected": false,
+    "observed_skill_read": false,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 15699,
+    "usage": {
+      "input_tokens": 43579,
+      "cached_input_tokens": 32768,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 655,
+      "reasoning_output_tokens": 469
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat ~/.agents/skills/lark-export/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "N06",
+    "run": 1,
+    "split": "train",
+    "expected": false,
+    "observed_skill_read": false,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 18830,
+    "usage": {
+      "input_tokens": 41916,
+      "cached_input_tokens": 32768,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 917,
+      "reasoning_output_tokens": 695
+    },
+    "commands": [
+      "/bin/zsh -lc \"rg --files -g 'AGENTS.md' -g '*.md' -g '*.txt' -g '*.json' -g '*.html' -g '*.pdf' -g '\"'!node_modules'\"' -g '\"'!vendor'\"' -g '\"'!package-lock.json'\"' -g '\"'!pnpm-lock.yaml'\"'\""
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "N07",
+    "run": 1,
+    "split": "test",
+    "expected": false,
+    "observed_skill_read": false,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 13760,
+    "usage": {
+      "input_tokens": 46048,
+      "cached_input_tokens": 32896,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 568,
+      "reasoning_output_tokens": 389
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat ~/.codex/skills/.system/imagegen/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "N08",
+    "run": 1,
+    "split": "test",
+    "expected": false,
+    "observed_skill_read": false,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 17749,
+    "usage": {
+      "input_tokens": 41905,
+      "cached_input_tokens": 32896,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 701,
+      "reasoning_output_tokens": 516
+    },
+    "commands": [
+      "/bin/zsh -lc \"rg --files -g '\"'!node_modules'\"' -g '\"'!vendor'\"' -g '\"'!'\"\\\\.git' -g '\"'!'\"\\\\.agents/**'\""
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "N09",
+    "run": 1,
+    "split": "test",
+    "expected": false,
+    "observed_skill_read": true,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 18374,
+    "usage": {
+      "input_tokens": 44463,
+      "cached_input_tokens": 32768,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 755,
+      "reasoning_output_tokens": 465
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat /private/var/folders/_k/dtckbnf53p1fsxzy1ff016_r0000gn/T/podcast-routing-tmm2nag9/.agents/skills/podcast-summary/SKILL.md'",
+      "/bin/zsh -lc \"rg --files --hidden -g '\"'!'\"\\\\.git' -g '\"'!node_modules'\"' -g '\"'!'\"\\\\.DS_Store'\""
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "N10",
+    "run": 1,
+    "split": "test",
+    "expected": false,
+    "observed_skill_read": false,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 22520,
+    "usage": {
+      "input_tokens": 45101,
+      "cached_input_tokens": 32896,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 743,
+      "reasoning_output_tokens": 514
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat ~/.agents/skills/doc-coauthoring/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "P01",
+    "run": 2,
+    "split": "train",
+    "expected": true,
+    "observed_skill_read": true,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 13548,
+    "usage": {
+      "input_tokens": 44203,
+      "cached_input_tokens": 32896,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 624,
+      "reasoning_output_tokens": 412
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat /private/var/folders/_k/dtckbnf53p1fsxzy1ff016_r0000gn/T/podcast-routing-rr7_hgjz/.agents/skills/podcast-summary/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "P02",
+    "run": 2,
+    "split": "train",
+    "expected": true,
+    "observed_skill_read": true,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 13054,
+    "usage": {
+      "input_tokens": 44200,
+      "cached_input_tokens": 20736,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 590,
+      "reasoning_output_tokens": 383
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat /private/var/folders/_k/dtckbnf53p1fsxzy1ff016_r0000gn/T/podcast-routing-6e5cyla7/.agents/skills/podcast-summary/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "P03",
+    "run": 2,
+    "split": "train",
+    "expected": true,
+    "observed_skill_read": true,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 14974,
+    "usage": {
+      "input_tokens": 44219,
+      "cached_input_tokens": 32896,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 644,
+      "reasoning_output_tokens": 422
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat /private/var/folders/_k/dtckbnf53p1fsxzy1ff016_r0000gn/T/podcast-routing-d35wuj3p/.agents/skills/podcast-summary/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "P04",
+    "run": 2,
+    "split": "train",
+    "expected": true,
+    "observed_skill_read": true,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 12448,
+    "usage": {
+      "input_tokens": 44189,
+      "cached_input_tokens": 32896,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 489,
+      "reasoning_output_tokens": 280
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat /private/var/folders/_k/dtckbnf53p1fsxzy1ff016_r0000gn/T/podcast-routing-vafihzo2/.agents/skills/podcast-summary/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "P05",
+    "run": 2,
+    "split": "train",
+    "expected": true,
+    "observed_skill_read": true,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 14329,
+    "usage": {
+      "input_tokens": 44171,
+      "cached_input_tokens": 20608,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 521,
+      "reasoning_output_tokens": 304
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat /private/var/folders/_k/dtckbnf53p1fsxzy1ff016_r0000gn/T/podcast-routing-pbk_imca/.agents/skills/podcast-summary/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "P06",
+    "run": 2,
+    "split": "train",
+    "expected": true,
+    "observed_skill_read": true,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 12236,
+    "usage": {
+      "input_tokens": 44208,
+      "cached_input_tokens": 32896,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 468,
+      "reasoning_output_tokens": 253
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat /private/var/folders/_k/dtckbnf53p1fsxzy1ff016_r0000gn/T/podcast-routing-uvvtqlh1/.agents/skills/podcast-summary/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "P07",
+    "run": 2,
+    "split": "test",
+    "expected": true,
+    "observed_skill_read": true,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 12655,
+    "usage": {
+      "input_tokens": 44187,
+      "cached_input_tokens": 32768,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 476,
+      "reasoning_output_tokens": 269
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat /private/var/folders/_k/dtckbnf53p1fsxzy1ff016_r0000gn/T/podcast-routing-uvivfqif/.agents/skills/podcast-summary/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "P08",
+    "run": 2,
+    "split": "test",
+    "expected": true,
+    "observed_skill_read": true,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 15894,
+    "usage": {
+      "input_tokens": 44215,
+      "cached_input_tokens": 32896,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 641,
+      "reasoning_output_tokens": 436
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat /private/var/folders/_k/dtckbnf53p1fsxzy1ff016_r0000gn/T/podcast-routing-s6v3bpdw/.agents/skills/podcast-summary/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "P09",
+    "run": 2,
+    "split": "test",
+    "expected": true,
+    "observed_skill_read": true,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 14945,
+    "usage": {
+      "input_tokens": 44196,
+      "cached_input_tokens": 32896,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 567,
+      "reasoning_output_tokens": 347
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat /private/var/folders/_k/dtckbnf53p1fsxzy1ff016_r0000gn/T/podcast-routing-rn_oxdev/.agents/skills/podcast-summary/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "P10",
+    "run": 2,
+    "split": "test",
+    "expected": true,
+    "observed_skill_read": true,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 13564,
+    "usage": {
+      "input_tokens": 44185,
+      "cached_input_tokens": 32768,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 488,
+      "reasoning_output_tokens": 279
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat /private/var/folders/_k/dtckbnf53p1fsxzy1ff016_r0000gn/T/podcast-routing-63ep5uzv/.agents/skills/podcast-summary/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "N01",
+    "run": 2,
+    "split": "train",
+    "expected": false,
+    "observed_skill_read": false,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 12596,
+    "usage": {
+      "input_tokens": 41822,
+      "cached_input_tokens": 32768,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 504,
+      "reasoning_output_tokens": 345
+    },
+    "commands": [
+      "/bin/zsh -lc \"rg --files -g '\"'!.git'\"' -g '\"'!node_modules'\"' -g '\"'!vendor'\"'\""
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "N02",
+    "run": 2,
+    "split": "train",
+    "expected": false,
+    "observed_skill_read": false,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 13863,
+    "usage": {
+      "input_tokens": 44464,
+      "cached_input_tokens": 32896,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 543,
+      "reasoning_output_tokens": 366
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat ~/.agents/skills/deep-survey/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "N03",
+    "run": 2,
+    "split": "train",
+    "expected": false,
+    "observed_skill_read": false,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 14321,
+    "usage": {
+      "input_tokens": 42013,
+      "cached_input_tokens": 20736,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 531,
+      "reasoning_output_tokens": 310
+    },
+    "commands": [
+      "/bin/zsh -lc 'command -v ffmpeg ffprobe sox'",
+      "/bin/zsh -lc \"rg --files --hidden -g '\"'!.git'\"' -g '\"'!node_modules'\"' -g '\"'!vendor'\"'\""
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "N04",
+    "run": 2,
+    "split": "train",
+    "expected": false,
+    "observed_skill_read": false,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 14278,
+    "usage": {
+      "input_tokens": 45621,
+      "cached_input_tokens": 32896,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 669,
+      "reasoning_output_tokens": 482
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat ~/.agents/skills/book-to-mindmap/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "N05",
+    "run": 2,
+    "split": "train",
+    "expected": false,
+    "observed_skill_read": false,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 15162,
+    "usage": {
+      "input_tokens": 43583,
+      "cached_input_tokens": 32768,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 663,
+      "reasoning_output_tokens": 480
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat ~/.agents/skills/lark-export/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "N06",
+    "run": 2,
+    "split": "train",
+    "expected": false,
+    "observed_skill_read": false,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 26862,
+    "usage": {
+      "input_tokens": 63754,
+      "cached_input_tokens": 53632,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 1356,
+      "reasoning_output_tokens": 1105
+    },
+    "commands": [
+      "/bin/zsh -lc \"rg --files -g 'AGENTS.md' -g '*.md' -g '*.txt' -g '*.json' -g '*.html' -g '*.csv' -g '*.pdf'\"",
+      "/bin/zsh -lc \"rg -n -C 3 '公积金|广州|二套|贷款|20[0-9]{2}' 资料\""
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "N07",
+    "run": 2,
+    "split": "test",
+    "expected": false,
+    "observed_skill_read": false,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 15232,
+    "usage": {
+      "input_tokens": 46033,
+      "cached_input_tokens": 32896,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 511,
+      "reasoning_output_tokens": 349
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat ~/.codex/skills/.system/imagegen/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "N08",
+    "run": 2,
+    "split": "test",
+    "expected": false,
+    "observed_skill_read": false,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 12862,
+    "usage": {
+      "input_tokens": 41828,
+      "cached_input_tokens": 32768,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 483,
+      "reasoning_output_tokens": 343
+    },
+    "commands": [
+      "/bin/zsh -lc \"rg --files --hidden -g '\"'! .git'\"' -g '\"'!.git'\"' -g '\"'!node_modules'\"' -g '\"'!vendor'\"'\""
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "N09",
+    "run": 2,
+    "split": "test",
+    "expected": false,
+    "observed_skill_read": false,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 22067,
+    "usage": {
+      "input_tokens": 63521,
+      "cached_input_tokens": 53632,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 1034,
+      "reasoning_output_tokens": 819
+    },
+    "commands": [
+      "/bin/zsh -lc \"pwd; rg --files -g 'AGENTS.md' -g '*podwise*' -g '*Podwise*' -g '*transcript*' -g '*README*' -g '*.json' -g '*.md' .\"",
+      "/bin/zsh -lc 'command -v podwise'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "N10",
+    "run": 2,
+    "split": "test",
+    "expected": false,
+    "observed_skill_read": false,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 14400,
+    "usage": {
+      "input_tokens": 45106,
+      "cached_input_tokens": 32896,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 502,
+      "reasoning_output_tokens": 268
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat ~/.agents/skills/doc-coauthoring/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "P01",
+    "run": 3,
+    "split": "train",
+    "expected": true,
+    "observed_skill_read": true,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 14129,
+    "usage": {
+      "input_tokens": 44205,
+      "cached_input_tokens": 32896,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 572,
+      "reasoning_output_tokens": 375
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat /private/var/folders/_k/dtckbnf53p1fsxzy1ff016_r0000gn/T/podcast-routing-dh3bkm4b/.agents/skills/podcast-summary/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "P02",
+    "run": 3,
+    "split": "train",
+    "expected": true,
+    "observed_skill_read": true,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 14624,
+    "usage": {
+      "input_tokens": 44189,
+      "cached_input_tokens": 32896,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 625,
+      "reasoning_output_tokens": 431
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat /private/var/folders/_k/dtckbnf53p1fsxzy1ff016_r0000gn/T/podcast-routing-ppfd7pjg/.agents/skills/podcast-summary/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "P03",
+    "run": 3,
+    "split": "train",
+    "expected": true,
+    "observed_skill_read": true,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 14327,
+    "usage": {
+      "input_tokens": 44218,
+      "cached_input_tokens": 32896,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 528,
+      "reasoning_output_tokens": 304
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat /private/var/folders/_k/dtckbnf53p1fsxzy1ff016_r0000gn/T/podcast-routing-r1pw0ud6/.agents/skills/podcast-summary/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "P04",
+    "run": 3,
+    "split": "train",
+    "expected": true,
+    "observed_skill_read": true,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 12215,
+    "usage": {
+      "input_tokens": 44196,
+      "cached_input_tokens": 32896,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 430,
+      "reasoning_output_tokens": 218
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat /private/var/folders/_k/dtckbnf53p1fsxzy1ff016_r0000gn/T/podcast-routing-orbka88r/.agents/skills/podcast-summary/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "P05",
+    "run": 3,
+    "split": "train",
+    "expected": true,
+    "observed_skill_read": true,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 15337,
+    "usage": {
+      "input_tokens": 44197,
+      "cached_input_tokens": 32896,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 682,
+      "reasoning_output_tokens": 465
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat /private/var/folders/_k/dtckbnf53p1fsxzy1ff016_r0000gn/T/podcast-routing-8ds2zoo4/.agents/skills/podcast-summary/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "P06",
+    "run": 3,
+    "split": "train",
+    "expected": true,
+    "observed_skill_read": true,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 13976,
+    "usage": {
+      "input_tokens": 44399,
+      "cached_input_tokens": 32768,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 522,
+      "reasoning_output_tokens": 306
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat .agents/skills/podcast-summary/SKILL.md'",
+      "/bin/zsh -lc \"rg --files --hidden -g '\"'!'\"\\\\.git/**' -g '\"'!node_modules/**'\"'\""
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "P07",
+    "run": 3,
+    "split": "test",
+    "expected": true,
+    "observed_skill_read": true,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 16658,
+    "usage": {
+      "input_tokens": 44204,
+      "cached_input_tokens": 32896,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 617,
+      "reasoning_output_tokens": 407
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat /private/var/folders/_k/dtckbnf53p1fsxzy1ff016_r0000gn/T/podcast-routing-bxsb0b4w/.agents/skills/podcast-summary/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "P08",
+    "run": 3,
+    "split": "test",
+    "expected": true,
+    "observed_skill_read": true,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 13611,
+    "usage": {
+      "input_tokens": 44204,
+      "cached_input_tokens": 32896,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 605,
+      "reasoning_output_tokens": 394
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat /private/var/folders/_k/dtckbnf53p1fsxzy1ff016_r0000gn/T/podcast-routing-9hc78kw5/.agents/skills/podcast-summary/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "P09",
+    "run": 3,
+    "split": "test",
+    "expected": true,
+    "observed_skill_read": true,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 14499,
+    "usage": {
+      "input_tokens": 44195,
+      "cached_input_tokens": 24320,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 582,
+      "reasoning_output_tokens": 356
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat /private/var/folders/_k/dtckbnf53p1fsxzy1ff016_r0000gn/T/podcast-routing-rpucd7zf/.agents/skills/podcast-summary/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "P10",
+    "run": 3,
+    "split": "test",
+    "expected": true,
+    "observed_skill_read": true,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 14537,
+    "usage": {
+      "input_tokens": 44190,
+      "cached_input_tokens": 32896,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 595,
+      "reasoning_output_tokens": 390
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat /private/var/folders/_k/dtckbnf53p1fsxzy1ff016_r0000gn/T/podcast-routing-4y089p5f/.agents/skills/podcast-summary/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "N01",
+    "run": 3,
+    "split": "train",
+    "expected": false,
+    "observed_skill_read": false,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 14301,
+    "usage": {
+      "input_tokens": 41919,
+      "cached_input_tokens": 32768,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 522,
+      "reasoning_output_tokens": 299
+    },
+    "commands": [
+      "/bin/zsh -lc \"rg --files -g '\"'!node_modules'\"' -g '\"'!.git'\"' -g '\"'!vendor'\"' -g '\"'!dist'\"' -g '\"'!build'\"' -g '\"'!package-lock.json'\"' -g '\"'!yarn.lock'\"' -g '\"'!pnpm-lock.yaml'\"'\""
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "N02",
+    "run": 3,
+    "split": "train",
+    "expected": false,
+    "observed_skill_read": false,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 15818,
+    "usage": {
+      "input_tokens": 41891,
+      "cached_input_tokens": 32768,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 522,
+      "reasoning_output_tokens": 303
+    },
+    "commands": [
+      "/bin/zsh -lc \"rg --files -g '\"'!node_modules'\"' -g '\"'!.git'\"' -g '*[Pp]odwise*' -g '*pricing*' -g '*cli*' -g '*fixture*' -g 'AGENTS.md' -g 'README*' -g 'SKILL.md'\""
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "N03",
+    "run": 3,
+    "split": "train",
+    "expected": false,
+    "observed_skill_read": false,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 15479,
+    "usage": {
+      "input_tokens": 41899,
+      "cached_input_tokens": 32768,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 509,
+      "reasoning_output_tokens": 339
+    },
+    "commands": [
+      "/bin/zsh -lc \"pwd\nrg --files -g '\"'!node_modules'\"' -g '\"'!'\"\\\\.git'\ncommand -v ffmpeg\ncommand -v ffprobe\""
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "N04",
+    "run": 3,
+    "split": "train",
+    "expected": false,
+    "observed_skill_read": false,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 12619,
+    "usage": {
+      "input_tokens": 45602,
+      "cached_input_tokens": 32768,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 459,
+      "reasoning_output_tokens": 273
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat ~/.agents/skills/book-to-mindmap/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "N05",
+    "run": 3,
+    "split": "train",
+    "expected": false,
+    "observed_skill_read": false,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 14116,
+    "usage": {
+      "input_tokens": 43594,
+      "cached_input_tokens": 32896,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 606,
+      "reasoning_output_tokens": 429
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat ~/.agents/skills/lark-export/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "N06",
+    "run": 3,
+    "split": "train",
+    "expected": false,
+    "observed_skill_read": false,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 21370,
+    "usage": {
+      "input_tokens": 47296,
+      "cached_input_tokens": 32768,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 970,
+      "reasoning_output_tokens": 772
+    },
+    "commands": [
+      "/bin/zsh -lc pwd"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "N07",
+    "run": 3,
+    "split": "test",
+    "expected": false,
+    "observed_skill_read": false,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 14275,
+    "usage": {
+      "input_tokens": 46048,
+      "cached_input_tokens": 32896,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 508,
+      "reasoning_output_tokens": 340
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat ~/.codex/skills/.system/imagegen/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "N08",
+    "run": 3,
+    "split": "test",
+    "expected": false,
+    "observed_skill_read": false,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 18637,
+    "usage": {
+      "input_tokens": 63675,
+      "cached_input_tokens": 53632,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 968,
+      "reasoning_output_tokens": 695
+    },
+    "commands": [
+      "/bin/zsh -lc \"rg --files -g '\"'!.git'\"' -g '\"'!node_modules'\"' -g '\"'!vendor'\"' -g '\"'!package-lock.json'\"' -g '\"'!pnpm-lock.yaml'\"' -g '\"'!yarn.lock'\"'\"",
+      "/bin/zsh -lc \"sed -n '1,100p' '资料/agent.txt'\"",
+      "/bin/zsh -lc \"sed -n '1,100p' '资料/返乡访谈.txt'\"",
+      "/bin/zsh -lc \"sed -n '1,100p' '资料/episode.txt'\""
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "N09",
+    "run": 3,
+    "split": "test",
+    "expected": false,
+    "observed_skill_read": true,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 13161,
+    "usage": {
+      "input_tokens": 44246,
+      "cached_input_tokens": 32768,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 499,
+      "reasoning_output_tokens": 355
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat .agents/skills/podcast-summary/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  },
+  {
+    "id": "N10",
+    "run": 3,
+    "split": "test",
+    "expected": false,
+    "observed_skill_read": false,
+    "returncode": 0,
+    "turn_completed": true,
+    "duration_ms": 14765,
+    "usage": {
+      "input_tokens": 45105,
+      "cached_input_tokens": 32896,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 575,
+      "reasoning_output_tokens": 370
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat ~/.agents/skills/doc-coauthoring/SKILL.md'"
+    ],
+    "settings": {
+      "model": "gpt-6-astra",
+      "model_reasoning_effort": "max",
+      "service_tier": "priority"
+    }
+  }
+]

@@ -1,0 +1,58 @@
+{
+ "name": "Monochrome",
+ "source": "zarazhangrui/beautiful-feishu-whiteboard templates/monochrome/design.md（MIT）",
+ "canvas": "#FAFADF",
+ "radius": 4,
+ "rule": "#1A1A16",
+ "rule_width": 1,
+ "text": {
+  "body": "#1A1A16",
+  "heading": "#1A1A16",
+  "muted": "#5E5E54"
+ },
+ "surfaces": {
+  "base": {
+   "fill": "#F2F2D2",
+   "border": "#1A1A16",
+   "text": "#1A1A16",
+   "heading": "#1A1A16",
+   "big": "#1A1A16"
+  },
+  "strong": {
+   "fill": "#1A1A16",
+   "border": null,
+   "text": "#FAFADF",
+   "heading": "#FAFADF",
+   "big": "#FAFADF"
+  },
+  "accent": {
+   "fill": "#F5F0E4",
+   "border": "#1A1A16",
+   "text": "#1A1A16",
+   "heading": "#1A1A16",
+   "big": "#1A1A16"
+  },
+  "plain": {
+   "fill": null,
+   "border": null,
+   "text": "#1A1A16",
+   "heading": "#1A1A16",
+   "big": "#1A1A16"
+  }
+ },
+ "marks": {
+  "number_fill": "#1A1A16",
+  "number_text": "#FAFADF",
+  "route_on": "#1A1A16",
+  "route_on_text": "#FAFADF",
+  "route_off": "#F2F2D2",
+  "route_off_text": "#1A1A16",
+  "arrow": "#1A1A16"
+ },
+ "data": [
+  "#1A1A16",
+  "#8A8A80",
+  "#5E5E54",
+  "#F2F2D2"
+ ]
+}
