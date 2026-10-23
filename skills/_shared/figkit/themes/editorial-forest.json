@@ -1,0 +1,58 @@
+{
+ "name": "Editorial Forest",
+ "source": "zarazhangrui/beautiful-feishu-whiteboard templates/editorial-forest/design.md（MIT）",
+ "canvas": "#efe7d4",
+ "radius": 6,
+ "rule": "#2e4a2a",
+ "rule_width": 2,
+ "text": {
+  "body": "#1a1a17",
+  "heading": "#2e4a2a",
+  "muted": "#1a1a17"
+ },
+ "surfaces": {
+  "base": {
+   "fill": "#e6dcc4",
+   "border": "#2e4a2a",
+   "text": "#1a1a17",
+   "heading": "#2e4a2a",
+   "big": "#2e4a2a"
+  },
+  "strong": {
+   "fill": "#2e4a2a",
+   "border": null,
+   "text": "#efe7d4",
+   "heading": "#efe7d4",
+   "big": "#e89cb1"
+  },
+  "accent": {
+   "fill": "#e89cb1",
+   "border": "#d27e96",
+   "text": "#243a21",
+   "heading": "#243a21",
+   "big": "#243a21"
+  },
+  "plain": {
+   "fill": null,
+   "border": null,
+   "text": "#1a1a17",
+   "heading": "#2e4a2a",
+   "big": "#2e4a2a"
+  }
+ },
+ "marks": {
+  "number_fill": "#2e4a2a",
+  "number_text": "#efe7d4",
+  "route_on": "#2e4a2a",
+  "route_on_text": "#efe7d4",
+  "route_off": "#e6dcc4",
+  "route_off_text": "#2e4a2a",
+  "arrow": "#2e4a2a"
+ },
+ "data": [
+  "#2e4a2a",
+  "#e89cb1",
+  "#3a5a36",
+  "#d27e96"
+ ]
+}

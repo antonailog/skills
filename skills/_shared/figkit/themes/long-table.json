@@ -1,0 +1,58 @@
+{
+ "name": "Long Table",
+ "source": "zarazhangrui/beautiful-feishu-whiteboard templates/long-table/design.md（MIT）",
+ "canvas": "#FAF1E2",
+ "radius": 4,
+ "rule": "#B53D2A",
+ "rule_width": 1,
+ "text": {
+  "body": "#B53D2A",
+  "heading": "#B53D2A",
+  "muted": "#B53D2A"
+ },
+ "surfaces": {
+  "base": {
+   "fill": "#FAF1E2",
+   "border": "#B53D2A",
+   "text": "#B53D2A",
+   "heading": "#B53D2A",
+   "big": "#B53D2A"
+  },
+  "strong": {
+   "fill": "#F2E5CF",
+   "border": "#B53D2A",
+   "text": "#B53D2A",
+   "heading": "#B53D2A",
+   "big": "#8E2D1F"
+  },
+  "accent": {
+   "fill": "#E8D7B6",
+   "border": "#B53D2A",
+   "text": "#B53D2A",
+   "heading": "#8E2D1F",
+   "big": "#8E2D1F"
+  },
+  "plain": {
+   "fill": null,
+   "border": null,
+   "text": "#B53D2A",
+   "heading": "#B53D2A",
+   "big": "#B53D2A"
+  }
+ },
+ "marks": {
+  "number_fill": "#B53D2A",
+  "number_text": "#FAF1E2",
+  "route_on": "#B53D2A",
+  "route_on_text": "#FAF1E2",
+  "route_off": "#F2E5CF",
+  "route_off_text": "#B53D2A",
+  "arrow": "#B53D2A"
+ },
+ "data": [
+  "#B53D2A",
+  "#E8D7B6",
+  "#8E2D1F",
+  "#F2E5CF"
+ ]
+}

@@ -1,0 +1,58 @@
+{
+ "name": "Avocado Press",
+ "source": "zarazhangrui/beautiful-feishu-whiteboard templates/avocado-press/design.md（MIT）",
+ "canvas": "#FFFFFF",
+ "radius": 4,
+ "rule": "#DCF4A2",
+ "rule_width": 3,
+ "text": {
+  "body": "#0055A4",
+  "heading": "#0055A4",
+  "muted": "#0055A4"
+ },
+ "surfaces": {
+  "base": {
+   "fill": "#FFFFFF",
+   "border": "#0055A4",
+   "text": "#0055A4",
+   "heading": "#0055A4",
+   "big": "#0055A4"
+  },
+  "strong": {
+   "fill": "#0055A4",
+   "border": null,
+   "text": "#FFFFFF",
+   "heading": "#FFFFFF",
+   "big": "#DCF4A2"
+  },
+  "accent": {
+   "fill": "#DCF4A2",
+   "border": null,
+   "text": "#0055A4",
+   "heading": "#0055A4",
+   "big": "#0055A4"
+  },
+  "plain": {
+   "fill": null,
+   "border": null,
+   "text": "#0055A4",
+   "heading": "#0055A4",
+   "big": "#0055A4"
+  }
+ },
+ "marks": {
+  "number_fill": "#0055A4",
+  "number_text": "#DCF4A2",
+  "route_on": "#0055A4",
+  "route_on_text": "#FFFFFF",
+  "route_off": "#DCF4A2",
+  "route_off_text": "#0055A4",
+  "arrow": "#0055A4"
+ },
+ "data": [
+  "#0055A4",
+  "#DCF4A2",
+  "#3b7fc4",
+  "#9ec9f0"
+ ]
+}

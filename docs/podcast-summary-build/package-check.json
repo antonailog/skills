@@ -1,0 +1,18 @@
+{
+  "package_files": [
+    "SKILL.md",
+    "references/visuals.md",
+    "references/tools-and-storage.md",
+    "references/content-and-document.md",
+    "references/feishu-update.md",
+    "scripts/source_manifest.py",
+    "scripts/audit_document.py",
+    "assets/content-plan.md",
+    "assets/note-template.md"
+  ],
+  "missing_links": [],
+  "installed_source_links": {
+    "~/.agents/skills/podcast-summary": true,
+    "~/.claude/skills/podcast-summary": true
+  }
+}
