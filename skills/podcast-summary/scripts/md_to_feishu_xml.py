@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""把笔记 Markdown 转成飞书文档 XML。约定：**粗** <u>下划线</u> ==高亮== *斜体* [链接](url) ![图](路径) 表格、有序／无序列表、问答两行段（**Q…** 下一行「答：」）。
+"""把笔记 Markdown 转成飞书文档 XML。约定：**粗** <u>下划线</u> ==高亮==（或 <mark>高亮</mark>） *斜体* [链接](url) ![图](路径) 表格、有序／无序列表、问答两行段（**Q…** 下一行「答：」）。
 SVG 图转成 <whiteboard type="svg" path="@文件">（创建时由 lark-cli 展开）；其他图片按 --img-map 换成网络地址。各级标题前若是正文，自动插入空段落。
 
 用法：python3 md_to_feishu_xml.py 笔记.md 输出.xml [--img-map '{"images/封面.png":"https://..."}'] [--title-suffix '（新结构）']"""
@@ -7,6 +7,7 @@ import argparse, html, json, pathlib, re
 import xml.etree.ElementTree as ET
 
 def inline(t):
+    t = re.sub(r'<mark>(.+?)</mark>', r'==\1==', t)
     t = t.replace('<u>', '\x01').replace('</u>', '\x02')
     t = html.escape(t, quote=False)
     t = re.sub(r'\[([^\]]+)\]\(([^)]+)\)', lambda m: f'<a href="{html.escape(m.group(2), quote=True)}">{m.group(1)}</a>', t)
