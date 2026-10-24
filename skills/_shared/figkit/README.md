@@ -10,7 +10,7 @@ FIGKIT_THEME=themes/editorial-forest.json python3 check_figure.py 输出.svg --w
 ```
 
 - `figkit.py`：图稿 JSON → SVG。模板：信息图、层级图、条件汇合、流程图、组成条、柱状图。文字按词折行（数字、百分比、英文串不拆），宽卡说明自动分栏，箭头用 `marker-end` 转原生连接器。
-- `check_figure.py`：最小字号 16、卡内行长 30 字、只用主题颜色、每屏强色面用量；`--wb` 同时跑 `@larksuite/whiteboard-cli --check`。
+- `check_figure.py`：最小字号 16、卡内行长 30 字、只用主题颜色、每屏强色面用量、文字超出所在形状、数字被拆到两行；`--wb` 同时跑 `@larksuite/whiteboard-cli --check`。
 - `oklch.py`：OKLCH 与对比度计算，录入新主题时校验文字对比度。
 
 ## 图稿
