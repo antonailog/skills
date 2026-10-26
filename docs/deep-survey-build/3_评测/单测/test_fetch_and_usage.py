@@ -89,7 +89,8 @@ class FetchEvidenceTests(unittest.TestCase):
     def test_proxy_fake_ip_is_accepted_only_for_domain_names(self):
         with patch.object(fetch.socket, 'getaddrinfo', return_value=[(None,None,None,None,('198.18.6.12',443))]):
             self.assertEqual(fetch.public_url('https://example.org/'), 'https://example.org/')
-        with self.assertRaises(ValueError): fetch.public_url('http://198.18.6.12/')
+        for url in ['http://198.18.6.12/', 'http://3323068417/', 'http://198.18.1/', 'http://0xc6.0x12.0.1/', 'http://0306.022.0.1/', 'http://0xc6120001/']:
+            with self.assertRaises(ValueError): fetch.public_url(url)
 
     def test_js_unicode_is_not_executed_or_corrupted(self):
         self.assertEqual(fetch.decode_js(r'中文\u4e16\u754c\ud83d\ude00'), '中文世界😀')

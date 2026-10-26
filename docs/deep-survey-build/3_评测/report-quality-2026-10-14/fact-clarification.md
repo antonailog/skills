@@ -14,7 +14,7 @@
 
 **报告短摘：**“其分会票存在页面与内嵌数据状态冲突，不据此推荐购买。”——R42 第 85 行（本机原件，未公开）
 
-[官方 Luma](https://luma.com/j9iqfmh8) 的原始快照 aie-luma-public.html 第 567 行（本机原件，未公开） 同时保留了两层信息：
+[官方 Luma](https://luma.com/j9iqfmh8) 的原始快照 aie-luma-public.html 第 567 行（本机原件，未公开）同时保留了两层信息：
 
 - 静态 HTML 的 `Breakout Session Pass` 按钮写 **“1 Left”**、`Breakout Session + Expo`，按钮没有 `disabled` 属性。按钮从全文字符偏移 `82593` 开始。
 - `script#__NEXT_DATA__` 的 `$.props.pageProps.initialData.data.ticket_types[2]` 写 `cents=9700`、`currency=usd`、`spots_remaining=1`、`is_disabled=false`，权益同为分会加展览。
@@ -29,7 +29,7 @@
 
 **报告短摘：**“现在购票已不能退款。”——R42 第 87 行（本机原件，未公开）。同段紧接退款截止、转让期限和本人确定能参加的提醒，第 9、98 行也将接受“不退票”列为购买条件。
 
-**有支持的部分（supported）：**中文购票须知快照（本机原件，未公开） 确实写明 2026 年 10 月 1 日 23:59 后不再接受退款申请，原文起于全文字符偏移 `12747`；[官方来源](https://aie.anruicloud.com/assets/pay-0b8ec5e2.js)。Luma 快照（本机原件，未公开） 的可见退款说明也写明 10 月 1 日 23:59 PT 后不接受退款申请（字符偏移 `88433`）。十月中旬已过这两个一般截止点；中文时区未注明不改变这一判断。
+**有支持的部分（supported）：**中文购票须知快照（本机原件，未公开）确实写明 2026 年 10 月 1 日 23:59 后不再接受退款申请，原文起于全文字符偏移 `12747`；[官方来源](https://aie.anruicloud.com/assets/pay-0b8ec5e2.js)。Luma 快照（本机原件，未公开）的可见退款说明也写明 10 月 1 日 23:59 PT 后不接受退款申请（字符偏移 `88433`）。十月中旬已过这两个一般截止点；中文时区未注明不改变这一判断。
 
 **完整条款的范围：**中文购票服务协议快照（本机原件，未公开）（[官方来源](https://aie.anruicloud.com/assets/Footer-395108d9.js)）还包含以下内容：
 
@@ -50,7 +50,7 @@
 
 **报告短摘：**“总支出与占用时间都更高，不能只比较每张票价格。”——R17 第 71 行（本机原件，未公开）。同句前半是公开价差 ¥1,400、两天对一天。
 
-中文票种原始 JSON（本机原件，未公开） 的 `$.Data.items[1]` 支持标准大会票公开价格 **¥1,999**，包含主会、分会和展览；[官方来源](https://aie.anruicloud.com/api/api/tickets)。Luma 原始快照（本机原件，未公开） 的 `$.props.pageProps.initialData.data.event` 记录 `start_at=2026-11-05T01:00:00.000Z`、`end_at=2026-11-06T10:30:00.000Z`、`timezone=Asia/Shanghai`，支持跨 **11 月 5–6 日**的两天会期。以上为 **supported**。
+中文票种原始 JSON（本机原件，未公开）的 `$.Data.items[1]` 支持标准大会票公开价格 **¥1,999**，包含主会、分会和展览；[官方来源](https://aie.anruicloud.com/api/api/tickets)。Luma 原始快照（本机原件，未公开）的 `$.props.pageProps.initialData.data.event` 记录 `start_at=2026-11-05T01:00:00.000Z`、`end_at=2026-11-06T10:30:00.000Z`、`timezone=Asia/Shanghai`，支持跨 **11 月 5–6 日**的两天会期。以上为 **supported**。
 
 证据索引没有 Maker 上海原始快照。两份报告都写 ¥599、一天，但它们不能互为原始来源。本次不联网，所以 Maker 这一基准记 **unverifiable**，不是判其错误。即使暂采这两个基准，`1999 − 599 = 1400` 只是正确的公开票价差（**derived_correct**），下述总量判断仍不能成立：
 
@@ -63,6 +63,6 @@
 
 ## 交付与校验
 
-只新增本文件与 [结构化记录](docs/deep-survey-build/3_评测/report-quality-2026-10-14/fact-clarification.json)。原报告、policy、task 保持读取时 SHA-256；未读写既有评分。本次澄清不构成总体质量评分，也不要求两位原评审为取得一致而回改评分。
+只新增本文件与 [结构化记录](fact-clarification.json)。原报告、policy、task 保持读取时 SHA-256；未读写既有评分。本次澄清不构成总体质量评分，也不要求两位原评审为取得一致而回改评分。
 
 定位说明：文中字符偏移均为解码后的 Unicode 字符、从 0 开始，不是字节偏移；行号从 1 开始。压缩 JS 多数为单行，故同时提供条款名、JSON 路径与字符定位。
