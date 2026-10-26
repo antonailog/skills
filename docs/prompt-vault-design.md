@@ -146,7 +146,7 @@ prompt-vault/
 **≥5 条真实 query 样本**（门禁第 5 条）：
 
 1. 「收录这个 https://mp.weixin.qq.com/s/NAdhdFrUq9-BKelqzqpwBQ 里面有几段生图prompt 案例图也扒下来」
-2. 「把 https://my.feishu.cn/wiki/F957wGdEfiJCHqksyQWck7wrnDg 下面的子文档都导入我的prompt库」
+2. 「把 https://my.feishu.cn/wiki/<节点 token> 下面的子文档都导入我的prompt库」
 3. 「这条prompt挺好的帮我存一下：你是一位资深文案编辑，请把下面的文字改写成…」（粘贴全文，没给来源）
 4. 「刚看到个雕像自拍的nano banana prompt想收进库 链接 https://x.com/…」
 5. 「prompt库重建下索引 我手动改了两个文件的分类」

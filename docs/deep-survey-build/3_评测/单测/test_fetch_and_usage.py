@@ -86,6 +86,11 @@ class FetchEvidenceTests(unittest.TestCase):
             with self.assertRaises(ValueError): fetch.public_url('https://example.org/')
         with self.assertRaises(ValueError): fetch.SafeRedirect().redirect_request(None,None,302,'',{},'http://127.0.0.1/')
 
+    def test_proxy_fake_ip_is_accepted_only_for_domain_names(self):
+        with patch.object(fetch.socket, 'getaddrinfo', return_value=[(None,None,None,None,('198.18.6.12',443))]):
+            self.assertEqual(fetch.public_url('https://example.org/'), 'https://example.org/')
+        with self.assertRaises(ValueError): fetch.public_url('http://198.18.6.12/')
+
     def test_js_unicode_is_not_executed_or_corrupted(self):
         self.assertEqual(fetch.decode_js(r'中文\u4e16\u754c\ud83d\ude00'), '中文世界😀')
         self.assertIn('中文内容仅是字符串', fetch.script_evidence('const x="中文内容仅是字符串"; process.exit(9);'))

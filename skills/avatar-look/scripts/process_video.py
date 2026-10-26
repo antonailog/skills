@@ -290,7 +290,7 @@ def main():
     if not seam_fill:
         sh('ffmpeg', '-v', 'error', '-y', '-i', str(video), '-an', '-vf', f'crop={crop},scale={a.size}:{a.size}',
            *X264, str(out / 'avatar.mp4'))
-    data ={'size': a.size, 'fps': fps, 'front': poses[0][0], 'poses': poses, 'ring': ring}
+    data = {'size': a.size, 'fps': fps, 'front': poses[0][0], 'poses': poses, 'ring': ring}
     (out / 'poses.js').write_text(
         '// avatar-look/scripts/process_video.py 产出，勿手改。poses: [帧号, x 右正左负, y 下正上负]；\n'
         '// ring: [帧号, 屏幕方向角 0=右 90=下 180=左 270=上]，头绕圈那段按播放顺序排列，角度单调递增\n'
