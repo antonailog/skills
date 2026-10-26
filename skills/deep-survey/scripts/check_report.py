@@ -1,35 +1,27 @@
 #!/usr/bin/env python3
-"""检查调研报告的结构、引用、可读性与图表。
+"""检查调研报告的机械项：引用、固定部分、图片、表格、凭证。写法由写作指南与审读员判断，脚本不查。
 
 用法：
-  python3 check_report.py report.md [--sources sources.json] [--counter 20-counter.md]
+  python3 check_report.py report.md [--sources sources.json]
 
 错误（E，退出码 1）：
-  E1 正文引用的 [n] 不在「口径与来源」节或 sources.json
+  E1 正文引用的 [n] 不在来源表，或数字链接、来源列表与 sources.json 的 URL 不一致
   E2 正文出现【高】【中】【低】置信度标签
-  E3 缺固定小节或顺序不对（一分钟看懂 / 一 … 八 / 附录 / 口径与来源）
+  E3 固定部分缺失：首个二级标题不是「一分钟看懂」；没有「还不知道的」；没有「口径与来源」；
+     「口径与来源」不是最后一节；出现已取消的「留给你的问题」
   E4 表格有空格子
-  E5 「一分钟看懂」不合规：要点不是 5—7 条，或有要点超 45 字、含 2 个以上数字、带引用编号
   E6 图片文件不存在
   E7 两个编号方括号紧挨着（如 [38][17]），会被 Markdown 渲染成链接；应合并写成 [38,17]
-  E8 对抗分析「反例名单」里的玩家没有在报告里出现（给了 --counter 时检查）
+  E8 正文或来源里疑似凭证、Cookie、Bearer token、带 key / token 参数的 URL
+  E9 「推荐阅读」条目的标题没有超链接（应为 - **[标题](URL)**（机构，日期）[n]：原因）
 警告（W）：
   W1 正文含估算词（约 / 大约 / 估计 / 大概 / 据说）却没有来源编号
-  W2 一句话里超过 2 个来源编号
-  W3 正文字数（不含来源）偏离 6000—14000
   W4 「来源」节列了正文没引用的编号
   W5 过渡废话（值得注意的是 / 综上所述 / 不难看出 / 由此可见）
-  W6 段落超过 120 字
-  W7 连续 600 字以上没有表、图、列表或引语
   W8 截图下一行没有带来源编号的图注；数据图缺 charts/data/<同名>.json
   W9 图片和文字挤在同一段（图片下一行不是空行），部分编辑器会显示成空白
-  W10 「推荐阅读」不是 5—10 条，或有条目缺推荐原因（「：」之后的说明）或缺来源编号
-  W11 「一分钟看懂」里没有导引图
-  W12 第七节结论表缺「通过 / 放弃」「周期」「预算」列
+  W10 「推荐阅读」条目缺推荐原因（「：」之后的说明）或缺来源编号
   W13 来源编号不是从 1 开始连续：交付前跑 scripts/renumber_sources.py
-  W14 「留给你的问题」不是 3—7 条
-  W15 反例名单里的事件、数据没有按原名出现：它们常被改写，逐条确认已写进正文、第六节或第八节
-  W16 「第二梯队」一节没写明数字未逐条核查（这类线索表的数字多取自研究笔记）
   W17 来源列表里的标题可疑：只有站名、括号不闭合、带解析残留或内部占位符（如 [新1]）
   W18 正文出现内部工具名（Info2Action、lingowhale 等），读者不认识
 """
@@ -37,9 +29,20 @@ import json
 import re
 import sys
 from pathlib import Path
+from renumber_sources import page_key, source_urls, CITE_RE as LINK_CITE_RE
 
 CITE_RE = re.compile(r"\[(\d{1,3}(?:\s*,\s*\d{1,3})*)\]")
 ADJ_RE = re.compile(r"\[\d{1,3}(?:\s*,\s*\d{1,3})*\]\[\d{1,3}")
+TAG_RE = re.compile(r"【(高|中|低)】")
+IMG_RE = re.compile(r"!\[[^\]]*\]\(([^)\s]+)\)")
+EST_WORDS = ("约", "大约", "估计", "大概", "据说")
+FILLERS = ("值得注意的是", "综上所述", "不难看出", "由此可见")
+NUM_RE = re.compile(r"\d+(?:\.\d+)?")
+CRED_RE = re.compile(
+    r"(?i)(?:sk-[A-Za-z0-9_-]{16,}|AKIA[0-9A-Z]{16}|ghp_[A-Za-z0-9]{20,}|xox[abp]-[A-Za-z0-9-]{10,}"
+    r"|Bearer\s+[A-Za-z0-9._-]{16,}|\bCookie\s*:\s*\S{8,}"
+    r"|[?&](?:api_?key|access_?token|token|secret|password|cookie)=[^&\s)]{6,})"
+)
 
 
 def cite_nums(text: str) -> list[int]:
@@ -47,26 +50,6 @@ def cite_nums(text: str) -> list[int]:
     for g in CITE_RE.findall(text):
         out += [int(x) for x in g.split(",")]
     return out
-TAG_RE = re.compile(r"【(高|中|低)】")
-IMG_RE = re.compile(r"!\[[^\]]*\]\(([^)\s]+)\)")
-EST_WORDS = ("约", "大约", "估计", "大概", "据说")
-FILLERS = ("值得注意的是", "综上所述", "不难看出", "由此可见")
-NUM_RE = re.compile(r"\d+(?:\.\d+)?")
-REQUIRED = [
-    ("一分钟看懂", r"一分钟看懂"),
-    ("一", r"^一[、.]"),
-    ("二", r"^二[、.]"),
-    ("三", r"^三[、.]"),
-    ("四", r"^四[、.]"),
-    ("五", r"^五[、.]"),
-    ("六", r"^六[、.]"),
-    ("七", r"^七[、.]"),
-    ("八", r"^八[、.]"),
-    ("留给你的问题", r"^留给你的问题"),
-    ("附录", r"^附录"),
-    ("推荐阅读", r"^推荐阅读"),
-    ("口径与来源", r"来源"),
-]
 
 
 def zh_len(s: str) -> int:
@@ -75,6 +58,9 @@ def zh_len(s: str) -> int:
 
 
 def main() -> int:
+    if sys.argv[1:2] in (["-h"], ["--help"]):
+        print(__doc__.strip())
+        return 0
     if len(sys.argv) < 2:
         print(__doc__)
         return 2
@@ -85,32 +71,42 @@ def main() -> int:
     warns: list[str] = []
 
     h2 = [(i, l[3:].strip()) for i, l in enumerate(lines) if l.startswith("## ")]
-    pos = []
-    for name, pat in REQUIRED:
-        hit = next((k for k, (_, t) in enumerate(h2) if re.search(pat, t)), None)
-        if hit is None:
-            errors.append(f"E3 缺小节：{name}")
-        pos.append(hit)
-    found = [p for p in pos if p is not None]
-    if found != sorted(found):
-        errors.append("E3 小节顺序不对，应为 一分钟看懂 / 一 … 八 / 留给你的问题 / 附录 / 推荐阅读 / 口径与来源")
+    titles = [x for _, x in h2]
 
-    src_idx = next((i for i, t in reversed(h2) if "来源" in t and not t.startswith("推荐")), len(lines))
+    # —— 固定部分 ——
+    if not titles or not titles[0].startswith("一分钟看懂"):
+        errors.append("E3 第一个二级标题应为「一分钟看懂」")
+    if not any("还不知道" in x for x in titles):
+        errors.append("E3 缺「还不知道的」")
+    src_pos = [k for k, x in enumerate(titles) if x.startswith("口径与来源")]
+    if not src_pos:
+        errors.append("E3 缺「口径与来源」")
+    elif src_pos[-1] != len(titles) - 1:
+        errors.append("E3 「口径与来源」应为最后一节")
+    if any(x.startswith("留给你的问题") for x in titles):
+        errors.append("E3 「留给你的问题」已取消，删掉这一节")
+
+    src_idx = h2[src_pos[-1]][0] if src_pos else len(lines)
     body = lines[:src_idx]
     body_text = "\n".join(body)
 
     # —— 来源 ——
     listed: set[int] = set()
+    listed_urls = {}
     for l in lines[src_idx:]:
         m = re.match(r"^\s*(?:\[(\d{1,3})\]|(\d{1,3})[.、])\s*", l)
         if m:
-            listed.add(int(m.group(1) or m.group(2)))
+            n = int(m.group(1) or m.group(2))
+            listed.add(n)
+            listed_urls[n] = source_urls(l[m.end():])
     known = listed
+    source_items = {}
     if "--sources" in sys.argv:
         sp = Path(sys.argv[sys.argv.index("--sources") + 1])
-        known = {int(s["n"]) for s in json.loads(sp.read_text(encoding="utf-8"))}
+        source_items = {int(s["n"]): s for s in json.loads(sp.read_text(encoding="utf-8"))}
+        known = set(source_items)
     cited = set(cite_nums(body_text))
-    if not listed:
+    if src_pos and not listed:
         errors.append("E1 「口径与来源」节没有列出任何编号")
     if listed and (cited - listed):
         errors.append(f"E1 正文引用了来源节没列的编号: {sorted(cited - listed)}")
@@ -119,6 +115,22 @@ def main() -> int:
     if listed - cited:
         warns.append(f"W4 来源节列了正文没引用的编号: {sorted(listed - cited)}")
 
+    # 编号存在还不够：正文链接、来源列表和 JSON 必须指向同一页面。
+    for n, urls in listed_urls.items():
+        if n in source_items and (not urls or any(page_key(u) != page_key(source_items[n]["url"]) for u in urls)):
+            errors.append(f"E1 来源 {n} 的 URL 与 sources.json 不一致或缺失")
+    for m in LINK_CITE_RE.finditer(body_text):
+        if not m.group(2):
+            continue
+        for n in map(int, m.group(1).split(",")):
+            targets = [source_items[n]["url"]] if n in source_items else listed_urls.get(n, [])
+            if not targets or any(page_key(m.group(2)) != page_key(u) for u in targets):
+                errors.append(f"E1 正文引用 {n} 的 URL 与来源表不一致")
+
+    # —— 行级 ——
+    for i, l in enumerate(lines, 1):
+        if CRED_RE.search(l):
+            errors.append(f"E8 第 {i} 行疑似凭证或带密钥参数的 URL: {l.strip()[:40]}")
     for i, l in enumerate(body, 1):
         if ADJ_RE.search(l):
             errors.append(f"E7 第 {i} 行编号方括号相邻，会被渲染成链接: {ADJ_RE.search(l).group(0)}…")
@@ -129,68 +141,14 @@ def main() -> int:
             cells = [c.strip() for c in s.strip("|").split("|")]
             if any(c == "" for c in cells[1:]):
                 errors.append(f"E4 第 {i} 行表格有空格子")
-
-    # —— 一分钟看懂 ——
-    if pos[0] is not None:
-        a = h2[pos[0]][0]
-        b = h2[pos[0] + 1][0] if pos[0] + 1 < len(h2) else len(lines)
-        items = [l.strip() for l in lines[a:b] if re.match(r"^\s*(\d+[.、]|[-*])\s+", l)]
-        if not 5 <= len(items) <= 7:
-            errors.append(f"E5 「一分钟看懂」要点应为 5—7 条，现为 {len(items)} 条")
-        if not any(IMG_RE.search(l) for l in lines[a:b]):
-            warns.append("W11 「一分钟看懂」里没有导引图（scripts/make_guide.py）")
-        for it in items:
-            t = re.sub(r"^\s*(\d+[.、]|[-*])\s+", "", it).replace("**", "")
-            if CITE_RE.search(t):
-                errors.append(f"E5 一分钟看懂的要点不带引用编号: {t[:30]}")
-            if zh_len(t) > 45:
-                errors.append(f"E5 要点超 45 字（{zh_len(t)}）: {t[:30]}")
-            if len(NUM_RE.findall(t)) > 2:
-                errors.append(f"E5 要点数字过多: {t[:30]}")
-
-    # —— 句子级 ——
-    for i, l in enumerate(body, 1):
-        s = l.strip()
         if not s or s.startswith(("#", ">", "|", "!")):
             continue
         for sent in re.split(r"(?<=[。！？])", s):
             if any(w in sent for w in EST_WORDS) and NUM_RE.search(sent) and not CITE_RE.search(sent):
                 warns.append(f"W1 第 {i} 行估算数字无来源: {sent[:40]}")
-            if len(cite_nums(sent)) > 2:
-                warns.append(f"W2 第 {i} 行一句超过 2 个编号: {sent[:40]}")
         for f in FILLERS:
             if f in s:
                 warns.append(f"W5 第 {i} 行过渡废话「{f}」")
-
-    # —— 段落长度与图文节奏 ——
-    blocks, cur, start = [], [], 0
-    for i, l in enumerate(body):
-        if l.strip() == "":
-            if cur:
-                blocks.append((start, cur))
-            cur = []
-        else:
-            if not cur:
-                start = i
-            cur.append(l)
-    if cur:
-        blocks.append((start, cur))
-    run = 0
-    for start, bl in blocks:
-        first = bl[0].strip()
-        nontext = first.startswith(("|", "!", ">", "-", "*", "```")) or re.match(r"^\d+[.、]\s", first)
-        if first.startswith("#"):
-            continue
-        if nontext:
-            run = 0
-            continue
-        n = zh_len(" ".join(bl))
-        if n > 120:
-            warns.append(f"W6 第 {start + 1} 行段落 {n} 字，超过 120")
-        run += n
-        if run > 600:
-            warns.append(f"W7 第 {start + 1} 行前后连续 {run} 字没有表、图、列表或引语")
-            run = 0
 
     # —— 图片 ——
     n_img = 0
@@ -208,6 +166,8 @@ def main() -> int:
                 nxt = next((x for x in body[i + 1:i + 4] if x.strip()), "")
                 if not CITE_RE.search(nxt):
                     warns.append(f"W8 截图 {src} 下一行缺带编号的图注")
+            elif stem == "guide":
+                continue
             elif not any((p.parent / x).exists() for x in (f"data/{stem}.json", f"{stem}.mmd", f"{stem}.json")):
                 warns.append(f"W8 图 {src} 没有对应的 data/{stem}.json 或 {stem}.mmd")
 
@@ -217,77 +177,17 @@ def main() -> int:
         a = h2[rec][0]
         b = h2[rec + 1][0] if rec + 1 < len(h2) else len(lines)
         recs = [l.strip() for l in lines[a:b] if re.match(r"^\s*[-*]\s+", l)]
-        if not 5 <= len(recs) <= 10:
-            warns.append(f"W10 推荐阅读应为 5—10 条，现为 {len(recs)} 条")
         for r in recs:
             if "：" not in r or len(r.split("：", 1)[1].strip()) < 8:
                 warns.append(f"W10 推荐阅读缺推荐原因: {r[:40]}")
-            if not CITE_RE.search(r) and "http" not in r:
+            if not CITE_RE.search(r):
                 warns.append(f"W10 推荐阅读缺来源编号: {r[:40]}")
-
-    # —— 反例名单 ——
-    if "--counter" in sys.argv:
-        cp = Path(sys.argv[sys.argv.index("--counter") + 1])
-        names, on = [], False
-        for l in cp.read_text(encoding="utf-8").splitlines():
-            if l.startswith("## "):
-                on = l.strip().startswith("## 反例名单")
-                continue
-            if on and l.lstrip().startswith("-"):
-                parts = [x.strip(" *") for x in l.lstrip()[1:].split("|")]
-                if parts[0]:
-                    names.append((parts[0], parts[1] if len(parts) > 1 else "玩家"))
-        def present(alias):
-            # 英文名按整词匹配（Nomi 不能算进 economics），中文名按子串
-            if re.fullmatch(r"[\x00-\x7f]+", alias):
-                return re.search(rf"(?<![A-Za-z0-9]){re.escape(alias)}(?![A-Za-z0-9])", body_text, re.I)
-            return alias in body_text
-        soft = []
-        for nm, kind in names:
-            alts = [a.strip() for a in re.split(r"[/／]", nm) if a.strip()]
-            if any(present(a) for a in alts):
-                continue
-            if "玩家" in kind:
-                errors.append(f"E8 反例玩家「{nm}」没有出现在报告里：核实的进正文或第二梯队表，未核实的进第六或第八节并注明")
-            else:
-                soft.append(nm)
-        if soft:
-            warns.append(f"W15 反例名单里的事件、数据没有按原名出现（{len(soft)} 条），逐条确认已写进报告：{'；'.join(soft)}")
-
-    # —— 第七节结论表 ——
-    sec7 = next((k for k, (_, t) in enumerate(h2) if re.match(r"^七[、.]", t)), None)
-    if sec7 is not None:
-        a = h2[sec7][0]
-        b = h2[sec7 + 1][0] if sec7 + 1 < len(h2) else len(lines)
-        heads = [l for l in lines[a:b] if l.strip().startswith("|") and not re.match(r"^\|\s*:?-", l.strip())]
-        if heads:
-            hd = heads[0]
-            missing = [c for c, pat in (("通过 / 放弃", r"通过|放弃"), ("周期", r"周期"), ("预算", r"预算|投入"))
-                       if not re.search(pat, hd)]
-            if missing:
-                warns.append(f"W12 第七节结论表缺列：{'、'.join(missing)}")
-
-    # —— 留给你的问题 ——
-    leave = next((k for k, (_, t) in enumerate(h2) if t.startswith("留给你的问题")), None)
-    if leave is not None:
-        a = h2[leave][0]
-        b = h2[leave + 1][0] if leave + 1 < len(h2) else len(lines)
-        qs = [l for l in lines[a:b] if re.match(r"^\s*(\d+[.、]|[-*])\s+", l)]
-        if not 3 <= len(qs) <= 7:
-            warns.append(f"W14 「留给你的问题」应为 3—7 条，现为 {len(qs)} 条")
+            if not re.search(r"\[[^\]]+\]\(https?://[^)\s]+\)", r):
+                errors.append(f"E9 推荐阅读标题没有超链接: {r[:40]}")
 
     # —— 编号连续 ——
     if cited and sorted(cited) != list(range(1, len(cited) + 1)):
         warns.append(f"W13 来源编号不连续（引用 {len(cited)} 个，最大编号 {max(cited)}）：交付前跑 scripts/renumber_sources.py")
-
-    # —— 第二梯队要标未核 ——
-    tier_lines = [i for i, l in enumerate(lines) if l.startswith("#") and "第二梯队" in l]
-    if tier_lines:
-        a = tier_lines[0]
-        b = next((i for i in range(a + 1, len(lines)) if lines[i].startswith("#")), len(lines))
-        intro = [l for l in lines[a + 1:b] if not l.lstrip().startswith("|")]
-        if not re.search(r"未核|未经核查|未逐条核查|未核实", "\n".join(intro)):
-            warns.append("W16 「第二梯队」一节没写明数字未逐条核查")
 
     # —— 来源标题 ——
     for l in lines[src_idx:]:
@@ -300,7 +200,7 @@ def main() -> int:
         if (re.match(r"^[，,；;）)、:：]|^\d+[，,；;）)]", t) or "笔记" in t or len(t) < 6 or opens != closes
                 or re.search(r"\[新\d\]|来源缩写", t)
                 or re.fullmatch(r"App Store.{0,6}|维基百科|Wikipedia|iTunes Search API", t)
-                or (not re.search(r"[《「\"“]", t) and len(t.split()) <= 2 and len(t) <= 14)):
+                ):
             warns.append(f"W17 来源 {m.group(1)} 标题可疑：{t[:30]}")
 
     # —— 内部工具名 ——
@@ -312,8 +212,6 @@ def main() -> int:
 
     n_tab = sum(1 for k, l in enumerate(body) if l.strip().startswith("|") and (k == 0 or not body[k - 1].strip().startswith("|")))
     chars = zh_len(body_text)
-    if chars < 6000 or chars > 14000:
-        warns.append(f"W3 正文约 {chars} 字，目标 8000—12000")
 
     for e in errors:
         print(e)

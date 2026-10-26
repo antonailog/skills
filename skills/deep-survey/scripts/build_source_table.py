@@ -1,17 +1,19 @@
 #!/usr/bin/env python3
-"""合并研究笔记中的来源：去重、编号、按域名初分 evidence family。
+"""合并研究笔记和对比表中的来源：去重、编号，保留 CSV 中的稳定 URL。
 
 用法：
   python3 build_source_table.py <research_notes/课题目录> [--existing sources.json]
 
-输出到同一目录：sources.json 与 sources.md。
---existing 保留旧编号（续查时不打乱正文引用），新来源接着编号。
+输出到同一目录：sources.json 与 sources.md；不修改 CSV。
+默认复用目录中已有的 sources.json；--existing 可指定其他旧表。保留旧编号，新来源接着编号。
 
 另外标两件事（报告「口径与来源」据此在行尾注明）：
 - origin = 自有信源：URL 出现在 05-自有信源池.json（Info2Action 召回）。
 - weak = 原因：域名在固定信源库「踩坑名单」里属于导购、推广、聚合类；或引用它的每一行都标了「仅见搜索摘要」。
   信源库位置取环境变量 DEEP_SURVEY_SOURCE_LIBRARY，默认 ~/claudecode_workspace/知识/调研/_信源库/信源库.md，不存在就跳过。
 """
+import csv
+import io
 import json
 import os
 import re
@@ -105,12 +107,23 @@ def guess_type(host: str) -> str:
     return "待定（一方/媒体）"
 
 
+def source_markdown(items):
+    lines = ["| 编号 | 标题 | URL | 日期 | 类型 | family | 标记 |", "|---|---|---|---|---|---|---|"]
+    for s in items:
+        mark = "；".join(x for x in (s.get("origin", ""), f"弱：{s['weak']}" if s.get("weak") else "") if x) or "—"
+        lines.append(f"| {s['n']} | {s['title'] or '（待填）'} | {s['url']} | {s.get('date') or '（待填）'} | {s.get('type', '待定')} | {s.get('family', '')} | {mark} |")
+    return "\n".join(lines) + "\n"
+
+
 def main() -> int:
+    if sys.argv[1:2] in (["-h"], ["--help"]):
+        print(__doc__.strip())
+        return 0
     if len(sys.argv) < 2:
         print(__doc__)
         return 2
     notes_dir = Path(sys.argv[1])
-    existing_path = None
+    existing_path = notes_dir / "sources.json"
     if "--existing" in sys.argv:
         existing_path = Path(sys.argv[sys.argv.index("--existing") + 1])
     if not notes_dir.is_dir():
@@ -120,14 +133,19 @@ def main() -> int:
     sources: dict[str, dict] = {}
     if existing_path and existing_path.exists():
         for item in json.loads(existing_path.read_text(encoding="utf-8")):
-            sources[item["url"]] = item
+            item.setdefault("cited_in", [])
+            item.setdefault("title", "")
+            item.setdefault("date", "")
+            item.setdefault("type", guess_type(urlsplit(item["url"]).netloc))
+            item.setdefault("family", family_of(urlsplit(item["url"]).netloc))
+            sources[normalize(item["url"])] = item
 
     next_n = max([s["n"] for s in sources.values()], default=0) + 1
     cite_lines: dict[str, int] = {}
     weak_lines: dict[str, int] = {}
     for md in sorted(notes_dir.glob("*.md")):
         # 0 开头的是确认单、计划、自有信源池索引：池子里的链接没被引用就不算来源
-        if md.name in ("report.md", "sources.md") or md.name.startswith("0"):
+        if md.name in ("report.md", "sources.md") or md.name.startswith(("0", "20-", "30-", "9", "report-")):
             continue
         for line in md.read_text(encoding="utf-8", errors="replace").splitlines():
             titles = {normalize(u): t.strip() for t, u in MD_LINK_RE.findall(line)}
@@ -180,6 +198,31 @@ def main() -> int:
                 }
                 next_n += 1
 
+    # 对比表：「来源」列里的链接也编号
+    dossier = notes_dir / "40-dossier"
+    csv_files = sorted(dossier.glob("*.csv")) if dossier.is_dir() else []
+    for cp in csv_files:
+        rows = list(csv.reader(io.StringIO(cp.read_text(encoding="utf-8-sig"))))
+        if not rows or "来源" not in rows[0]:
+            continue
+        ci = rows[0].index("来源")
+        di = rows[0].index("日期") if "日期" in rows[0] else None
+        for r in rows[1:]:
+            if ci >= len(r):
+                continue
+            for raw in (m.group(0) for part in re.split(r"[;；]", r[ci]) for m in [URL_RE.search(part)] if m):
+                url = normalize(raw)
+                if url in sources:
+                    sources[url]["cited_in"].append(cp.name)
+                    continue
+                host = urlsplit(url).netloc
+                dm = DATE_RE.search(r[di]) if di is not None and di < len(r) else None
+                sources[url] = {
+                    "n": next_n, "title": "", "url": url, "date": dm.group(1) if dm else "",
+                    "type": guess_type(host), "family": family_of(host), "cited_in": [cp.name],
+                }
+                next_n += 1
+
     items = sorted(sources.values(), key=lambda s: s["n"])
     own = set()
     pool = notes_dir / "05-自有信源池.json"
@@ -200,24 +243,18 @@ def main() -> int:
         s["title"] = clean_title(s["title"])
     (notes_dir / "sources.json").write_text(json.dumps(items, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    lines = ["| 编号 | 标题 | URL | 日期 | 类型 | family | 标记 |", "|---|---|---|---|---|---|---|"]
-    for s in items:
-        mark = "；".join(x for x in (s.get("origin", ""), f"弱：{s['weak']}" if s.get("weak") else "") if x) or "—"
-        lines.append(f"| {s['n']} | {s['title'] or '（待填）'} | {s['url']} | {s['date'] or '（待填）'} | {s['type']} | {s['family']} | {mark} |")
-    (notes_dir / "sources.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    (notes_dir / "sources.md").write_text(source_markdown(items), encoding="utf-8")
 
     families = {}
     for s in items:
         families.setdefault(s["family"], []).append(s["n"])
     multi = {f: ns for f, ns in families.items() if len(ns) > 1}
-    print(f"来源 {len(items)} 条，family {len(families)} 个，写入 {notes_dir / 'sources.json'} 与 sources.md")
+    print(f"来源 {len(items)} 条，写入 {notes_dir / 'sources.json'} 与 sources.md")
     if multi:
-        print("同 family 多来源（验证者按内容确认是否转引同源）：")
-        for f, ns in multi.items():
-            print(f"  {f}: {ns}")
+        print(f"同一站点多条来源 {len(multi)} 组（可能转引同源，报告员写「单一来源」时参考 sources.md）")
     weak_n = [s["n"] for s in items if s.get("weak")]
     if weak_n:
-        print(f"弱来源 {len(weak_n)} 条（导购 / 聚合 / 只读到摘要），报告里不能单独撑结论：{weak_n[:30]}")
+        print(f"弱来源 {len(weak_n)} 条（导购 / 聚合 / 只读到摘要），「口径与来源」行尾要标出：{weak_n[:30]}")
     own_n = sum(1 for s in items if s.get("origin") == "自有信源")
     if own_n:
         print(f"自有信源 {own_n} 条")
