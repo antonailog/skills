@@ -23,7 +23,7 @@
     { "id": "n3", "query": "我想做个 AI 陪伴产品，帮我头脑风暴一下切入点，越发散越好", "why": "想法阶段 → forge-brainstorm", "split": "train" },
     { "id": "n4", "query": "分析一下 CodePilot 这个仓库的架构，数据流和模块划分是怎样的", "why": "代码架构 → project-learner；注意与问题驱动的 CodePilot 调研区分", "split": "train" },
     { "id": "n5", "query": "Replika 的官网和定价页在哪，给我链接就行", "why": "一步查询", "split": "test" },
-    { "id": "n6", "query": "看看这份 PRD 和这几张界面截图有什么问题 /Users/dbwu/Desktop/prd/", "why": "PRD 评审 → prd-analyzer", "split": "test" },
+    { "id": "n6", "query": "看看这份 PRD 和这几张界面截图有什么问题 ~/Desktop/prd/", "why": "PRD 评审 → prd-analyzer", "split": "test" },
     { "id": "n7", "query": "抓一下最近 24 小时的 AI 新闻出个日报", "why": "定时资讯 → twitter-watchdog", "split": "test" },
     { "id": "n8", "query": "我已经搜好了 20 篇关于 AI 陪伴的文章放在 知识/调研/陪伴素材/，帮我把它们整理成一份报告，不用再搜了", "why": "有材料只要整理，不需要找来源 → 知识整理", "split": "train" },
     { "id": "n9", "query": "写一段 prompt 让模型给竞品分析打分", "why": "共享“竞品分析”，实际是写 prompt → prompt-craft", "split": "train" },

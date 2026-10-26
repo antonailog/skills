@@ -10,7 +10,7 @@
  * 用法：先引 poses.js 再引本文件，然后
  *   <div data-avatar-look><img src=".../poster.webp" alt=""></div>   自动挂载（容器要有宽高）
  *   AvatarLook.mount(el)    手动挂载；容器是 JS 渲染出来的就在渲染后调 AvatarLook.scan()
- * 页面加载时显示正脸（poster.webp）；鼠标离开窗口一会儿后淡回正脸。
+ * 页面加载时显示正脸（poster.webp）；鼠标离开窗口一会儿、或在窗口里停着不动几秒，淡回正脸（看着访客），一动又跟过去。
  * 触屏只在手指按住时跟随；prefers-reduced-motion 时只显示正脸，不加载视频。
  */
 (function () {
@@ -23,6 +23,8 @@
   var MAX_SPEED = 170;    // 播放头最快每秒走多少帧（一圈约 110 帧）
   var FACE_FADE_MS = 260; // 正脸与视频之间的淡入淡出
   var IDLE_MS = 1500;     // 鼠标离开多久后回正脸
+  var STILL_MS = 5000;    // 鼠标在窗口里停着不动多久后回正脸（0 = 不回正）
+  var WAKE_PX = 10;       // 离上次停下的位置超过这么多像素才算动了：手搭在鼠标上的一两像素抖动不重新计时，回正后也不会被抖醒
   var FPS = D.fps || 24;
 
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -56,10 +58,15 @@
   function wrapDiff(d) { d = ((d % L) + L) % L; return d > L / 2 ? d - L : d; }
 
   // ---- 指针：鼠标 / 触控笔随时跟随；触屏只在按住时跟随 ----
-  var pointer = null, lastSeen = 0;
-  function setP(e) { pointer = { x: e.clientX, y: e.clientY }; lastSeen = performance.now(); }
+  var pointer = null, lastSeen = 0, anchor = null, lastMoved = 0;
+  function setP(e, wake) {
+    var now = performance.now();
+    pointer = { x: e.clientX, y: e.clientY }; lastSeen = now;
+    // 静止计时看离落脚点 anchor 的距离，不看每次事件之间的距离：慢慢挪也会累计到 WAKE_PX
+    if (wake || !anchor || Math.hypot(pointer.x - anchor.x, pointer.y - anchor.y) > WAKE_PX) { anchor = pointer; lastMoved = now; }
+  }
   addEventListener('pointermove', function (e) { if (e.pointerType !== 'touch' || e.buttons) setP(e); }, { passive: true });
-  addEventListener('pointerdown', setP, { passive: true });
+  addEventListener('pointerdown', function (e) { setP(e, true); }, { passive: true });
   addEventListener('pointerup', function (e) { if (e.pointerType === 'touch') pointer = null; });
   addEventListener('pointercancel', function () { pointer = null; });
   document.addEventListener('mouseleave', function () { pointer = null; });
@@ -136,8 +143,9 @@
         var f = frameAt(it.p);
         if (f !== it.frame) { it.frame = f; seekTo(it, (f + 0.5) / FPS); }
       }
-      // 视频跳到位之前、或鼠标离开一会儿后，显示正脸
-      var faceOn = !it.shown || it.target === null || (!pointer && now - lastSeen > IDLE_MS);
+      // 视频跳到位之前、鼠标离开一会儿后、或鼠标停着不动 STILL_MS 后，显示正脸；播放头照样跟着方向走，一动就从对的那帧淡回来
+      var faceOn = !it.shown || it.target === null || (!pointer && now - lastSeen > IDLE_MS) ||
+        (STILL_MS > 0 && pointer && now - lastMoved > STILL_MS);
       if (faceOn !== it.faceOn) { it.faceOn = faceOn; it.v.style.opacity = faceOn ? '0' : '1'; }
     }
     requestAnimationFrame(tick);

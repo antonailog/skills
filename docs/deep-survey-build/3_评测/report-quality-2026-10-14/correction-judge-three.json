@@ -1,0 +1,255 @@
+{
+  "review_type": "targeted_correction_review",
+  "evaluator": "judge-three",
+  "blinded": false,
+  "reviewed_at_utc": "2026-10-15T02:55:31.795411+00:00",
+  "original_report_id": "R63",
+  "revised_report_id": "R64",
+  "policy_version": "1.0.0",
+  "overall_rescore_performed": false,
+  "unrelated_fact_checks_rerun": false,
+  "inputs": {
+    "original_report_sha256": "0dbb0f8bc2617d294343e781fd0ea4bf03de4178e41bf6138b71b45b3b30710a",
+    "revised_report_sha256": "f83c7a9947cb3044ee33602437eca27095423d44f250ba208094ee7915a5e1b4",
+    "diff_sha256": "3fdf87b84baee1a260fcf047109add8bce51beccda3ba08c874a6524082888cd",
+    "policy_sha256": "d7be83d23b882db74b6225cb3720c1f247b9399eb67552f68424cd160f4abf7a",
+    "evidence_index_sha256": "b3fad07148e42caae90f0652f19ebc3b89e6abf04c9efe7fcb5ef5ce9af356aa"
+  },
+  "original_review_preservation": {
+    "unchanged": true,
+    "artifact_sha256": {
+      "judge-three.json": "85ec24b23d495b6fc8961d9314a8f8985a745bd7bb4fe8186731f25e24bea76a",
+      "judge-three.md": "40b7ca3533f5864942fd533d3ab09cb0be87c136c7111d1778029f27a96b5b7e"
+    }
+  },
+  "findings": [
+    {
+      "id": "terminology_and_people",
+      "status": "resolved",
+      "revision_locations": [
+        "R64 L11",
+        "R64 L76",
+        "R64 L96",
+        "R64 L100–109"
+      ],
+      "source_check_ids": [
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S08",
+        "S09",
+        "S10",
+        "S11",
+        "S12"
+      ],
+      "evidence": "首用 Harness 加入解释；Jeff、Ivan 与候选表各人物加入组织和岗位；表格仍以用户问题与听后检验标准连接相关性。新增身份全部回到 02.js 与 01.html 对应人物资料核对。",
+      "reasoning": "不再只给一串需要读者自行检索的姓名。组织/岗位、讨论方向和要解决的问题已能连起来，满足本次身份及相关性修复目标。Harness 的解释足够支持后文比较，未引入技术误导。",
+      "residuals": [
+        "Andrew Qu 仍未列完整岗位，但 L70 已说明 Vercel 所属与原文作者身份，L82 给出上海议题，相关性有足够上下文；不要求所有名字统一列全职级。",
+        "这没有新增普通独行参会者的直接体验证据，也不证明嘉宾会与读者深谈；这些仍是原报告的事实边界，不是身份文字修复未完成。"
+      ]
+    },
+    {
+      "id": "actionable_contact_routes",
+      "status": "resolved",
+      "revision_locations": [
+        "R64 L147–149"
+      ],
+      "source_check_ids": [
+        "S13",
+        "S14",
+        "S15",
+        "S16"
+      ],
+      "evidence": "Program 锚点、General inquiry 邮箱、国内票务邮箱和主办方公开账号均在已有原始快照中找到；07.js 第九条与 Footer 明确将国内邮箱标为票务咨询。",
+      "reasoning": "现在每类核实动作有对应入口：先看 Program，缺失日程或普通票交流/语言问题走一般咨询，票价与权益走购票页面/票务邮箱，主办方账号只作为公开信息渠道。修订未把咨询变成承诺，也未把票务邮箱或社交账号扩成已确认的预约机制。",
+      "residuals": [
+        "本次验证的是公布的入口与标签，未测试邮件送达、回复能力或当前账号状态，没有实际发送任何消息。",
+        "最终日程、普通票社交准入、预约与非演讲翻译仍未得到主办方答复；报告仍明确列为待核事项。"
+      ]
+    },
+    {
+      "id": "boundary_repetition",
+      "status": "resolved",
+      "revision_locations": [
+        "R64 L17、L23、L30、L46",
+        "R64 L66、L76、L82、L100",
+        "R64 L147–160"
+      ],
+      "source_check_ids": [],
+      "evidence": "diff 显示：开头精确快照时间移到文末；结算及附加权益限制集中到票表前；技术材料不等于讲义/效果集中到 L66，删除旧 L82 与旧 L100 的重复提醒；删去旧缺口表后的现场质量重述；文末不再重复列出所有个案限定。",
+      "reasoning": "重复确实减少，主要通过集中说明和保留局部必要边界，而非仅以字数变化判断。必要限定仍在：L23/L28 为公开价与渠道限制；L66 为暂定议程和材料用途；L72 为 Vercel 五例自报；L76 为 Exa 适用条件与作者身份；L94/L96 为文档能力和未核性能；L109 为作者检验标准；L113 为嘉宾不等于参会者；L119–124 为个人样本与翻译边界；L138 为结论翻转及等待代价；L158–160 为时间和同源来源。没有看到因收拢而把计划、宣传或个案升级为事实保证。",
+      "residuals": [
+        "学习/交流/成本条件仍在摘要、决策表与缺口表中出现，但分别承担结论、选择规则和核实动作，属于有用途的重现。",
+        "“普通票交流范围未知”仍不只出现一次；本次目标是减少无增量的边界复述，不要求删除所有就地提醒。"
+      ]
+    }
+  ],
+  "source_checks": [
+    {
+      "id": "S01",
+      "claim": "Harness 首次出现时解释为给模型提供任务资料、接入工具、检查执行结果的机制。",
+      "location": "R64 L11",
+      "source_url": "https://aimakersummit.com/2026/shanghai/track/harness.html",
+      "evidence": "evidence-r63/14.txt 原工具行 L5–6、L32 的上下文/工具调用/工作流及机械检查、独立 Agent 审核。",
+      "status": "derived_correct",
+      "explanation": "这是面向新读者的简化工作定义，覆盖本报告讨论的上下文、工具和结果检查。没有声称穷尽 Harness 的组成，也没有把 Harness 等同模型本身。"
+    },
+    {
+      "id": "S02",
+      "claim": "Jeff Wang：Exa 联合创始人",
+      "location": "R64 L76",
+      "source_url": "https://ai.engineer/_next/static/chunks/5144-8308f14f8d639ccb.js",
+      "evidence": "evidence-r63/02.js slug=jeff-wang 的 name/role/company，零基 Unicode 字符 [5601, 5718)；01.html 同名嘉宾卡片。",
+      "status": "supported",
+      "explanation": "姓名、所属组织和岗位与原始官方数据一致；岗位用于说明交流背景，没有替代演讲质量证明。"
+    },
+    {
+      "id": "S03",
+      "claim": "Ivan Burazin：Daytona 联合创始人兼 CEO",
+      "location": "R64 L96",
+      "source_url": "https://ai.engineer/_next/static/chunks/5144-8308f14f8d639ccb.js",
+      "evidence": "evidence-r63/02.js slug=ivan-burazin 的 name/role/company，零基 Unicode 字符 [4713, 4858)；01.html 同名嘉宾卡片。",
+      "status": "supported",
+      "explanation": "姓名、所属组织和岗位与原始官方数据一致；岗位用于说明交流背景，没有替代演讲质量证明。"
+    },
+    {
+      "id": "S04",
+      "claim": "Nancy Wang：1Password 首席技术官",
+      "location": "R64 L104",
+      "source_url": "https://ai.engineer/_next/static/chunks/5144-8308f14f8d639ccb.js",
+      "evidence": "evidence-r63/02.js slug=nancy-wang 的 name/role/company，零基 Unicode 字符 [3819, 3965)；01.html 同名嘉宾卡片。",
+      "status": "supported",
+      "explanation": "姓名、所属组织和岗位与原始官方数据一致；岗位用于说明交流背景，没有替代演讲质量证明。"
+    },
+    {
+      "id": "S05",
+      "claim": "Faye Zhang：Google Cloud Gemini Agents 工程师",
+      "location": "R64 L104",
+      "source_url": "https://ai.engineer/_next/static/chunks/5144-8308f14f8d639ccb.js",
+      "evidence": "evidence-r63/02.js slug=faye-zhang 的 name/role/company，零基 Unicode 字符 [10132, 10310)；01.html 同名嘉宾卡片。",
+      "status": "supported",
+      "explanation": "原文为 Staff AI Engineer, Gemini Agents / Google Cloud；修订略去资深层级，仍是准确的宽口径身份，不造成职位夸大。"
+    },
+    {
+      "id": "S06",
+      "claim": "小刀老师：Kimi Agent 工程负责人",
+      "location": "R64 L104",
+      "source_url": "https://ai.engineer/_next/static/chunks/5144-8308f14f8d639ccb.js",
+      "evidence": "evidence-r63/02.js slug=tang-feihu 的 name/role/company，零基 Unicode 字符 [16171, 16327)；01.html 同名嘉宾卡片。",
+      "status": "supported",
+      "explanation": "原数据将唐飞虎与 Xiaodao Laoshi 对应，岗位为 Kimi 的 Head of Agent Engineering；称小刀老师不混淆其他实体。"
+    },
+    {
+      "id": "S07",
+      "claim": "Meder Kamalov：Oimo 创始人",
+      "location": "R64 L105",
+      "source_url": "https://ai.engineer/_next/static/chunks/5144-8308f14f8d639ccb.js",
+      "evidence": "evidence-r63/02.js slug=meder-kamalov 的 name/role/company，零基 Unicode 字符 [7405, 7547)；01.html 同名嘉宾卡片。",
+      "status": "supported",
+      "explanation": "原公司为 Oimo (ex-fal)，角色为 Founder；修订保留当前组织 Oimo 与创始人身份，省去旧关联，没有添加新资历。"
+    },
+    {
+      "id": "S08",
+      "claim": "Do Tuan Anh：Techcombank 数据与 AI 工程高级经理",
+      "location": "R64 L105",
+      "source_url": "https://ai.engineer/_next/static/chunks/5144-8308f14f8d639ccb.js",
+      "evidence": "evidence-r63/02.js slug=do-tuan-anh 的 name/role/company，零基 Unicode 字符 [13515, 13689)；01.html 同名嘉宾卡片。",
+      "status": "supported",
+      "explanation": "姓名、所属组织和岗位与原始官方数据一致；岗位用于说明交流背景，没有替代演讲质量证明。"
+    },
+    {
+      "id": "S09",
+      "claim": "Sarah Chieng：Cerebras 开发者体验负责人",
+      "location": "R64 L106",
+      "source_url": "https://ai.engineer/_next/static/chunks/5144-8308f14f8d639ccb.js",
+      "evidence": "evidence-r63/02.js slug=sarah-chieng 的 name/role/company，零基 Unicode 字符 [10991, 11148)；01.html 同名嘉宾卡片。",
+      "status": "supported",
+      "explanation": "姓名、所属组织和岗位与原始官方数据一致；岗位用于说明交流背景，没有替代演讲质量证明。"
+    },
+    {
+      "id": "S10",
+      "claim": "Bin Liu：HeyGen 工程副总裁",
+      "location": "R64 L106",
+      "source_url": "https://ai.engineer/_next/static/chunks/5144-8308f14f8d639ccb.js",
+      "evidence": "evidence-r63/02.js slug=bin-liu 的 name/role/company，零基 Unicode 字符 [11885, 12009)；01.html 同名嘉宾卡片。",
+      "status": "supported",
+      "explanation": "姓名、所属组织和岗位与原始官方数据一致；岗位用于说明交流背景，没有替代演讲质量证明。"
+    },
+    {
+      "id": "S11",
+      "claim": "Christoph Lassner：World Labs 联合创始人",
+      "location": "R64 L107",
+      "source_url": "https://ai.engineer/_next/static/chunks/5144-8308f14f8d639ccb.js",
+      "evidence": "evidence-r63/02.js slug=christoph-lassner 的 name/role/company，零基 Unicode 字符 [2951, 3106)；01.html 同名嘉宾卡片。",
+      "status": "supported",
+      "explanation": "姓名、所属组织和岗位与原始官方数据一致；岗位用于说明交流背景，没有替代演讲质量证明。"
+    },
+    {
+      "id": "S12",
+      "claim": "Ding Hao（Xuanwo）：LanceDB 高级工程师",
+      "location": "R64 L107",
+      "source_url": "https://ai.engineer/_next/static/chunks/5144-8308f14f8d639ccb.js",
+      "evidence": "evidence-r63/02.js slug=xuanwo 的 name/role/company，零基 Unicode 字符 [18784, 18920)；01.html 同名嘉宾卡片。",
+      "status": "supported",
+      "explanation": "姓名、所属组织和岗位与原始官方数据一致；岗位用于说明交流背景，没有替代演讲质量证明。"
+    },
+    {
+      "id": "S13",
+      "claim": "可先查看官网 Program 的 #schedule 入口。",
+      "location": "R64 L147",
+      "source_url": "https://ai.engineer/shanghai/2026",
+      "evidence": "evidence-r63/01.html 零基字符 38832–39325 的 id=\"schedule\" 与 Program preview；页脚 Program 也链接 #schedule。",
+      "status": "supported",
+      "explanation": "锚点和栏目真实存在于快照。正文没有把 Program preview 当成完整最终日程；这里是查看已公布内容的入口。"
+    },
+    {
+      "id": "S14",
+      "claim": "hello@ai.engineer 是官网 General inquiry，一般咨询可用于询问日程、社交准入和语言支持。",
+      "location": "R64 L147、L149",
+      "source_url": "https://ai.engineer/shanghai/2026",
+      "evidence": "evidence-r63/01.html 零基字符 57615–58172：Contact 内 General inquiry 的 mailto:hello@ai.engineer?subject=AI%20Engineer%20Shanghai%20Inquiry。",
+      "status": "supported",
+      "explanation": "邮箱、标签和邮件主题与快照完全一致。建议通过一般咨询提出问题没有扩大职责；修订没有保证对方一定回复或能确认尚未确定的安排。"
+    },
+    {
+      "id": "S15",
+      "claim": "infoaieshanghai@gmail.com 是票务咨询，可问渠道资格、票种权益及退转问题。",
+      "location": "R64 L148",
+      "source_url": "https://aie.anruicloud.com/pay",
+      "evidence": "evidence-r63/07.js 第九条末尾，零基字符 7282–7792，明示购票事宜与“联系方式 · 票务咨询”；同文件 Footer 字符 14922–15446 标记票务咨询；第三条与 06.js 另将该邮箱列为转让联系邮箱。",
+      "status": "supported",
+      "explanation": "原始条款的授权范围不只有转让，还明确为购票事宜及票务咨询；因此询问渠道/权益不构成职责扩张。修订还明确不能据此保证全部议程问题都能回答。"
+    },
+    {
+      "id": "S16",
+      "claim": "Standup Partners 的公开账号可以留意，但不是已确认的预约渠道。",
+      "location": "R64 L149",
+      "source_url": "https://ai.engineer/shanghai/2026",
+      "evidence": "evidence-r63/01.html 零基字符 56753–57382：主办方 organizer-links 中的 https://x.com/StandupPartners。",
+      "status": "supported",
+      "explanation": "官网确有该主办方公开链接。修订只建议关注公开信息，明确没有将账号变成配对、预约或普通票社交报名入口。未访问该账号，也不评价其现在是否可响应。"
+    }
+  ],
+  "summary": {
+    "resolved": 3,
+    "partial": 0,
+    "unresolved": 0,
+    "new_role_or_contact_claims_unsupported": 0
+  },
+  "limitations": [
+    "本次已知修订对应此前评审，是窄范围非盲复核，不是新的盲评。",
+    "只复核 Harness/人物背景、核实入口与职责、边界重复三类问题；其他已经核验且无关的事实没有重新检查。",
+    "未阅读作者修订说明、其他评审或 Skill 改造材料；没有联网扩研，也没有联系任何组织或个人。",
+    "原始 judge-three.json/.md 保持字节不变。本结果不重打八维分数，不构成全报告重新评分、整体质量已提高/未退化或跨课题质量提升的证明。",
+    "角色与联系入口只确认其与当时原始快照一致，不证明其后来没有变化，也不证明服务已履约。"
+  ],
+  "freeze": {
+    "status": "targeted_findings_frozen",
+    "frozen_at_utc": "2026-10-15T02:55:31.795411+00:00"
+  }
+}

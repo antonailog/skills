@@ -1,0 +1,33 @@
+{
+  "files": {
+    "SKILL.md": "df53ddaef757cea455d298de872564c9bacec1372f2398968a40c4890edd11e4",
+    "README.md": "92b22ba972a10fa0e7f251f244397a43907697f5636dbc8ec36b8c04e5e8259b",
+    "references/researcher.md": "275d1b4a76445e2d6748eb5f5d810610f6a5e3c3710241a2fa9a7dec615bd6bb",
+    "references/writer.md": "af334793ca5b890df4ad5497ba438649ea544c66e9f148b4fba96791a819ef0d",
+    "references/reviewer.md": "9e0e3ca5f0617fab52d3cbb5d422bbb08c933a2072c1c348345b8ee0c2c75294",
+    "references/report-quality-policy.md": "d7be83d23b882db74b6225cb3720c1f247b9399eb67552f68424cd160f4abf7a",
+    "references/fetching.md": "1738cead94b620c8d258283a74fe8b6e0b7d2de46978d93830f69d1c88000946",
+    "scripts/fetch_page.py": "838f420be7883da03e9477df5f47df05d22762b3a45193cf7d7236c254a4815e",
+    "scripts/measure_run.py": "bb1b2f9950d67518ca6ed3e133b7244d1724b32807f23eeb987dd6fd0b91f3f6"
+  },
+  "verification": {
+    "existing_tests": 31,
+    "new_tests": 14,
+    "skill_quick_validate": "passed",
+    "diff_whitespace": "passed"
+  },
+  "evaluation_scope": "Independent researcher, writer and cold reader; frozen evidence with supplemental originals; live fetch smoke checked separately; not a fresh end-to-end research benchmark.",
+  "feedback_iteration": {
+    "frozen_report": "R63",
+    "corrected_report": "R64",
+    "policy_unchanged": true,
+    "changed_guides": [
+      "references/writer.md",
+      "references/reviewer.md"
+    ],
+    "changes": "Explain terms and roles; pair verification actions with known scoped entry points; consolidate repeated limitations while keeping local qualifiers.",
+    "targeted_reviews": ["correction-judge-three.json", "correction-judge-four.json"],
+    "targeted_review_status": "All three specified issue groups resolved in both independent reviews; no overall rescore.",
+    "overall_quality_improvement_established": false
+  }
+}

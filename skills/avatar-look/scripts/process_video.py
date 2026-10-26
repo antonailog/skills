@@ -21,6 +21,7 @@ FACE_TO_CROP = 2.65     # 方块边长 = 脸宽（左右脸颊关键点距离）
 RING_MIN_R = 0.8        # 头转幅到位（归一化半径 ≥ 0.8）才算进入绕圈段
 MAX_GAP_DEG = 60        # 绕圈段首尾之间没拍到的角度超过它，说明视频没转满一圈
 MIN_DETECT = 0.9        # 人脸识别率下限
+X264 = ['-c:v', 'libx264', '-preset', 'slow', '-crf', '22', '-g', '1', '-pix_fmt', 'yuv420p', '-movflags', '+faststart']
 
 
 def sh(*cmd):
@@ -124,7 +125,10 @@ def build_ring(poses):
     start = next((i for i, p in enumerate(poses) if math.hypot(p[1], p[2]) >= RING_MIN_R), None)
     if start is None:
         return []
-    seg, ang, prev = poses[start:], [], None
+    # 终点同样按转幅截：即梦首尾帧都是正脸，视频结尾头会收回正脸。视频刚好转一圈时不会触发 trim_ring，
+    # 回正那几帧方向角还在「上」附近，混进环尾就会和环头的满幅仰头接在一起，转过接缝时跳（10-21 黑衣服视频 ×3.9）
+    end = max(i for i, p in enumerate(poses) if math.hypot(p[1], p[2]) >= RING_MIN_R)
+    seg, ang, prev = poses[start:end + 1], [], None
     for _, x, y in seg:
         a = math.degrees(math.atan2(y, x))
         if prev is not None:
@@ -171,6 +175,37 @@ def trim_ring(ring, crop_dir):
         return ring, None
     _, i, j = best
     return ring[i:j], {'start': ring[i][0], 'end': ring[j - 1][0], 'dropped_frames': len(ring) - (j - i)}
+
+
+def fill_seam(ring, crop_dir, next_f):
+    """环尾接回环头时缺的角度用光流补帧。视频没正好闭合时（比如头最后一段边转边收回正脸，满幅那一段没拍到），
+    首尾两帧差好几帧的角度，转过接缝会跳。按缺口 ÷ 平均每帧角度补 n 帧：双向 DIS 光流先按运动对齐两端、再按时刻加权混合，
+    比直接叠两张图少重影（10-21 黑衣服视频：缺口 23°，接缝 ×2.6 → 补 5 帧后每步 ×0.5 左右，和真实相邻帧一样）。
+    补出的帧编号接在原视频最后一帧后面，写进 crop_dir，编码时一起进 avatar.mp4。缺口不到两帧的角度不补。"""
+    step = (ring[-1][1] - ring[0][1]) / (len(ring) - 1)
+    gap = ring[0][1] + 360 - ring[-1][1]
+    n = round(gap / step) - 1
+    if n < 1:
+        return ring, None
+    fa, fb = ring[-1][0], ring[0][0]
+    a, b = (cv2.imread(str(crop_dir / f'f{f:03d}.png')) for f in (fa, fb))
+    dis = cv2.DISOpticalFlow_create(cv2.DISOPTICAL_FLOW_PRESET_MEDIUM)
+    ga, gb = cv2.cvtColor(a, cv2.COLOR_BGR2GRAY), cv2.cvtColor(b, cv2.COLOR_BGR2GRAY)
+    f01, f10 = dis.calc(ga, gb, None), dis.calc(gb, ga, None)
+    h, w = ga.shape
+    gx, gy = np.meshgrid(np.arange(w, dtype=np.float32), np.arange(h, dtype=np.float32))
+    warp = lambda img, fl: cv2.remap(img, gx + fl[..., 0], gy + fl[..., 1], cv2.INTER_LINEAR,
+                                     borderMode=cv2.BORDER_REPLICATE).astype(np.float32)
+    added = []
+    for k in range(1, n + 1):
+        t = k / (n + 1)
+        ft0 = -(1 - t) * t * f01 + t * t * f10          # t 时刻指向两端的流（Super SloMo 的线性近似）
+        ft1 = (1 - t) ** 2 * f01 - t * (1 - t) * f10
+        img = ((1 - t) * warp(a, ft0) + t * warp(b, ft1)).clip(0, 255).astype(np.uint8)
+        f = next_f + k - 1
+        cv2.imwrite(str(crop_dir / f'f{f:03d}.png'), img)
+        added.append([f, round(ring[-1][1] + gap * t, 2)])
+    return ring + added, {'frames': n, 'between': [fa, fb], 'gap_before_deg': round(gap, 1)}
 
 
 def ring_smoothness(ring, crop_dir):
@@ -229,8 +264,12 @@ def main():
         poses, blink = build_poses(rows)
         ring = build_ring(poses)
         ring, trimmed = trim_ring(ring, crop_dir)
+        gap = (ring[0][1] + 360 - ring[-1][1]) if len(ring) > 1 else 360   # 补帧前的缺口：判断视频转没转满一圈看它
+        seg = [ring[0][0], ring[-1][0]] if ring else None
+        seam_fill = None
+        if len(ring) >= 30 and gap <= MAX_GAP_DEG:
+            ring, seam_fill = fill_seam(ring, crop_dir, n_all)
         smooth = ring_smoothness(ring, crop_dir) if len(ring) > 2 else None
-        gap = (ring[0][1] + 360 - ring[-1][1]) if len(ring) > 1 else 360
         if len(ring) < 30:
             problems.append(f'绕圈段只有 {len(ring)} 帧：头转动幅度太小，或只在左右摆没有上下')
         elif gap > MAX_GAP_DEG:
@@ -243,24 +282,30 @@ def main():
                     interpolation=cv2.INTER_AREA), [cv2.IMWRITE_WEBP_QUALITY, 82])
         if ring:
             check_grid(ring, poses[0][0], crop_dir, out / 'check.png')
+        if seam_fill:
+            # 补出来的帧原视频里没有：从裁好的帧序列（原帧 + 补帧）编码
+            sh('ffmpeg', '-v', 'error', '-y', '-framerate', str(fps), '-start_number', '0', '-i', str(crop_dir / 'f%03d.png'),
+               '-vf', f'scale={a.size}:{a.size}', *X264, str(out / 'avatar.mp4'))
 
-    sh('ffmpeg', '-v', 'error', '-y', '-i', str(video), '-an', '-vf', f'crop={crop},scale={a.size}:{a.size}',
-       '-c:v', 'libx264', '-preset', 'slow', '-crf', '22', '-g', '1', '-pix_fmt', 'yuv420p',
-       '-movflags', '+faststart', str(out / 'avatar.mp4'))
-    data = {'size': a.size, 'fps': fps, 'front': poses[0][0], 'poses': poses, 'ring': ring}
+    if not seam_fill:
+        sh('ffmpeg', '-v', 'error', '-y', '-i', str(video), '-an', '-vf', f'crop={crop},scale={a.size}:{a.size}',
+           *X264, str(out / 'avatar.mp4'))
+    data ={'size': a.size, 'fps': fps, 'front': poses[0][0], 'poses': poses, 'ring': ring}
     (out / 'poses.js').write_text(
         '// avatar-look/scripts/process_video.py 产出，勿手改。poses: [帧号, x 右正左负, y 下正上负]；\n'
         '// ring: [帧号, 屏幕方向角 0=右 90=下 180=左 270=上]，头绕圈那段按播放顺序排列，角度单调递增\n'
         'window.AVATAR_LOOK_DATA = ' + json.dumps(data, separators=(',', ':')) + ';\n', encoding='utf-8')
 
     report = {'video': str(video), 'frames': n_all, 'fps': fps, 'crop': crop, 'detected': len(rows),
-              'blink_frames': blink, 'ring': [ring[0][0], ring[-1][0]] if ring else None, 'ring_frames': len(ring),
-              'gap_deg': round(gap, 1), 'trimmed': trimmed, 'smoothness': smooth, 'mp4_kb': round((out / 'avatar.mp4').stat().st_size / 1024),
+              'blink_frames': blink, 'ring': seg, 'ring_frames': len(ring),
+              'gap_deg': round(gap, 1), 'trimmed': trimmed, 'seam_fill': seam_fill, 'smoothness': smooth, 'mp4_kb': round((out / 'avatar.mp4').stat().st_size / 1024),
               'ok': not problems, 'problems': problems}
     (out / 'report.json').write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf-8')
     print(f'裁切 {crop}；人脸识别 {len(rows)}/{n_all}；剔除眨眼帧 {blink}（这些帧不进时间轴，请对照视频确认是真眨眼）')
     if ring:
-        print(f'绕圈段 第 {ring[0][0]}—{ring[-1][0]} 帧共 {len(ring)} 帧，{ring[0][1]:.0f}° → {ring[-1][1]:.0f}°，缺口 {gap:.0f}°')
+        print(f'绕圈段 第 {seg[0]}—{seg[1]} 帧，{ring[0][1]:.0f}° 起，缺口 {gap:.0f}°')
+        if seam_fill:
+            print(f'首尾缺口用光流补了 {seam_fill["frames"]} 帧（第 {seg[1]} 帧 → 第 {seg[0]} 帧之间，编号接在视频末尾），时间轴共 {len(ring)} 帧')
         if trimmed:
             print(f'视频转了不止一圈，已裁成一圈：去掉 {trimmed["dropped_frames"]} 帧，环从第 {trimmed["start"]} 帧到第 {trimmed["end"]} 帧，接缝 {trimmed["end"]} → {trimmed["start"]}')
         if smooth:

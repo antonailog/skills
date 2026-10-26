@@ -86,7 +86,7 @@ class Renumber(unittest.TestCase):
         r = run(SCRIPTS / "renumber_sources.py", rp, "--sources", d / "sources.json")
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         out = rp.read_text(encoding="utf-8")
-        self.assertIn("正文 [1]，再 [2]", out)
+        self.assertIn("正文 [1](https://h.com/a)，再 [2](https://h.com/b)", out)
         self.assertIn("1. 报告员写的甲（弱来源：导购站） — https://h.com/a", out)
         self.assertIn("口径说明。", out)
 
@@ -97,19 +97,23 @@ REPORT = """# 标题
 
 **是什么**：x。
 
-1. 甲
-2. 乙
-3. 丙
-4. 丁
-5. 戊
+| 项 | 内容 |
+|---|---|
+| {row1} | 一段文本和几道题 |
+| 输出 | 选项和概率 |
+| 效果 | 英文分类同类前列 |
+| 价格 | 输入每百万 token 0.042 美元 |
+| 结论 | {conclusion} |
 
 ![导引](g.svg)
 
-## 一、是什么
+读法导航。
+
+## 一、是什么：x
 
 事实 [1]。
 
-## 二、格局
+## 二、{chap2}：y
 
 ### 第二梯队
 
@@ -121,54 +125,41 @@ REPORT = """# 标题
 
 {body_extra}
 
-## 三、用户
-## 四、钱
-## 五、案例
-## 六、分析
-## 七、结论
+## 三、集成判断：z
 
 | 选项 | 适合谁 | 代价 | 先验证什么 | 通过 / 放弃线 | 周期 | 预算 |
 |---|---|---|---|---|---|---|
 | a | b | c | d | e | f | g |
 
-## 八、还不知道的
-## 留给你的问题
-
-1. 一
-2. 二
-3. 三
-
-## 附录
+## 四、还不知道的
+{extra_section}
 ## 推荐阅读
 
-- **甲**（机构，2026）[1]：推荐原因写够八个字以上。
+- {rec}（机构，2026）[1]：推荐原因写够八个字以上。
 
 ## 口径与来源
 
 1. {title} — https://x.com/a（2026-01-01）
 """
 
-
 class CheckReport(unittest.TestCase):
-    def check(self, counter=None, **kw):
+    """v8：脚本只查机械项（引用、固定部分、图片、表格、凭证），不查章节大纲、事实表形状与写法。"""
+
+    def check(self, **kw):
         d = Path(tempfile.mkdtemp())
         (d / "g.svg").write_text("<svg/>", encoding="utf-8")
-        fields = {"tier_intro": "规模线索未逐条核查。", "body_extra": "", "title": "某机构《某报告》"}
+        fields = {"tier_intro": "规模线索未逐条核查。", "body_extra": "", "title": "某机构《某报告》",
+                  "row1": "输入", "chap2": "格局", "extra_section": "",
+                  "rec": "**[甲](https://x.com/a)**", "conclusion": "先小试"}
         fields.update(kw)
         (d / "r.md").write_text(REPORT.format(**fields), encoding="utf-8")
-        args = [SCRIPTS / "check_report.py", d / "r.md"]
-        if counter:
-            (d / "c.md").write_text(counter, encoding="utf-8")
-            args += ["--counter", d / "c.md"]
-        return run(*args).stdout
+        return run(SCRIPTS / "check_report.py", d / "r.md").stdout
 
-    def test_clean_report_has_no_new_warnings(self):
+    def test_clean_report_has_no_errors_or_new_warnings(self):
         out = self.check()
-        for code in ("W16", "W17", "W18", "E8"):
+        self.assertIn("— 错误 0", out, out)
+        for code in ("W17", "W18"):
             self.assertNotIn(code, out)
-
-    def test_tier_without_unverified_note(self):
-        self.assertIn("W16", self.check(tier_intro="第二梯队玩家。"))
 
     def test_site_only_source_title(self):
         self.assertIn("W17", self.check(title="App Store 美区"))
@@ -177,11 +168,45 @@ class CheckReport(unittest.TestCase):
     def test_internal_tool_name(self):
         self.assertIn("W18", self.check(body_extra="数据来自 Info2Action 召回。"))
 
-    def test_counter_player_whole_word(self):
-        counter = "## 反例名单\n- Nomi | 玩家 | 反驳 C1 | 未核\n"
-        self.assertIn("E8", self.check(counter=counter, body_extra="economics 很重要。"))
-        self.assertNotIn("E8", self.check(counter=counter, body_extra="Nomi 是反例。"))
+    def test_plan_outline_and_fact_rows_not_checked(self):
+        out = self.check(chap2="输入输出", row1="规模")
+        self.assertNotIn("E3", out, out)
+        self.assertNotIn("E5", out, out)
 
+    def test_leave_questions_section_removed(self):
+        self.assertIn("E3 「留给你的问题」已取消", self.check(extra_section="\n## 留给你的问题\n\n1. 一\n"))
+
+    def test_reading_title_needs_link(self):
+        self.assertIn("E9", self.check(rec="**甲**"))
+        self.assertNotIn("E9", self.check())
+
+    def test_source_word_in_chapter_title_is_fine(self):
+        out = self.check(chap2="格局：收入来源集中在 API")
+        self.assertNotIn("E3", out, out)
+
+    def test_credential_is_error(self):
+        self.assertIn("E8", self.check(body_extra="调用示例：Authorization: Bearer abcdefghijklmnopqrstuvwxyz123456"))
+        self.assertIn("E8", self.check(body_extra="链接 https://api.example.com/v1?api_key=abc123def456"))
+        self.assertNotIn("E8", self.check(body_extra="官方文档说要在请求头里带 Bearer token，示例已略去。"))
+
+
+class DossierSources(unittest.TestCase):
+    def test_csv_keeps_urls_and_renders_current_numbers(self):
+        d = Path(tempfile.mkdtemp())
+        (d / "10-1-格局.md").write_text("- 甲 — 某文（https://a.com/x，2026-01-01）\n", encoding="utf-8")
+        (d / "40-dossier").mkdir()
+        (d / "40-dossier" / "价格.csv").write_text(
+            "产品,价格,来源,日期\n甲,1 美元,https://a.com/x;https://b.com/y,2026-01\n乙,2 美元,本机：src/a.py:3,2026-01\n",
+            encoding="utf-8")
+        r = run(SCRIPTS / "build_source_table.py", d)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        csv_text = (d / "40-dossier" / "价格.csv").read_text(encoding="utf-8")
+        self.assertIn("https://a.com/x;https://b.com/y", csv_text)
+        self.assertIn("本机：src/a.py:3", csv_text)
+        r = run(SCRIPTS / "render_table.py", d / "40-dossier" / "价格.csv")
+        self.assertEqual(r.returncode, 0, r.stdout)
+        self.assertIn("[1,2]", r.stdout)
+        self.assertIn("`本机：src/a.py:3`", r.stdout)
 
 class ChartRules(unittest.TestCase):
     def render(self, spec):
@@ -210,19 +235,6 @@ class ChartRules(unittest.TestCase):
         ev = [{"date": "2023-02", "label": "意大利叫停 Replika", "kind": "监管", "source": [1]},
               {"date": "2024-08", "label": "Google 带走创始人", "kind": "资本", "source": [2]}]
         self.assertEqual(self.render({"type": "timeline", "title": "t", "events": ev}).returncode, 0)
-
-
-class Coverage(unittest.TestCase):
-    def test_object_review_whole_word(self):
-        d = Path(tempfile.mkdtemp())
-        (d / "02-needs.json").write_text('[{"id":"N1","need":"x","min_sources":1,"min_families":1}]', encoding="utf-8")
-        (d / "02-objects.json").write_text('["Replika"]', encoding="utf-8")
-        (d / "10-a.md").write_text("## Cited Findings\n- {N1} economics（https://a.com/1 ，2026-01-01）\n\n"
-                                   "## 新发现的玩家\n- Nomi：小团队（https://a.com/2 ，2026-01-01）\n", encoding="utf-8")
-        run(SCRIPTS / "coverage_report.py", d)
-        text = (d / "25-coverage.md").read_text(encoding="utf-8")
-        row = next(l for l in text.splitlines() if l.startswith("| Nomi"))
-        self.assertIn("| Nomi | 1 | 1 |", row)  # 只算新发现的玩家那一行，不算 economics
 
 
 if __name__ == "__main__":
