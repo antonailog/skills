@@ -6,7 +6,7 @@ from pathlib import Path
 
 script, case = Path(sys.argv[1]), "setup"
 fresh = r'''{"type":"thread.started","thread_id":"01a1254c-6c2e-7eb3-bf71-da0a48a7abf3"}
-{"type":"item.completed","item":{"id":"item_0","type":"error","message":"Under-development features enabled: chronicle. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /Users/dbwu/.codex/config.toml."}}
+{"type":"item.completed","item":{"id":"item_0","type":"error","message":"Under-development features enabled: chronicle. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /Users/me/.codex/config.toml."}}
 {"type":"turn.started"}
 {"type":"item.completed","item":{"id":"item_1","type":"agent_message","text":"我会把 a.txt 的内容改成 world。\n"}}
 {"type":"item.started","item":{"id":"item_2","type":"command_execution","command":"/bin/zsh -lc \"printf 'world' > a.txt\"","aggregated_output":"","exit_code":null,"status":"in_progress"}}
@@ -15,7 +15,7 @@ fresh = r'''{"type":"thread.started","thread_id":"01a1254c-6c2e-7eb3-bf71-da0a48
 {"type":"turn.completed","usage":{"input_tokens":50109,"cached_input_tokens":38016,"cache_write_input_tokens":0,"output_tokens":57,"reasoning_output_tokens":0}}
 '''
 resume = r'''{"type":"thread.started","thread_id":"01a1254c-6c2e-7eb3-bf71-da0a48a7abf3"}
-{"type":"item.completed","item":{"id":"item_0","type":"error","message":"Under-development features enabled: chronicle. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /Users/dbwu/.codex/config.toml."}}
+{"type":"item.completed","item":{"id":"item_0","type":"error","message":"Under-development features enabled: chronicle. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /Users/me/.codex/config.toml."}}
 {"type":"turn.started"}
 {"type":"item.started","item":{"id":"item_1","type":"command_execution","command":"/bin/zsh -lc \"printf '\\\\nagain' >> a.txt\"","aggregated_output":"","exit_code":null,"status":"in_progress"}}
 {"type":"item.completed","item":{"id":"item_1","type":"command_execution","command":"/bin/zsh -lc \"printf '\\\\nagain' >> a.txt\"","aggregated_output":"","exit_code":0,"status":"completed"}}
@@ -23,10 +23,10 @@ resume = r'''{"type":"thread.started","thread_id":"01a1254c-6c2e-7eb3-bf71-da0a4
 {"type":"turn.completed","usage":{"input_tokens":100484,"cached_input_tokens":87936,"cache_write_input_tokens":0,"output_tokens":96,"reasoning_output_tokens":0}}
 '''
 stderr = r'''Reading additional input from stdin...
-2026-10-10T10:12:10.646390Z ERROR codex_core::session::session: failed to load skill /Users/dbwu/.agents/skills/sync-test/SKILL.md: missing YAML frontmatter delimited by ---
-2026-10-10T10:12:10.646417Z ERROR codex_core::session::session: failed to load skill /Users/dbwu/claudecode_workspace/Skill/yikegunshi-skill/skills/wechat-publisher/SKILL.md: missing YAML frontmatter delimited by ---
-2026-10-10T10:12:11.870036Z ERROR codex_core::session::session: failed to load skill /Users/dbwu/.agents/skills/sync-test/SKILL.md: missing YAML frontmatter delimited by ---
-2026-10-10T10:12:11.870065Z ERROR codex_core::session::session: failed to load skill /Users/dbwu/claudecode_workspace/Skill/yikegunshi-skill/skills/wechat-publisher/SKILL.md: missing YAML frontmatter delimited by ---
+2026-10-10T10:12:10.646390Z ERROR codex_core::session::session: failed to load skill /Users/me/.agents/skills/sync-test/SKILL.md: missing YAML frontmatter delimited by ---
+2026-10-10T10:12:10.646417Z ERROR codex_core::session::session: failed to load skill /Users/me/claudecode_workspace/Skill/yikegunshi-skill/skills/wechat-publisher/SKILL.md: missing YAML frontmatter delimited by ---
+2026-10-10T10:12:11.870036Z ERROR codex_core::session::session: failed to load skill /Users/me/.agents/skills/sync-test/SKILL.md: missing YAML frontmatter delimited by ---
+2026-10-10T10:12:11.870065Z ERROR codex_core::session::session: failed to load skill /Users/me/claudecode_workspace/Skill/yikegunshi-skill/skills/wechat-publisher/SKILL.md: missing YAML frontmatter delimited by ---
 '''
 stub_code = '''#!/usr/bin/env python3
 import json, os, signal, subprocess, sys, time

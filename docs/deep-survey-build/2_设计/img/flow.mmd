@@ -1,0 +1,7 @@
+flowchart LR
+  P([1 计划<br/>确认单 + 大纲 + 分工<br/>你确认一次]):::you --> R[2 研究<br/>研究员按章并行<br/>先查你的信息流]
+  R --> G{3 补缺<br/>每章够不够？<br/>不够补研 ≤2 轮}
+  G --> W[4 写作<br/>报告员按大纲写<br/>出图、跑检查]
+  W --> V[5 审读<br/>审读员只看可读性<br/>报告员改一轮]
+  V --> D([6 交付<br/>重编号、看图<br/>你定放哪]):::you
+  classDef you fill:#fff,stroke:#002FA7,stroke-width:3px

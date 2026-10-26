@@ -9,3 +9,12 @@
 .DS_Store
 __pycache__/
 *.pyc
+
+# 质量回归的本机报告副本、公开原文快照和带本机日志路径的统计原件
+3_评测/report-quality-*/blind/
+3_评测/report-quality-*/evidence/
+3_评测/report-quality-*/evidence-r*/
+3_评测/report-quality-*/live-evidence/
+3_评测/report-quality-*/judge-*-evidence/
+3_评测/report-quality-*/manifest-private.json
+3_评测/report-quality-*/usage-*.json

@@ -1,0 +1,393 @@
+{
+  "document_type": "targeted_fact_clarification",
+  "policy_version": "1.0.0",
+  "reviewer": "quality_fact_referee",
+  "independence": {
+    "participated_in_research_or_writing": false,
+    "model_configuration": "inherited; no override",
+    "subagents_used": false,
+    "manifest_read": false,
+    "judge_one_or_two_read": false,
+    "skill_changes_read": false
+  },
+  "scope": {
+    "report_ids": [
+      "R42",
+      "R17"
+    ],
+    "allowed_research_inputs": [
+      "blind/policy.md",
+      "blind/task.md",
+      "blind/R42.md",
+      "blind/R17.md",
+      "evidence/index.json",
+      "original snapshots listed in evidence/index.json"
+    ],
+    "workspace_instructions_read": "<工作区>/CLAUDE.md",
+    "web_accessed": false,
+    "scores_assigned": false,
+    "prior_scores_modified": false,
+    "reports_modified": false
+  },
+  "evidence_time": {
+    "captured_at": "2026-10-15T01:14:00Z",
+    "time_note": "来自当次公开材料快照；采集笔记统一核验时点，非逐请求精确时间",
+    "interpretation": "仅有这一组统一登记的快照，不能重建 R42 每一次观察的精确时序；不以当前网页判历史真假。"
+  },
+  "input_sha256": {
+    "blind/policy.md": "d7be83d23b882db74b6225cb3720c1f247b9399eb67552f68424cd160f4abf7a",
+    "blind/task.md": "2d8c8142ee11f7b30ad27f007b07f4a3948aa033bbf812051a791288f6ddd7d9",
+    "blind/R42.md": "d5b4d2b12cc9163544388d7a6227330802f7b6e6fd72aa813f3198bda2c7d8dd",
+    "blind/R17.md": "9253ee72370723aa517542b7113de3a85d3ea48567e650def09b86734cea71eb"
+  },
+  "snapshot_integrity": [
+    {
+      "path": "evidence/aie-home-public.html",
+      "source_url": "https://ai.engineer/shanghai/2026",
+      "captured_at": "2026-10-15T01:14:00Z",
+      "sha256": "ccb6efb05f9c331967667af7b0bee0b522f6c2262c7885a0b0c0338971394731",
+      "matches_index": true
+    },
+    {
+      "path": "evidence/aie-main-public.js",
+      "source_url": "https://ai.engineer/_next/static/chunks/5144-8308f14f8d639ccb.js",
+      "captured_at": "2026-10-15T01:14:00Z",
+      "sha256": "1be97eb78c916e69959f023c46b8571464001428410ae1c8b156696610bcce7f",
+      "matches_index": true
+    },
+    {
+      "path": "evidence/aie-page-public.js",
+      "source_url": "https://ai.engineer/_next/static/chunks/pages/shanghai/2026-2717cee97b66ce68.js",
+      "captured_at": "2026-10-15T01:14:00Z",
+      "sha256": "7e313faf6d722ddfb6d27614c15c14cb0ac687d1c4b0ec30352a410090eb605e",
+      "matches_index": true
+    },
+    {
+      "path": "evidence/aie-pay-public.html",
+      "source_url": "https://aie.anruicloud.com/pay",
+      "captured_at": "2026-10-15T01:14:00Z",
+      "sha256": "5573fb2c49bfeb8b3298155492000e75c70881f6e56a7d13a061916c8cf9e646",
+      "matches_index": true
+    },
+    {
+      "path": "evidence/aie-pay-public.js",
+      "source_url": "https://aie.anruicloud.com/assets/index-df926897.js",
+      "captured_at": "2026-10-15T01:14:00Z",
+      "sha256": "42754b8c481aa75a6b9556fd8760f892617d0eff1fb72847cd4dca5460ab61ca",
+      "matches_index": true
+    },
+    {
+      "path": "evidence/aie-pay-page-public.js",
+      "source_url": "https://aie.anruicloud.com/assets/pay-0b8ec5e2.js",
+      "captured_at": "2026-10-15T01:14:00Z",
+      "sha256": "6ab8c01e8d53ab77a2d99382cf71f611a2478b15bc6cf9c437af7557836ea8d5",
+      "matches_index": true
+    },
+    {
+      "path": "evidence/aie-pay-legal-public.js",
+      "source_url": "https://aie.anruicloud.com/assets/Footer-395108d9.js",
+      "captured_at": "2026-10-15T01:14:00Z",
+      "sha256": "2d82e21af1aca2a3c14aca34c2dfffcb3bc373d941d32491963d4887bc9b7a77",
+      "matches_index": true
+    },
+    {
+      "path": "evidence/aie-ticket-config-public.js",
+      "source_url": "https://aie.anruicloud.com/assets/ticketConfig-0d254958.js",
+      "captured_at": "2026-10-15T01:14:00Z",
+      "sha256": "b111b818f4009d54e8c0830f5482564f1ec01315ff9294d811be7e0ba15e5e36",
+      "matches_index": true
+    },
+    {
+      "path": "evidence/aie-tickets-public.json",
+      "source_url": "https://aie.anruicloud.com/api/api/tickets",
+      "captured_at": "2026-10-15T01:14:00Z",
+      "sha256": "b223b47608951424006178ac3dd6aa9fc0e82f8780d07872668e0fb8f3fc217b",
+      "matches_index": true
+    },
+    {
+      "path": "evidence/aie-luma-public.html",
+      "source_url": "https://luma.com/j9iqfmh8",
+      "captured_at": "2026-10-15T01:14:00Z",
+      "sha256": "9cd8a23750c25b622f1012e40dbc3f884d67eecd3583c20659053f2891461c3c",
+      "matches_index": true
+    }
+  ],
+  "findings": [
+    {
+      "id": "FC1",
+      "report_id": "R42",
+      "report_location": {
+        "path": "blind/R42.md",
+        "line": 85
+      },
+      "original_excerpt": "其分会票存在页面与内嵌数据状态冲突，不据此推荐购买。",
+      "status": "unverifiable",
+      "status_explanation": "历史冲突尚未核实；所给单份快照里的页面标记与内嵌票种数据一致，不能支持冲突说法。若把该句限定为描述本快照，则与本快照矛盾。",
+      "subchecks": [
+        {
+          "claim": "所给 Luma 快照中的分会票页面与内嵌数据存在状态冲突",
+          "status": "contradicted",
+          "source_url": "https://luma.com/j9iqfmh8",
+          "evidence": [
+            {
+              "path": "evidence/aie-luma-public.html",
+              "line": 567,
+              "char_start_0": 82593,
+              "locator": "包含 Breakout Session Pass 的 button；静态 HTML 标记",
+              "excerpt": "Breakout Session Pass | 1 Left | Breakout Session + Expo；button 无 disabled 属性"
+            },
+            {
+              "path": "evidence/aie-luma-public.html",
+              "line": 567,
+              "locator": "script#__NEXT_DATA__ -> $.props.pageProps.initialData.data.ticket_types[2]",
+              "observed": {
+                "name": "Breakout Session Pass",
+                "cents": 9700,
+                "currency": "usd",
+                "description": "Breakout Session + Expo",
+                "spots_remaining": 1,
+                "is_disabled": false,
+                "max_capacity": 3,
+                "num_tickets_registered": 2
+              }
+            }
+          ],
+          "explanation": "页面所示剩余 1 张与数据剩余 1 张、未禁用一致。该 HTML 中 Sold Out 对应 Early Bird - All Access；其内嵌 spots_remaining=0、is_disabled=true 也一致，不是分会票。"
+        },
+        {
+          "claim": "R42 作者在另一观察时刻确实看到了冲突",
+          "status": "unverifiable",
+          "source_url": "https://luma.com/j9iqfmh8",
+          "evidence": [
+            {
+              "path": "evidence/index.json",
+              "locator": "url=https://luma.com/j9iqfmh8；captured_at 和 time_note"
+            }
+          ],
+          "explanation": "包中没有第二组冲突页面/内嵌数据或逐请求观察时间，不能确认，也不能据此断言历史观察虚假。"
+        },
+        {
+          "claim": "这一冲突说法是 R42 排除分会票购买建议的关键前提",
+          "status": "supported",
+          "source_url": null,
+          "evidence": [
+            {
+              "path": "blind/R42.md",
+              "line": 85,
+              "locator": "同一句以“不据此推荐购买”承接状态冲突；第82行把标准大会票列为基准"
+            }
+          ],
+          "explanation": "这是正文给出的直接、唯一明确的局部排除理由。其影响是缩窄较低价分会票的条件选择；并非证明该票必然适合用户。"
+        }
+      ],
+      "importance": {
+        "level": "high_for_ticket_selection",
+        "reason": "会影响用户是否把 USD 97 分会票留作候选，因此不能视为无关小误差。报告表格明确只列中文渠道，表格本身不承担列全 Luma 票种的责任；问题在第85行排除理由。",
+        "core_conclusion_effect": "不足单独推翻“本地倾向去、专程先核排期”的总体判断；目标场次的票权归属、最终排程及实际付款库存仍待核。"
+      },
+      "appropriate_boundary": "现有快照只能说明分会票在该页面和内嵌数据均显示可选、剩余 1 张。应把历史冲突记为未核，不把该快照当作已成交或库存保证，也不据此判造假。"
+    },
+    {
+      "id": "FC2",
+      "report_id": "R42",
+      "report_location": {
+        "path": "blind/R42.md",
+        "line": 87,
+        "related_lines": [
+          9,
+          17,
+          98
+        ]
+      },
+      "original_excerpt": "现在购票已不能退款。",
+      "status": "contradicted",
+      "status_explanation": "无条件、覆盖所有退款情形的读法与中文完整协议的明确例外相冲突；一般退票截止已过这一较窄意思有依据。",
+      "context": "第87行紧接一般退款截止和转让期限，末句强调本人确定能参加；第9、98行也把接受“不退票”列为下单条件。因此按个人临时不去理解有上下文支持，但粗体句未限定范围，也没有交代完整协议例外。",
+      "subchecks": [
+        {
+          "claim": "一般退款截止已经过去",
+          "status": "supported",
+          "source_url": "https://aie.anruicloud.com/assets/pay-0b8ec5e2.js",
+          "evidence": [
+            {
+              "path": "evidence/aie-pay-page-public.js",
+              "line": 1,
+              "char_start_0": 12747,
+              "locator": "退票及退款政策须知；2026 年 10 月 1 日 23:59 后",
+              "excerpt": "将不再接受任何退款申请"
+            },
+            {
+              "path": "evidence/aie-luma-public.html",
+              "line": 567,
+              "char_start_0": 88433,
+              "locator": "可见正文 Refund Policy",
+              "excerpt": "After October 1st, 2026, 11:59 PM PT: ... no refund requests will be accepted."
+            }
+          ],
+          "additional_source_urls": [
+            "https://luma.com/j9iqfmh8"
+          ],
+          "explanation": "两份摘要均有截止规定，报告时间在截止之后。中文未注明时区的缺口不改变十月中旬已过十月一日的判断。"
+        },
+        {
+          "claim": "完整中文协议不保留任何退款例外",
+          "status": "contradicted",
+          "source_url": "https://aie.anruicloud.com/assets/Footer-395108d9.js",
+          "evidence": [
+            {
+              "path": "evidence/aie-pay-legal-public.js",
+              "line": 1,
+              "char_start_0": 5666,
+              "locator": "第三条 退票与改签规则；第1项个人原因退票、第2项不予退票情形",
+              "excerpt": "因购票人自身原因无法参会的，按以下阶梯规则办理退票"
+            },
+            {
+              "path": "evidence/aie-pay-legal-public.js",
+              "line": 1,
+              "char_start_0": 6674,
+              "locator": "第五条第2项 活动取消 / 延期",
+              "excerpt": "峰会取消的，主办方将在 15 个工作日内全额退还门票费用；峰会延期、购票人无法参加新场次的，可申请全额退款"
+            }
+          ],
+          "explanation": "第五条第2项先述不可抗力导致取消或延期的通知，再列取消退款与延期无法参会退款。条款同时排除取消时的差旅住宿间接损失。第三条第2项虽然使用“任何退款申请”的绝对措辞，不能脱离第五条而把全协议概括为没有退款例外。"
+        },
+        {
+          "claim": "所有中文取消/延期退款条款自动适用 Luma 订单",
+          "status": "unverifiable",
+          "source_url": "https://luma.com/j9iqfmh8",
+          "evidence": [
+            {
+              "path": "evidence/aie-luma-public.html",
+              "line": 567,
+              "locator": "Refund Policy 及 __NEXT_DATA__ 的 refund_policy=null"
+            }
+          ],
+          "explanation": "本包只能核到 Luma 自己的一般退款说明，不能用中文完整协议自动扩大其订单适用范围。refund_policy=null 本身也不等于没有任何权利或例外。"
+        }
+      ],
+      "importance": {
+        "level": "material_refund_scope",
+        "reason": "影响下单风险判断，且“不退票”在摘要、正文和购买条件中重复出现；但不是退款截止日期造错，引用的短版购票须知确实使用绝对措辞。",
+        "core_conclusion_effect": "对因个人原因临时取消的下单谨慎建议仍成立；修正例外范围不必反转整体参会建议。"
+      },
+      "appropriate_boundary": "可表述为“因个人原因无法参会等一般退票情形，当前已过退款期；中文协议另保留取消、延期等处理条款”。这是通读协议后对报告表述的限缩，不是声称第三条第2项原文字面写着“仅个人原因”。本次只核条款内容，不裁定执行结果或法律效力。"
+    },
+    {
+      "id": "FC3",
+      "report_id": "R17",
+      "report_location": {
+        "path": "blind/R17.md",
+        "line": 71,
+        "related_lines": [
+          21,
+          73,
+          74,
+          101
+        ]
+      },
+      "original_excerpt": "总支出与占用时间都更高，不能只比较每张票价格。",
+      "status": "unsupported",
+      "status_explanation": "公开票价和会期支持固定比较口径下的门票差额、会议日历天数；无法推出用户两次参会的总支出与总占用时间都必然更高。不是已证实其实际结果相反。",
+      "context": "同句前半使用 Maker 公开 ¥599 与 AIE 全通票差 ¥1,400、两天对一天；第21行明示公开全价不是用户实付，第74、101行承认出发城市、住宿晚数、实际票款和差旅成本未知。后文降低误解风险，但没有补齐前句确定性比较的前提。",
+      "subchecks": [
+        {
+          "claim": "AIE 普通标准票公开价格为 ¥1,999，活动会期跨 11 月 5–6 日",
+          "status": "supported",
+          "source_url": "https://aie.anruicloud.com/api/api/tickets",
+          "evidence": [
+            {
+              "path": "evidence/aie-tickets-public.json",
+              "line": 1,
+              "locator": "$.Data.items[1]",
+              "observed": {
+                "name": "标准大会门票",
+                "currentPrice": 1999.0,
+                "description": "包含主会，分会和展览"
+              }
+            },
+            {
+              "path": "evidence/aie-luma-public.html",
+              "line": 567,
+              "locator": "script#__NEXT_DATA__ -> $.props.pageProps.initialData.data.event",
+              "observed": {
+                "start_at": "2026-11-05T01:00:00.000Z",
+                "end_at": "2026-11-06T10:30:00.000Z",
+                "timezone": "Asia/Shanghai"
+              }
+            }
+          ],
+          "additional_source_urls": [
+            "https://luma.com/j9iqfmh8"
+          ],
+          "explanation": "价格支持公开普通入口基准；活动跨度支持两天会期，不等于每位用户会全程参加或个人总占用时长。"
+        },
+        {
+          "claim": "Maker 上海公开全价 ¥599、会期一天",
+          "status": "unverifiable",
+          "source_url": "https://aimakersummit.com/2026/shanghai",
+          "evidence": [
+            {
+              "path": "evidence/index.json",
+              "locator": "全部10条索引；无 Maker 官方原始快照"
+            }
+          ],
+          "explanation": "两份匿名报告都陈述该基准，但报告互相印证不能替代原始证据。此次按要求不联网，故不将该前提记作独立核实通过；这不构成其错误的证据。"
+        },
+        {
+          "claim": "若按报告给出的两个公开价，门票差额为 ¥1,400",
+          "status": "derived_correct",
+          "source_url": null,
+          "evidence": [
+            {
+              "path": "blind/R17.md",
+              "line": 71,
+              "locator": "公开价条件算术：1999 - 599 = 1400"
+            }
+          ],
+          "explanation": "算术正确，条件性结论只涉及公开票价差，不是两次实付差或总预算差。"
+        },
+        {
+          "claim": "据此可确定用户总支出及总占用时间都更高",
+          "status": "unsupported",
+          "source_url": null,
+          "evidence": [
+            {
+              "path": "blind/task.md",
+              "line": 1,
+              "locator": "所在地、预算、满意的具体场次未知"
+            },
+            {
+              "path": "blind/R17.md",
+              "line": 21,
+              "locator": "公开全价不是用户实付价"
+            },
+            {
+              "path": "blind/R17.md",
+              "line": 74,
+              "locator": "出发城市、住宿晚数未知"
+            },
+            {
+              "path": "blind/R17.md",
+              "line": 101,
+              "locator": "用户实付价、具体听课经历及差旅成本未知"
+            }
+          ],
+          "explanation": "即使暂采公开价为两次票款，若两次票外花费分别为 X_A 和 X_M，总差额仍为 1400 + X_A - X_M，未知变量使方向不能确定。两天对一天仅是会期，个人实际听会、通勤和差旅时间及两次安排仍未知；加上工作时间机会成本也需要个人条件。"
+        }
+      ],
+      "importance": {
+        "level": "moderate_comparison_overreach",
+        "reason": "原需求明确要求总成本，读者可能把确定性句子当作自身预算和时间比较结论；属于比较口径扩大。",
+        "core_conclusion_effect": "同段给出预算结构并承认未知，缺陷较局部；“票价和会期投入需要更充分理由”的讨论仍可成立，不据此推翻整体建议。"
+      },
+      "appropriate_boundary": "按所引公开全价，AIE 门票多 ¥1,400、会期多一天；个人总预算和总占用时间需按两次实际参会安排另算。Maker 基准仍需对应原始快照核实。"
+    }
+  ],
+  "limitations": [
+    "没有新联网或新取证；没有当前页面对照。",
+    "分会票历史冲突缺少对应时点的页面与数据配对，不能判为造假。",
+    "静态页面和内嵌库存不是创建订单、进入付款或成交的证据。",
+    "证据索引没有 Maker 原始快照，Maker ¥599/一天的基准在本次未独立核实。",
+    "只解释三个争点的证据和推理边界；不作总体质量评分，不读取或修改既有评分，也不建议为一致性回改评分。"
+  ]
+}

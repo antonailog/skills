@@ -1,0 +1,254 @@
+{
+  "evaluator": "judge-four",
+  "review_type": "targeted_correction_review",
+  "blind": false,
+  "policy_version_context": "1.0.0",
+  "baseline_report_id": "R63",
+  "revised_report_id": "R64",
+  "scope_statement": "仅复核术语与人物身份/相关性、核实入口职责、重复边界三类定向修订。不是全报告重新评分，不是独立盲测，也不构成跨课题质量提升证明。",
+  "full_report_rescored": false,
+  "original_scores_modified": false,
+  "baseline_report_sha256": "0dbb0f8bc2617d294343e781fd0ea4bf03de4178e41bf6138b71b45b3b30710a",
+  "revised_report_sha256": "f83c7a9947cb3044ee33602437eca27095423d44f250ba208094ee7915a5e1b4",
+  "diff_sha256": "3fdf87b84baee1a260fcf047109add8bce51beccda3ba08c874a6524082888cd",
+  "policy_sha256": "d7be83d23b882db74b6225cb3720c1f247b9399eb67552f68424cd160f4abf7a",
+  "evidence_index_sha256": "b3fad07148e42caae90f0652f19ebc3b89e6abf04c9efe7fcb5ef5ce9af356aa",
+  "original_evaluation_artifact_hashes": {
+    "judge-four.json": "91430c6bc742e54454aaf6b831c4b8f66bd6a40865ae895f22d090cb423fd999",
+    "judge-four.md": "d331ad11a05da7bfff1f1a9156e43ac56947be7de7b6973784d1f9d86936a508"
+  },
+  "items": [
+    {
+      "id": "terminology_and_people",
+      "status": "resolved",
+      "question": "首用 Harness 及重要人物身份/相关性是否解释",
+      "locations": [
+        "R64.md:11",
+        "R64.md:70,76,80,82",
+        "R64.md:96",
+        "R64.md:100-109"
+      ],
+      "evidence": [
+        "第11行在首次出现Harness时即解释提供任务资料、接入工具和检查执行结果；与evidence-r63/14.txt原文L5-L6的上下文/工具/流程及L32的机械检查、独立审核、偏航反馈相容，是入门解释而非排他的完整定义。",
+        "第76、96行补齐Exa和Daytona讲者身份；104-107行的11项新身份（含前两位）均已逐项回查01.html嘉宾卡片，见role_checks。",
+        "第102-109行继续以读者问题—讲者身份/方向—验证问题组织，身份补充没有变成无关履历堆叠。第70行已以Vercel与d0文章作者身份说明Andrew Qu的相关性，无需为本次修复强制加完整职衔。",
+        "第106行HTML“中间格式”、107行机器人数据“增量处理”分别由02.js的bin-liu（字符11885-12760）和xuanwo（18784-19658）摘要支持。"
+      ],
+      "residuals": [
+        "Harness解释简化但足够建立本文所需概念，不是完整技术规范。",
+        "公开讲者角色仍不能证明普通参会者岗位分布或保证接触机会；第113行保留该界线。此未知不妨碍本项修复成立。"
+      ]
+    },
+    {
+      "id": "verification_routes",
+      "status": "resolved",
+      "question": "核实动作是否对应已知可用入口且没有扩大入口职责",
+      "locations": [
+        "R64.md:147-149"
+      ],
+      "evidence": [
+        "第147行给出确实存在的#schedule锚点和官网General inquiry邮箱，分别用于先看预览和询问缺项。",
+        "第148行把实际结算留给国内购票页面，将渠道资格、票种权益和退转问题交给原条款明确的票务咨询邮箱。",
+        "第149行使用一般咨询邮箱询问社交与语言，并将Standup Partners账号仅列为观察信息入口；明确尚未取得公开配对或预约入口。",
+        "具体锚点、邮箱和职责标签均已回查01.html及07.js，见contact_checks；未向任何地址发送消息。"
+      ],
+      "residuals": [
+        "“可用”限于给定快照中确实公布且链接正确，不表示本次已验证邮箱投递、回复速度、账号最新状态或预约成功。",
+        "普通票细分权益仍待会务回答，修订提供了合理询问路径，没有把问题本身写成已解决。"
+      ]
+    },
+    {
+      "id": "repetition_and_qualifiers",
+      "status": "resolved",
+      "question": "重复边界是否减少且仍保留必要限定",
+      "locations": [
+        "R64.md:17,23,28,30,36,46",
+        "R64.md:62,66,72,76,82,94,96,100,109",
+        "R64.md:119-124,132-149,158-160"
+      ],
+      "evidence": [
+        "对照指定diff：旧第17行的长快照/结算说明缩成导向文末；旧第30、46、148、160行重复的未下单核验被收束到新第17、23、28、158行不同用途的说明。",
+        "技术材料不等于上海讲义或现场效果的总边界集中至第66行；旧第76、82、100行的重复警示缩减，旧第151行总括段删除，来源说明也缩短。",
+        "必要限定仍在：第28行不保证优惠资格；36行不保证阅读时仍能转让；62行未看Maker全录像；72行厂商自报五个查询及迁移前提；94、96行非性能实测/不采用未核基准；119-124行样本、利益关系和语言范围；138行等待代价；147-149行入口职责。",
+        "第158行仍保留UTC/洛杉矶时点、批次采集不是精确请求时间、访问时间不是发表时间，以及没有重新联网核验购票状态；第160行保留官方同源边界。"
+      ],
+      "residuals": [
+        "第13、66、132-138、147行仍提及日程或交流条件未知，但分别承担摘要、材料解释、决策门槛和核实动作，属于功能性复现。",
+        "本项只判断三类修订中的重复与限定，没有据此重新评价整篇信息密度或声称全报告质量提升。"
+      ]
+    }
+  ],
+  "role_checks": [
+    {
+      "person": "Jeff Wang",
+      "claim": "Exa 联合创始人",
+      "report_location": "R64.md:76",
+      "source_url": "https://ai.engineer/shanghai/2026",
+      "evidence": "evidence-r63/01.html：button#speaker-jeff-wang 的 name / role / company 卡片内容",
+      "status": "supported",
+      "note": "身份与官网卡片相符；只核实公开身份，不证明可预约或能深入交流。"
+    },
+    {
+      "person": "Ivan Burazin",
+      "claim": "Daytona 联合创始人兼 CEO",
+      "report_location": "R64.md:96",
+      "source_url": "https://ai.engineer/shanghai/2026",
+      "evidence": "evidence-r63/01.html：button#speaker-ivan-burazin 的 name / role / company 卡片内容",
+      "status": "supported",
+      "note": "身份与官网卡片相符；只核实公开身份，不证明可预约或能深入交流。"
+    },
+    {
+      "person": "Nancy Wang",
+      "claim": "1Password 首席技术官",
+      "report_location": "R64.md:104",
+      "source_url": "https://ai.engineer/shanghai/2026",
+      "evidence": "evidence-r63/01.html：button#speaker-nancy-wang 的 name / role / company 卡片内容",
+      "status": "supported",
+      "note": "身份与官网卡片相符；只核实公开身份，不证明可预约或能深入交流。"
+    },
+    {
+      "person": "Faye Zhang",
+      "claim": "Google Cloud Gemini Agents 工程师",
+      "report_location": "R64.md:104",
+      "source_url": "https://ai.engineer/shanghai/2026",
+      "evidence": "evidence-r63/01.html：button#speaker-faye-zhang 的 name / role / company 卡片内容",
+      "status": "supported",
+      "note": "原文为 Staff AI Engineer, Gemini Agents；修订省略资深级别，未夸大职位。"
+    },
+    {
+      "person": "小刀老师 / Tang Feihu",
+      "claim": "Kimi Agent 工程负责人",
+      "report_location": "R64.md:104",
+      "source_url": "https://ai.engineer/shanghai/2026",
+      "evidence": "evidence-r63/01.html：button#speaker-tang-feihu 的 name / role / company 卡片内容",
+      "status": "supported",
+      "note": "身份与官网卡片相符；只核实公开身份，不证明可预约或能深入交流。"
+    },
+    {
+      "person": "Meder Kamalov",
+      "claim": "Oimo 创始人",
+      "report_location": "R64.md:105",
+      "source_url": "https://ai.engineer/shanghai/2026",
+      "evidence": "evidence-r63/01.html：button#speaker-meder-kamalov 的 name / role / company 卡片内容",
+      "status": "supported",
+      "note": "身份与官网卡片相符；只核实公开身份，不证明可预约或能深入交流。"
+    },
+    {
+      "person": "Do Tuan Anh",
+      "claim": "Techcombank 数据与 AI 工程高级经理",
+      "report_location": "R64.md:105",
+      "source_url": "https://ai.engineer/shanghai/2026",
+      "evidence": "evidence-r63/01.html：button#speaker-do-tuan-anh 的 name / role / company 卡片内容",
+      "status": "supported",
+      "note": "身份与官网卡片相符；只核实公开身份，不证明可预约或能深入交流。"
+    },
+    {
+      "person": "Sarah Chieng",
+      "claim": "Cerebras 开发者体验负责人",
+      "report_location": "R64.md:106",
+      "source_url": "https://ai.engineer/shanghai/2026",
+      "evidence": "evidence-r63/01.html：button#speaker-sarah-chieng 的 name / role / company 卡片内容",
+      "status": "supported",
+      "note": "身份与官网卡片相符；只核实公开身份，不证明可预约或能深入交流。"
+    },
+    {
+      "person": "Bin Liu",
+      "claim": "HeyGen 工程副总裁",
+      "report_location": "R64.md:106",
+      "source_url": "https://ai.engineer/shanghai/2026",
+      "evidence": "evidence-r63/01.html：button#speaker-bin-liu 的 name / role / company 卡片内容",
+      "status": "supported",
+      "note": "身份与官网卡片相符；只核实公开身份，不证明可预约或能深入交流。"
+    },
+    {
+      "person": "Christoph Lassner",
+      "claim": "World Labs 联合创始人",
+      "report_location": "R64.md:107",
+      "source_url": "https://ai.engineer/shanghai/2026",
+      "evidence": "evidence-r63/01.html：button#speaker-christoph-lassner 的 name / role / company 卡片内容",
+      "status": "supported",
+      "note": "身份与官网卡片相符；只核实公开身份，不证明可预约或能深入交流。"
+    },
+    {
+      "person": "Ding Hao（Xuanwo）",
+      "claim": "LanceDB 高级工程师",
+      "report_location": "R64.md:107",
+      "source_url": "https://ai.engineer/shanghai/2026",
+      "evidence": "evidence-r63/01.html：button#speaker-xuanwo 的 name / role / company 卡片内容",
+      "status": "supported",
+      "note": "身份与官网卡片相符；只核实公开身份，不证明可预约或能深入交流。"
+    }
+  ],
+  "contact_checks": [
+    {
+      "entry": "官网 Program",
+      "report_location": "R64.md:147",
+      "report_url": "https://ai.engineer/shanghai/2026#schedule",
+      "source_url": "https://ai.engineer/shanghai/2026",
+      "evidence": "evidence-r63/01.html：href=\"#schedule\"（字符6565、9572、57655）与 id=\"schedule\"（字符39052）；对应 Program preview。",
+      "status": "supported",
+      "scope_check": "锚点存在且指向议程预览。修订明确它不是最终安排已确定的保证。"
+    },
+    {
+      "entry": "General inquiry：hello@ai.engineer",
+      "report_location": "R64.md:147,149",
+      "report_url": "mailto:hello@ai.engineer?subject=AI%20Engineer%20Shanghai%20Inquiry",
+      "source_url": "https://ai.engineer/shanghai/2026",
+      "evidence": "evidence-r63/01.html：页脚 Contact 中 mailto 位于字符57835，标签 General inquiry 位于57897。",
+      "status": "supported",
+      "scope_check": "官网一般咨询入口，可合理询问议程、普通票社交准入与语言支持；报告未保证回复、权威确认或预约成功。"
+    },
+    {
+      "entry": "国内票务邮箱：infoaieshanghai@gmail.com",
+      "report_location": "R64.md:148",
+      "report_url": "mailto:infoaieshanghai@gmail.com",
+      "source_url": "https://aie.anruicloud.com/assets/Footer-395108d9.js",
+      "evidence": "evidence-r63/07.js：service 第九条称购票疑问可通过官方邮箱联系，字符7502起标为票务咨询；Footer 链接字符15142起同样标为票务咨询；转让条款字符6125。",
+      "status": "supported",
+      "scope_check": "渠道资格、票种权益和退转属于明确票务语境；修订保留“未保证其能回答全部议程问题”，没有扩大为大会全部事项负责人。"
+    },
+    {
+      "entry": "Standup Partners 公开账号",
+      "report_location": "R64.md:149",
+      "report_url": "https://x.com/StandupPartners",
+      "source_url": "https://ai.engineer/shanghai/2026",
+      "evidence": "evidence-r63/01.html：organizer-links 内该URL位于字符56981，标签 X / @StandupPartners；相邻主办方介绍。",
+      "status": "supported",
+      "scope_check": "只建议留意公开账号，并明确不是已确认的预约渠道；没有把社媒账号变成配对、预约或票务保证。"
+    }
+  ],
+  "source_files_rechecked": [
+    {
+      "path": "evidence-r63/01.html",
+      "url": "https://ai.engineer/shanghai/2026",
+      "sha256": "ccb6efb05f9c331967667af7b0bee0b522f6c2262c7885a0b0c0338971394731",
+      "captured_at": "2026-10-15T01:14:00Z"
+    },
+    {
+      "path": "evidence-r63/02.js",
+      "url": "https://ai.engineer/_next/static/chunks/5144-8308f14f8d639ccb.js",
+      "sha256": "1be97eb78c916e69959f023c46b8571464001428410ae1c8b156696610bcce7f",
+      "captured_at": "2026-10-15T01:14:00Z"
+    },
+    {
+      "path": "evidence-r63/07.js",
+      "url": "https://aie.anruicloud.com/assets/Footer-395108d9.js",
+      "sha256": "2d82e21af1aca2a3c14aca34c2dfffcb3bc373d941d32491963d4887bc9b7a77",
+      "captured_at": "2026-10-15T01:14:00Z"
+    },
+    {
+      "path": "evidence-r63/14.txt",
+      "url": "https://aimakersummit.com/2026/shanghai/track/harness.html",
+      "sha256": "85e370aa834973b7bf6c1037301d7be60932f481ac39f3f55f8b68679c1784a8",
+      "captured_at": "2026-10-15T02:07:24Z"
+    }
+  ],
+  "method_limits": [
+    "只阅读修订稿、指定差异及对应原始证据；未读取作者修订说明、其他评审或Skill改动。",
+    "未联网扩研；未重跑其他无关已核事实；未创建订单或发送询问。",
+    "字符定位从0起按Unicode字符计数；网页工具原文的L编号沿用原摘录。",
+    "所有结论限定于已保存快照，不证明新网页或现场状态。"
+  ],
+  "frozen_at_utc": "2026-10-15T02:55:07+00:00",
+  "frozen": true
+}

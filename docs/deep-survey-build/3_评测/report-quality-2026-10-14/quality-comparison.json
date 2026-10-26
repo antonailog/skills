@@ -1,0 +1,239 @@
+{
+  "policy_version": "1.0.0",
+  "policy_sha256": "d7be83d23b882db74b6225cb3720c1f247b9399eb67552f68424cd160f4abf7a",
+  "weights": {
+    "factuality": 25,
+    "coverage": 15,
+    "synthesis": 15,
+    "usefulness": 15,
+    "density": 10,
+    "expression": 10,
+    "sources": 5,
+    "calibration": 5
+  },
+  "reports": {
+    "R42": {
+      "mean_total": 80.625,
+      "total_range": [
+        78.75,
+        82.5
+      ],
+      "dimension_means": {
+        "factuality": 2.5,
+        "coverage": 3.0,
+        "synthesis": 3.5,
+        "usefulness": 4.0,
+        "density": 3.0,
+        "expression": 4.0,
+        "sources": 3.0,
+        "calibration": 3.5
+      },
+      "provisional": true,
+      "critical_failures": 0,
+      "judges": [
+        {
+          "judge": "judge-one",
+          "total_exact": 82.5,
+          "scores": {
+            "factuality": 3,
+            "coverage": 3,
+            "synthesis": 3,
+            "usefulness": 4,
+            "density": 3,
+            "expression": 4,
+            "sources": 3,
+            "calibration": 4
+          },
+          "critical_failures": [],
+          "provisional": false,
+          "fact_count": 19,
+          "fact_statuses": {
+            "derived_correct": 3,
+            "supported": 15,
+            "unsupported": 1
+          },
+          "score_file_sha256": "a89dae3ea577d986655cde61eddcc62a4b620a8689a9dbbbda61a35f7cadf32c"
+        },
+        {
+          "judge": "judge-two",
+          "total_exact": 78.75,
+          "scores": {
+            "factuality": 2,
+            "coverage": 3,
+            "synthesis": 4,
+            "usefulness": 4,
+            "density": 3,
+            "expression": 4,
+            "sources": 3,
+            "calibration": 3
+          },
+          "critical_failures": [],
+          "provisional": true,
+          "fact_count": 24,
+          "fact_statuses": {
+            "supported": 20,
+            "unverifiable": 3,
+            "contradicted": 1
+          },
+          "score_file_sha256": "b29484df15f5ec4b299fc092d34381535b0a11acc48c4cea08eb847851412c94"
+        }
+      ]
+    },
+    "R17": {
+      "mean_total": 87.5,
+      "total_range": [
+        85.0,
+        90.0
+      ],
+      "dimension_means": {
+        "factuality": 3.0,
+        "coverage": 3.5,
+        "synthesis": 3.5,
+        "usefulness": 4.0,
+        "density": 3.5,
+        "expression": 4.0,
+        "sources": 3.0,
+        "calibration": 4.0
+      },
+      "provisional": false,
+      "critical_failures": 0,
+      "judges": [
+        {
+          "judge": "judge-one",
+          "total_exact": 85.0,
+          "scores": {
+            "factuality": 3,
+            "coverage": 3,
+            "synthesis": 3,
+            "usefulness": 4,
+            "density": 4,
+            "expression": 4,
+            "sources": 3,
+            "calibration": 4
+          },
+          "critical_failures": [],
+          "provisional": false,
+          "fact_count": 18,
+          "fact_statuses": {
+            "supported": 13,
+            "derived_correct": 4,
+            "unsupported": 1
+          },
+          "score_file_sha256": "a89dae3ea577d986655cde61eddcc62a4b620a8689a9dbbbda61a35f7cadf32c"
+        },
+        {
+          "judge": "judge-two",
+          "total_exact": 90.0,
+          "scores": {
+            "factuality": 3,
+            "coverage": 4,
+            "synthesis": 4,
+            "usefulness": 4,
+            "density": 3,
+            "expression": 4,
+            "sources": 3,
+            "calibration": 4
+          },
+          "critical_failures": [],
+          "provisional": false,
+          "fact_count": 22,
+          "fact_statuses": {
+            "supported": 20,
+            "unverifiable": 1,
+            "derived_correct": 1
+          },
+          "score_file_sha256": "b29484df15f5ec4b299fc092d34381535b0a11acc48c4cea08eb847851412c94"
+        }
+      ]
+    },
+    "R63": {
+      "mean_total": 86.875,
+      "total_range": [
+        86.25,
+        87.5
+      ],
+      "dimension_means": {
+        "factuality": 4.0,
+        "coverage": 3.0,
+        "synthesis": 4.0,
+        "usefulness": 3.0,
+        "density": 3.0,
+        "expression": 3.0,
+        "sources": 3.5,
+        "calibration": 4.0
+      },
+      "provisional": false,
+      "critical_failures": 0,
+      "judges": [
+        {
+          "judge": "judge-three",
+          "total_exact": 86.25,
+          "scores": {
+            "factuality": 4,
+            "coverage": 3,
+            "synthesis": 4,
+            "usefulness": 3,
+            "density": 3,
+            "expression": 3,
+            "sources": 3,
+            "calibration": 4
+          },
+          "critical_failures": [],
+          "provisional": false,
+          "fact_count": 28,
+          "fact_statuses": {
+            "supported": 25,
+            "derived_correct": 3
+          },
+          "score_file_sha256": "85ec24b23d495b6fc8961d9314a8f8985a745bd7bb4fe8186731f25e24bea76a"
+        },
+        {
+          "judge": "judge-four",
+          "total_exact": 87.5,
+          "scores": {
+            "factuality": 4,
+            "coverage": 3,
+            "synthesis": 4,
+            "usefulness": 3,
+            "density": 3,
+            "expression": 3,
+            "sources": 4,
+            "calibration": 4
+          },
+          "critical_failures": [],
+          "provisional": false,
+          "fact_count": 27,
+          "fact_statuses": {
+            "supported": 25,
+            "derived_correct": 2
+          },
+          "score_file_sha256": "91430c6bc742e54454aaf6b831c4b8f66bd6a40865ae895f22d090cb423fd999"
+        }
+      ]
+    }
+  },
+  "comparison": {
+    "R63_vs_R17": {
+      "dimension_delta": {
+        "factuality": 1.0,
+        "coverage": -0.5,
+        "synthesis": 0.5,
+        "usefulness": -1.0,
+        "density": -0.5,
+        "expression": -1.0,
+        "sources": 0.5,
+        "calibration": 0.0
+      },
+      "total_delta": -0.625,
+      "quality_non_regression_established": false,
+      "reason": "Both R63 judges score usefulness and expression 3/4 versus both R17 judges 4/4. Higher factuality and synthesis do not offset these losses."
+    },
+    "R42": "Provisional retained after independent clarification: evidence for ticket-status conflict remains missing. Raw scores unchanged."
+  },
+  "limits": [
+    "R63 uses supplemental originals; not a single-variable writer-role experiment.",
+    "R63 formal blind scores remain frozen; subsequent targeted corrections must be reported separately.",
+    "Different independent evaluator contexts used for R63; same inherited model settings and frozen policy.",
+    "Scores are rubric judgments, not precise objective measurements."
+  ]
+}

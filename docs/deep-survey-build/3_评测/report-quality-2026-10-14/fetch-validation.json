@@ -1,0 +1,88 @@
+{
+  "script_sha256": "838f420be7883da03e9477df5f47df05d22762b3a45193cf7d7236c254a4815e",
+  "live_pages": [
+    {
+      "url": "https://ai.engineer/shanghai/2026",
+      "status": "ok",
+      "actual_network_requests": 4,
+      "missing_resources": 0
+    },
+    {
+      "url": "https://luma.com/j9iqfmh8",
+      "status": "ok",
+      "actual_network_requests": 1,
+      "missing_resources": 0
+    },
+    {
+      "url": "https://aie.anruicloud.com/pay",
+      "status": "ok",
+      "actual_network_requests": 8,
+      "missing_resources": 0
+    },
+    {
+      "url": "https://vercel.com/blog/we-removed-80-percent-of-our-agents-tools",
+      "status": "partial",
+      "actual_network_requests": 11,
+      "missing_resources": 41
+    }
+  ],
+  "live_total_http_attempts": 24,
+  "live_aie_three_entry_http_attempts": 13,
+  "initial_generic_article_issue": "Vercel body already present but auto mode chased application scripts, used 11 extra HTTP attempts and hit the shared 24 cap. Returned partial, did not hide the missing resources.",
+  "fix": "Substantial article content in auto mode records a stop decision; --all-resources remains available for missing fields.",
+  "post_fix_replay": {
+    "actual_network_requests": 0,
+    "evidence_reads": 14,
+    "statuses": [
+      "ok",
+      "ok",
+      "ok",
+      "ok"
+    ]
+  },
+  "checks": {
+    "speaker_titles": {
+      "observed": 21,
+      "expected": 21
+    },
+    "speaker_abstracts": {
+      "observed": 21,
+      "expected": 21
+    },
+    "speaker_title_in_extracted_text": {
+      "observed": true,
+      "expected": true
+    },
+    "standard_price_in_structured_data": {
+      "observed": true,
+      "expected": true
+    },
+    "expo_price_in_structured_data": {
+      "observed": true,
+      "expected": true
+    },
+    "conditional_channel_in_data": {
+      "observed": true,
+      "expected": true
+    },
+    "cancellation_postponement_exception_extracted": {
+      "observed": true,
+      "expected": true
+    },
+    "vercel_case_and_limiting_condition": {
+      "observed": true,
+      "expected": true
+    },
+    "static_article_avoids_site_application": {
+      "observed": 1,
+      "expected": 1
+    }
+  },
+  "limits": [
+    "Target fields verified; not a complete semantic audit of all public pages.",
+    "Post-fix four-page result is replay from real snapshots, not a second claimed live measurement.",
+    "AIE live 13 HTTP attempts are distinct from the historical 17 heterogeneous tool operations; no 24 percent reduction claim.",
+    "Auto heuristics are disclosed and coverage stays not_assessed."
+  ],
+  "raw_index": "live-evidence/index.json"
+}
