@@ -13,7 +13,7 @@
 
 - [网页采集](references/fetching.md)：`fetch_page.py` 批量提取 HTML、内嵌 JSON、公开脚本与 GET 数据，保留原文、时间、哈希及明确的缺失状态；支持固定证据回放。
 - [报告质量 policy](references/report-quality-policy.md)：八维评分、独立事实核验、严重错误门槛。版本验收使用两名独立盲评，普通报告保留一次冷读；不按篇幅、来源数、图数或 token 给质量分。
-- `measure_run.py`：显式指定主/子日志、turn 和时段，按响应去重，区分缓存、非缓存与输出 token，不把累计上下文当成浪费或账单。
+- `measure_run.py`：只读 Codex 的 JSONL 会话记录；显式指定主/子日志、turn 和时段，按响应去重，区分缓存、非缓存与输出 token，不把累计上下文当成浪费或账单。
 
 ## 来源与交付
 

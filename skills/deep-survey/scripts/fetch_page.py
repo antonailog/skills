@@ -40,16 +40,26 @@ def canonical(url):
     return urllib.parse.urlunsplit((p.scheme.lower(), p.netloc.lower(), p.path or "/", p.query, ""))
 
 
+# Clash / Surge fake-ip: with the proxy owning DNS, every public domain resolves into 198.18.0.0/15.
+# Accept that range only for domain names; a literal 198.18.x.x URL is still rejected.
+FAKE_IP = ipaddress.ip_network("198.18.0.0/15")
+
+
 def public_url(url):
     url = canonical(url)
     host = urllib.parse.urlsplit(url).hostname
     if host.lower().rstrip(".") in ("localhost", "localhost.localdomain"):
         raise ValueError("Private host is not a public source")
     try:
-        addresses = [str(ipaddress.ip_address(host))]
+        addresses, literal = [str(ipaddress.ip_address(host))], True
     except ValueError:
-        addresses = list({x[4][0] for x in socket.getaddrinfo(host, None, type=socket.SOCK_STREAM)})
-    if any(not ipaddress.ip_address(a).is_global for a in addresses):
+        addresses, literal = list({x[4][0] for x in socket.getaddrinfo(host, None, type=socket.SOCK_STREAM)}), False
+
+    def allowed(a):
+        ip = ipaddress.ip_address(a)
+        return ip.is_global or (not literal and ip in FAKE_IP)
+
+    if not all(allowed(a) for a in addresses):
         raise ValueError("Private or reserved network targets are not public sources")
     return url
 

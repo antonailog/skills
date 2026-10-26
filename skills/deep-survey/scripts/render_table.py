@@ -19,6 +19,9 @@ from renumber_sources import page_key
 
 
 def main() -> int:
+    if sys.argv[1:2] in (["-h"], ["--help"]):
+        print(__doc__.strip())
+        return 0
     a = sys.argv[1:]
     if not a:
         print(__doc__)

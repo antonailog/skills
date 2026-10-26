@@ -58,6 +58,9 @@ def zh_len(s: str) -> int:
 
 
 def main() -> int:
+    if sys.argv[1:2] in (["-h"], ["--help"]):
+        print(__doc__.strip())
+        return 0
     if len(sys.argv) < 2:
         print(__doc__)
         return 2
