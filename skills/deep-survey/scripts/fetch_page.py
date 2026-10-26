@@ -53,7 +53,10 @@ def public_url(url):
     try:
         addresses, literal = [str(ipaddress.ip_address(host))], True
     except ValueError:
-        addresses, literal = list({x[4][0] for x in socket.getaddrinfo(host, None, type=socket.SOCK_STREAM)}), False
+        try:  # inet_aton also accepts integer, short, hex and octal IPv4 forms (3323068417, 198.18.1, 0xc6.0x12.0.1)
+            addresses, literal = [socket.inet_ntoa(socket.inet_aton(host))], True
+        except OSError:
+            addresses, literal = list({x[4][0] for x in socket.getaddrinfo(host, None, type=socket.SOCK_STREAM)}), False
 
     def allowed(a):
         ip = ipaddress.ip_address(a)
