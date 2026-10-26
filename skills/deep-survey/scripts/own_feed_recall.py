@@ -4,7 +4,7 @@
 用法：
   python3 own_feed_recall.py <research_notes/课题目录> --keywords 关键词1 关键词2 ... [--days 90] [--top 100]
 
-关键词：从信息需求清单拆出 5—15 个，用品类名、产品名、公司名及中英文别名，**不要整句**。
+关键词：从计划（00-plan.md）拆出 5—15 个，用品类名、产品名、公司名及中英文别名，**不要整句**。
   整句会让关键词检索失效（2026-10-11 实测：整句命中 0 条，「AI陪伴」命中 96 条）。
 
 怎么排：每个关键词各召回一次，合并去重后自己重排，不用 Info2Action 的排序（它只按向量相似度排，
@@ -96,7 +96,7 @@ def main() -> int:
     out_dir = Path(argv[0]).resolve()
     keywords = arg_list(argv, "--keywords")
     if not keywords:
-        print("缺 --keywords：从信息需求清单拆 5—15 个关键词")
+        print("缺 --keywords：从计划拆 5—15 个关键词")
         return 2
     long_kw = [k for k in keywords if len(re.findall(r"[\u4e00-\u9fff]", k)) > 10 or len(k.split()) > 4]
     if long_kw:
@@ -183,7 +183,7 @@ def main() -> int:
           f"关键词 {len(keywords)} 个，近 {days} 天，取前 {top} 条，实得 {len(items)} 条。"
           "研究员先读这份索引，相关的去同名 JSON 里读原文（content 字段）。引用时照常写标题和 URL，行尾加「自有信源」。"
           "平台是 lingowhale 的是公众号文章：链接是语鲸阅读器，外人要登录才能看，引用时写成「公众号「作者」《标题》」，"
-          "核查以 JSON 里的原文为准。", "",
+          "引用以 JSON 里的原文为准。", "",
           "| 关键词 | 关键词命中 | 向量命中 | 进池 |", "|---|---|---|---|"]
     md += [f"| {k} | {lx} | {vx} | {kept} |" for k, lx, vx, kept in per_kw]
     md += [""]

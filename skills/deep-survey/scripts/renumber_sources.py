@@ -8,27 +8,30 @@
   1. 按正文里第一次出现的顺序，给被引用的来源重新编号 1—N。
   2. 同一页面的多个旧编号合并成一个：App Store 页按「国家 + 应用编号」认（带不带应用名、
      带不带 ?see-all=reviews 都算同一页），36 氪桌面页与移动端页算同一页，其他网址去掉锚点后相同即同一页。
-  3. 改写正文和推荐阅读里的 [n]、[a,b]：合并后去重，保持原顺序。
+  3. 将正文和推荐阅读里的 [n]、[a,b] 及已有数字链接统一为可点击原文链接。
   4. 重写「口径与来源」的编号列表：沿用报告里原有的条目文字（报告员写的标题、日期、弱来源标记），
      只换编号；报告里没列的编号才用 sources.json 生成 `n. 标题 — URL（日期）`，弱来源（weak 字段）在行尾标出。
      列表之前的口径说明保留不动。
   5. 给了 --charts 时，同步改写 charts/data/*.json 的 source 字段，并提示重跑 make_chart.py（图的页脚编号要更新）。
-  6. 新旧对照写到 sources.json 同目录的 sources-renumber.json；改写前的报告备份为同目录的 report-编号前.md。
+  6. 同步 sources.json / sources.md，旧 CSV 数字恢复为 URL；保存编号对照与报告、来源原件，重跑不覆盖原件。
 
 --dry-run 只打印会怎么改，不写文件。
 """
+import csv
+import io
 import json
 import re
 import sys
 from pathlib import Path
 from urllib.parse import urlsplit
+from build_source_table import URL_RE, normalize, source_markdown
 
-CITE_RE = re.compile(r"\[(\d{1,3}(?:\s*,\s*\d{1,3})*)\]")
+CITE_RE = re.compile(r"\[(\d{1,3}(?:\s*,\s*\d{1,3})*)\](?:\((https?://[^)\s]+)\))?")
 LIST_RE = re.compile(r"^\s*(?:\[(\d{1,3})\]|(\d{1,3})[.、])\s+")
 
 
 def page_key(url: str) -> str:
-    u = urlsplit(url.strip())
+    u = urlsplit(normalize(url.strip()))
     host = u.netloc.lower()
     for p in ("www.", "m."):
         if host.startswith(p):
@@ -41,6 +44,10 @@ def page_key(url: str) -> str:
         return f"36kr.com/p/{m.group(1)}"
     q = "&".join(x for x in u.query.split("&") if x and not x.startswith(("see-all", "utm_")))
     return f"{host}{u.path.rstrip('/')}" + (f"?{q}" if q else "")
+
+
+def source_urls(text):
+    return [m.group(0).split("（", 1)[0].rstrip(".,;:。，；：") for m in URL_RE.finditer(text)]
 
 
 def sources_section(lines):
@@ -62,7 +69,9 @@ def main() -> int:
     sp = Path(a[a.index("--sources") + 1])
     charts = Path(a[a.index("--charts") + 1]) if "--charts" in a else None
     dry = "--dry-run" in a
-    lines = rp.read_text(encoding="utf-8").splitlines()
+    original_report = rp.read_text(encoding="utf-8")
+    original_sources = sp.read_text(encoding="utf-8")
+    lines = original_report.splitlines()
     src = {int(s["n"]): s for s in json.loads(sp.read_text(encoding="utf-8"))}
     s0, s1 = sources_section(lines)
     if s0 is None:
@@ -73,8 +82,8 @@ def main() -> int:
     # 1 首次出现顺序
     order: list[int] = []
     for l in body:
-        for g in CITE_RE.findall(l):
-            for x in g.split(","):
+        for m in CITE_RE.finditer(l):
+            for x in m.group(1).split(","):
                 n = int(x)
                 if n not in order:
                     order.append(n)
@@ -82,6 +91,14 @@ def main() -> int:
     if missing:
         print(f"正文引用了 sources.json 里没有的编号：{missing}，先修正")
         return 1
+
+    # 已有链接若指向别的页面，应报错，不能在重排时掩盖错配。
+    for line in body:
+        for m in CITE_RE.finditer(line):
+            if m.group(2) and any(page_key(m.group(2)) != page_key(src[int(n)]["url"])
+                                  for n in m.group(1).split(",")):
+                print(f"引用 URL 与来源编号不一致：{m.group(0)}")
+                return 1
 
     # 2 合并同一页面
     key_new: dict[str, int] = {}
@@ -97,8 +114,7 @@ def main() -> int:
             # 合并时优先保留不带查询串、标题更完整的那条
             cur = new_src[key_new[k]]
             if (not cur.get("title")) or ("?" in cur["url"] and "?" not in src[n]["url"]):
-                cur.update({k2: v for k2, v in src[n].items() if k2 != "n"})
-                cur["old"] = cur["old"]
+                cur.update({k2: v for k2, v in src[n].items() if k2 not in ("n", "old")})
         old_new[n] = key_new[k]
 
     def repl(m):
@@ -107,7 +123,7 @@ def main() -> int:
             nn = old_new[int(x)]
             if nn not in nums:
                 nums.append(nn)
-        return "[" + ",".join(str(x) for x in nums) + "]"
+        return ", ".join(f"[{n}]({new_src[n]['url']})" for n in nums)
 
     new_body = [CITE_RE.sub(repl, l) for l in body]
 
@@ -132,6 +148,10 @@ def main() -> int:
         s = new_src[nn]
         old_text = next((written[o] for o in s["old"] if o in written), None)
         if old_text:
+            urls = source_urls(old_text)
+            if not urls or any(page_key(u) != page_key(s["url"]) for u in urls):
+                print(f"来源条目 URL 与来源表不一致：旧编号 {s['old']}")
+                return 1
             out_list.append(f"{nn}. {old_text}")
             reused += 1
             continue
@@ -160,72 +180,105 @@ def main() -> int:
     for nn, olds in merged.items():
         print(f"  合并 {olds} → {nn}：{new_src[nn]['url'][:70]}")
 
-    # 5 图表数据
+    # 5 先验证旧编号，再映射；未知旧编号不能与合法新编号碰巧相同。
     chart_changes = []
     if charts and (charts / "data").is_dir():
         for jp in sorted((charts / "data").glob("*.json")):
             spec = json.loads(jp.read_text(encoding="utf-8"))
             changed = False
-
-            def walk(o):
-                nonlocal changed
-                if isinstance(o, dict):
-                    for k, v in o.items():
-                        if k == "source" and isinstance(v, list):
-                            nv = []
-                            for x in v:
-                                if isinstance(x, list):
-                                    nv.append(sorted({old_new.get(y, y) for y in x}))
-                                else:
-                                    nv.append(old_new.get(x, x))
-                            if isinstance(nv[0] if nv else None, int):
-                                nv = list(dict.fromkeys(nv))
-                            if nv != v:
-                                o[k] = nv
-                                changed = True
-                        else:
-                            walk(v)
-                elif isinstance(o, list):
-                    for v in o:
-                        walk(v)
-
-            walk(spec)
             unknown = []
 
-            def collect(o):
-                if isinstance(o, dict):
-                    for k, v in o.items():
-                        if k == "source":
-                            for x in v:
-                                for y in (x if isinstance(x, list) else [x]):
-                                    if y not in old_new.values():
-                                        unknown.append(y)
+            def remap(value):
+                nonlocal changed
+                if isinstance(value, list):
+                    values = [remap(v) for v in value]
+                    return list(dict.fromkeys(values)) if all(isinstance(v, int) for v in values) else values
+                if not isinstance(value, int) or value not in old_new:
+                    unknown.append(value)
+                    return value
+                return old_new[value]
+
+            def walk(value):
+                nonlocal changed
+                if isinstance(value, dict):
+                    for key, item in value.items():
+                        if key == "source":
+                            mapped = remap(item)
+                            if mapped != item:
+                                value[key] = mapped
+                                changed = True
                         else:
-                            collect(v)
-                elif isinstance(o, list):
-                    for v in o:
-                        collect(v)
+                            walk(item)
+                elif isinstance(value, list):
+                    for item in value:
+                        walk(item)
+
+            walk(spec)
+            if unknown:
+                print(f"{jp.name} 引用了正文没引用过的旧编号：{unknown}，未改写任何文件")
+                return 1
             if changed:
                 chart_changes.append((jp, spec))
-            collect(spec)
-            if unknown:
-                print(f"  注意：{jp.name} 引用了正文没引用过的编号 {sorted(set(unknown))}，图的来源要在正文里也出现")
+
+    # 旧 CSV 的数字来源在旧表仍可用时恢复成稳定 URL；新 CSV 无需改写。
+    csv_changes = []
+    for cp in sorted((sp.parent / "40-dossier").glob("*.csv")):
+        rows = list(csv.reader(io.StringIO(cp.read_text(encoding="utf-8-sig"))))
+        if not rows or "来源" not in rows[0]:
+            continue
+        ci = rows[0].index("来源")
+        changed = False
+        for row in rows[1:]:
+            if ci >= len(row):
+                continue
+            parts = [v.strip() for v in re.split(r"[;；]", row[ci]) if v.strip()]
+            for i, value in enumerate(parts):
+                if value.isdigit():
+                    if int(value) not in src:
+                        print(f"{cp.name} 旧来源编号不存在：{value}，未改写任何文件")
+                        return 1
+                    parts[i] = src[int(value)]["url"]
+                    changed = True
+            if changed:
+                row[ci] = ";".join(parts)
+        if changed:
+            buf = io.StringIO()
+            csv.writer(buf, lineterminator="\n").writerows(rows)
+            csv_changes.append((cp, buf.getvalue()))
 
     if dry:
         print("（dry-run，未写文件）")
         return 0
     notes = sp.parent
-    (notes / "report-编号前.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
-    rp.write_text("\n".join(new_lines) + "\n", encoding="utf-8")
+    new_items = [{"n": n, **{k: v for k, v in item.items() if k not in ("n", "old")}}
+                 for n, item in new_src.items()]
+    report_text = "\n".join(new_lines) + "\n"
+    source_text = json.dumps(new_items, ensure_ascii=False, indent=2) + "\n"
+    md_text = source_markdown(new_items)
+    md_path = notes / "sources.md"
+    if (report_text == original_report and source_text == original_sources and not chart_changes
+            and not csv_changes and md_path.exists() and md_path.read_text(encoding="utf-8") == md_text):
+        print("编号、链接与来源表已一致，无需改写")
+        return 0
+    # 保留首次改写前的原件；重跑不覆盖恢复依据。
+    for backup, original in [(notes / "report-编号前.md", original_report),
+                             (notes / "sources-编号前.json", original_sources)]:
+        if not backup.exists():
+            backup.write_text(original, encoding="utf-8")
+    rp.write_text(report_text, encoding="utf-8")
+    sp.write_text(source_text, encoding="utf-8")
+    md_path.write_text(md_text, encoding="utf-8")
     (notes / "sources-renumber.json").write_text(json.dumps(
-        {"old_to_new": {str(k): v for k, v in old_new.items()},
-         "new": [{"n": nn, **{k: v for k, v in s.items() if k not in ("n", "cited_in")}} for nn, s in new_src.items()]},
-        ensure_ascii=False, indent=1), encoding="utf-8")
+        {"old_to_new": {str(k): v for k, v in old_new.items()}, "new": new_items},
+        ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     for jp, spec in chart_changes:
-        jp.write_text(json.dumps(spec, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(f"已改写 {rp.name}；备份 {notes / 'report-编号前.md'}；对照表 {notes / 'sources-renumber.json'}")
+        jp.write_text(json.dumps(spec, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    for cp, text in csv_changes:
+        cp.write_text(text, encoding="utf-8")
+    print(f"已同步 {rp.name}、{sp.name} 与 sources.md；原件及编号对照保存在 {notes}")
     if chart_changes:
         print(f"已改写 {len(chart_changes)} 个图表数据文件，重跑 make_chart.py --all 更新图上的来源编号")
+
     return 0
 
 
