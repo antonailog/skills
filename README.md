@@ -4,7 +4,7 @@
 
 **阿東的 Claude Code / Codex Agent Skill 合集。**
 
-知识整理、写作发布、写 Skill 和 prompt，以及几个写代码时用的 Skill，由 [@antonailog](https://github.com/antonailog) 构建与维护。开发流程的整套 Skill 在 [forge-skills](https://github.com/antonailog/forge-skills)。
+知识整理、写作发布、写 Skill 和 prompt，以及写代码和做设计时用的 Skill，由 [@antonailog](https://github.com/antonailog) 构建与维护。开发流程的整套 Skill 在 [forge-skills](https://github.com/antonailog/forge-skills)。
 
 ![Skills](https://img.shields.io/badge/skills-14-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
@@ -24,14 +24,21 @@
 
 ## Skill 一览
 
-按用途分四类。每张图是一个真实跑过的例子：左边是给它的输入，右边是它交出的东西；点「看这个例子」能看到完整的输入、产物和过程。
+按用途分五类。每张图是一个真实跑过的例子：左边是给它的输入，右边是它交出的东西；点「看这个例子」能看到完整的输入、产物和过程。
 
 ### AI 编程
 
-写代码相关的 Skill。Forge 是一整套开发流程，单独放在 forge-skills 仓库；这里的两个可以单独用。
+写代码相关的 Skill。Forge 是一整套开发流程，单独放在 forge-skills 仓库；codex-delegate 可以单独用。
 
 <table>
 <tr><td width="50%" valign="top"><a href="https://github.com/antonailog/forge-skills"><img src="https://raw.githubusercontent.com/antonailog/forge-skills/main/examples/pomodoro/shots/forge-brainstorm/card.jpg" alt="Forge：从一句想法到上线"></a><br><a href="https://github.com/antonailog/forge-skills"><b>Forge</b></a> · 16 个 Skill + 1 个总入口，从一句想法到上线<br><sub>想清楚、写需求、设计、写代码、验收、审查、发布、修 bug、复盘，每个环节一个 Skill，在单独的仓库 <a href="https://github.com/antonailog/forge-skills">forge-skills</a> 里。完整示范：用它把一个番茄钟网页从一句想法做到上线，每一步的产物都在 <a href="https://github.com/antonailog/forge-demo-pomodoro">forge-demo-pomodoro</a>。</sub></td><td width="50%" valign="top"><a href="skills/codex-delegate/"><img src="skills/codex-delegate/examples/pomodoro/shots/card.jpg" alt="codex-delegate：Claude 派活给 Codex，自己验收"></a><br><a href="skills/codex-delegate/"><b>codex-delegate</b></a> · Claude 派活给 Codex，自己验收<br><sub>一个 AI 又写代码又给自己验收，等于自己批改自己的作业，写错了也看不出来。这个 Skill 让 Claude 写好任务书（要做什么、只能动哪些文件、怎样才算做完），派给本机的 Codex 在后台写，Claude 盯着进度、收回结果后逐条按验收标准核对，不合格就把意见发回原会话返工，最多两轮。最后给出一份由另一个 AI 写、经过 Claude 独立验收的代码。</sub><br><sub><a href="skills/codex-delegate/examples/pomodoro/">看这个例子 →</a></sub></td></tr>
+</table>
+
+### AI 设计
+
+把一张照片或一个想法做成网页上会看向鼠标的 3D 头像。
+
+<table>
 <tr><td width="50%" valign="top"><a href="skills/avatar-look/"><img src="skills/avatar-look/examples/orange-cat/shots/card.jpg" alt="avatar-look：做一个看向鼠标的 3D 头像"></a><br><a href="skills/avatar-look/"><b>avatar-look</b></a> · 做一个看向鼠标的 3D 头像<br><sub>想给网站做个会动的头像，常见做法是找人建 3D 模型或写一堆动画代码，成本高还容易做得僵硬。这个 Skill 从一张照片或一句想法出发：先生成 3D 风格的头像图，再给你一段提示词去即梦生成「头绕一圈」的视频，拿回来自动处理成按角度排好的帧，产出一个能嵌进任何网页的组件，鼠标移到哪头就转向哪，最后自动验收转得顺不顺。最后给出一个会看向访客鼠标、放进网页就能用的 3D 头像。</sub><br><sub><a href="skills/avatar-look/examples/orange-cat/">看这个例子 →</a></sub></td><td width="50%"></td></tr>
 </table>
 
