@@ -1,0 +1,84 @@
+{
+ "week": [
+  "2026-11-09",
+  "2026-11-15"
+ ],
+ "title": "本周活动推荐",
+ "events": [
+  {
+   "id": "baidu-world-26",
+   "city": "北京",
+   "date": "11/12",
+   "when": "周四 08:00 签到",
+   "due": "",
+   "name": "百度世界 2026",
+   "venue": "国家会议中心二期",
+   "venue_hl": "",
+   "org": "百度",
+   "intro": "百度年度技术与产品发布会，主题「下一幕，智能组织」。设主论坛、10+ 场分论坛和 30+ 场 AI 公开课；专业观众票免费，需审核。",
+   "price": "¥398起",
+   "cover": "covers/be82e4423aca.jpg",
+   "category": "大会峰会"
+  },
+  {
+   "id": "1b38de72d4",
+   "city": "北京",
+   "date": "11/13–14",
+   "when": "周五–六 09:00 起",
+   "due": "",
+   "name": "Rebuild 重构\n2026 中国企业 AI 大会",
+   "venue": "海淀 · 详细地址报名后可见",
+   "venue_hl": "",
+   "org": "崔牛会",
+   "intro": "用友王文京、有赞白鸦等 100+ 位嘉宾，主办方公布规模 2000+ 人。14 日上午领袖峰会，两天下午平行专场；公开展区票免费，需审核。",
+   "price": "¥2688",
+   "cover": "covers/b5dc3ae33955.jpg",
+   "category": "大会峰会"
+  },
+  {
+   "id": "f723f7a701",
+   "city": "北京",
+   "date": "11/14",
+   "when": "周六 10:05 开幕",
+   "due": "",
+   "name": "GOTC 2026 全球开源技术峰会",
+   "venue": "亦庄 · 通明湖国际会展中心",
+   "venue_hl": "",
+   "org": "开源中国",
+   "intro": "今年从演讲型峰会改成可逛的开放现场：1 个主舞台、4 大街区、12 个共建活动。13 日为开放原子大赛总决赛，不对公众开放。",
+   "price": "",
+   "cover": "covers/0d23b720e545.jpg",
+   "category": "大会峰会"
+  },
+  {
+   "id": "1edab5c772",
+   "city": "上海",
+   "date": "11/10",
+   "when": "周二 13:30–16:30",
+   "due": "",
+   "name": "源点 ORIGIN\nData + AI 技术实践巡展 · 上海站",
+   "venue": "徐汇 · 新漕河泾国际商务中心 A 座",
+   "venue_hl": "",
+   "org": "DataFun、漕河泾 AI 加速器联合主办",
+   "intro": "5 场分享串起 Agent 落地链路：本体、企业知识、Harness、可信智能体、Data Agent，讲者来自普华永道、合合信息、蚂蚁密算等。",
+   "price": "免费",
+   "cover": "https://wcd-image-bucket-prod.oss-cn-zhangjiakou.aliyuncs.com/raw/1KNacg4wUn733XPKDK4aEU2B.png",
+   "category": "分享会沙龙"
+  },
+  {
+   "id": "047fa4513f",
+   "city": "线上",
+   "date": "11/10",
+   "when": "周二 14:30–16:40",
+   "due": "",
+   "name": "China AI Infra Day",
+   "venue": "线上直播",
+   "venue_hl": "",
+   "org": "NVIDIA",
+   "intro": "解读 NVIDIA 在 GTC 柏林发布的 AI 网络创新：百万 GPU 组网、十亿瓦级 AI 工厂、DSX Air 网络仿真；15:20 起技术、业务两个专场并行。",
+   "price": "免费",
+   "cover": "https://wcd-image-bucket-prod.oss-cn-zhangjiakou.aliyuncs.com/raw/MVhbw1NXgymbH8PJ2H1ssE.png",
+   "category": "直播课程"
+  }
+ ]
+}
