@@ -33,17 +33,24 @@ def blocks(md):
     return out, odd
 
 
+CITIES = ("北京", "上海", "深圳", "杭州", "广州", "成都", "南京", "苏州", "武汉", "西安", "重庆", "天津", "香港", "新加坡", "线上",
+          "beijing", "shanghai", "shenzhen", "hangzhou", "guangzhou", "chengdu", "singapore")
+
+
 def similar(a, b):
     """弹窗标题和文案里的名字写法常不一样（「GTC2026 全球流量大会」和「GTC 全球流量大会」）。
-    一个包含另一个算同一场；否则要有两段以上连着 4 个字一样，只有数字和符号的片段（「2026」）不算"""
-    a, b = re.sub(r"[\W_]", "", a), re.sub(r"[\W_]", "", b)
+    去掉空格标点、忽略大小写后：两边点名的城市不同就不是同一场（同系列的上海站、北京站）；
+    一个包含另一个算同一场；否则按数字把名字切开（「2026」连着后面的字不能凑数），段内有两段以上 4 字相同才算"""
+    a, b = (re.sub(r"[\W_]", "", x).casefold() for x in (a, b))
     if not a or not b:
+        return False
+    ca, cb = {c for c in CITIES if c in a}, {c for c in CITIES if c in b}
+    if ca and cb and not ca & cb:
         return False
     if a in b or b in a:
         return True
-    frags = {a[i:i + 4] for i in range(len(a) - 3)}
-    hits = [f for f in frags if f in b and not re.fullmatch(r"\d+", f)]
-    return len(hits) >= 2
+    frags = lambda x: {seg[k:k + 4] for seg in re.split(r"\d+", x) for k in range(len(seg) - 3)}
+    return len(frags(a) & frags(b)) >= 2
 
 
 def status(url):

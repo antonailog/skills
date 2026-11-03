@@ -229,8 +229,10 @@ def check_spec(spec):
     errs = []
     try:
         a, b = (dt.date.fromisoformat(x) for x in spec["week"])
-        assert len(spec["week"]) == 2 and a <= b
+        ok = all(isinstance(x, str) and len(x) == 10 for x in spec["week"]) and a <= b
     except Exception:
+        ok = False
+    if not ok:
         errs.append("week 要写成 [\"周一\", \"周日\"] 两个日期，比如 [\"2026-11-09\", \"2026-11-15\"]")
     if not spec.get("events"):
         errs.append("events 是空的，至少要有一场")

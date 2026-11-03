@@ -33,7 +33,10 @@ def safe_name(name, used):
 
 def read_one(ctx, url, out, name):
     """读一个网址，返回 (是否算失败, 一行说明)。每个网址开一个新页面，出错不影响下一个"""
-    pg = ctx.new_page()
+    try:
+        pg = ctx.new_page()
+    except Exception as e:
+        return True, f"!! {name}：浏览器开不了新页面（{type(e).__name__}）"
     try:
         resp = pg.goto(url, wait_until="domcontentloaded", timeout=30000)
         try:   # 有的页面一直有长连接，等不到 networkidle；等 15 秒就读已经加载出来的
@@ -54,7 +57,10 @@ def read_one(ctx, url, out, name):
     except Exception as e:
         return True, f"!! {name}：打不开（{type(e).__name__}）{url[:60]}"
     finally:
-        pg.close()
+        try:
+            pg.close()
+        except Exception:
+            pass
     if resp is not None and resp.status >= 400:
         return True, f"!! {name}：返回 {resp.status}，页面可能不存在 {url[:60]}"
     if any(w in text for w in WALL):
