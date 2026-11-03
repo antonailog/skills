@@ -24,6 +24,7 @@
 产出：海报.html、海报.png、素材/、预览-1.png、预览-2.png（上下两半，缩小了方便看）。
 自检会报：二维码扫不出网址、某行最后只剩一两个字（孤字）、介绍超过三行、价格太长、宣传图没下下来。
 """
+import datetime as dt
 import html
 import json
 import shutil
@@ -84,9 +85,11 @@ def fetch_cover(e, assets, warns):
         if not ph.exists():
             try:
                 ph.write_bytes(get(f"{BASE}img/ph-{color}.jpg"))
-            except Exception:   # 网站也连不上：本地画一张浅灰图顶上
+            except Exception:   # 网站也连不上：本地画一张浅灰图顶上，不留作缓存，联网后重跑会换回分类默认图
+                ph = assets / "ph-offline.jpg"
                 Image.new("RGB", (640, 360), (236, 236, 236)).save(ph, "JPEG", quality=88)
-                warns.append(f"{e['name'][:20]}：分类默认图也没下下来，用了纯色图")
+                warns.append(f"{e['name'][:20]}：宣传图和分类默认图都没下下来，用了纯色图，联网后重跑")
+                return ph.name, True
         if src:
             warns.append(f"{e['name'][:20]}：宣传图没拿到（{ex}），用了分类默认图")
         return ph.name, True
@@ -224,8 +227,11 @@ def shoot(out, warns):
 def check_spec(spec):
     """缺了必填字段就停，别出一张缺东西的图"""
     errs = []
-    if not (isinstance(spec.get("week"), list) and len(spec["week"]) == 2):
-        errs.append("week 要写成 [周一, 周日] 两个日期")
+    try:
+        a, b = (dt.date.fromisoformat(x) for x in spec["week"])
+        assert len(spec["week"]) == 2 and a <= b
+    except Exception:
+        errs.append("week 要写成 [\"周一\", \"周日\"] 两个日期，比如 [\"2026-11-09\", \"2026-11-15\"]")
     if not spec.get("events"):
         errs.append("events 是空的，至少要有一场")
     for k, e in enumerate(spec.get("events") or [], 1):

@@ -34,9 +34,16 @@ def blocks(md):
 
 
 def similar(a, b):
-    """弹窗标题和文案里的名字写法常不一样（「GTC2026 全球流量大会」和「GTC 全球流量大会」），有 4 个字连着一样就算同一场"""
-    a, b = re.sub(r"\s", "", a), re.sub(r"\s", "", b)
-    return any(a[i:i + 4] in b for i in range(max(1, len(a) - 3)))
+    """弹窗标题和文案里的名字写法常不一样（「GTC2026 全球流量大会」和「GTC 全球流量大会」）。
+    一个包含另一个算同一场；否则要有两段以上连着 4 个字一样，只有数字和符号的片段（「2026」）不算"""
+    a, b = re.sub(r"[\W_]", "", a), re.sub(r"[\W_]", "", b)
+    if not a or not b:
+        return False
+    if a in b or b in a:
+        return True
+    frags = {a[i:i + 4] for i in range(len(a) - 3)}
+    hits = [f for f in frags if f in b and not re.fullmatch(r"\d+", f)]
+    return len(hits) >= 2
 
 
 def status(url):
@@ -66,11 +73,19 @@ def main():
         b = p.chromium.launch()
         pg = b.new_page(viewport={"width": 1280, "height": 900})
         for name, kind, url in items:
-            if "antonailog.com/more/ai-events/?e=" in url:
-                pg.goto(url, wait_until="networkidle", timeout=60000)
-                pg.wait_for_timeout(1200)
-                d = pg.locator('[role="dialog"]')
-                title = d.first.inner_text(timeout=5000).split("\n")[0] if d.count() else ""
+            detail = re.search(r"antonailog\.com/more/ai-events/?\?e=", url)
+            if kind == "详情" and not detail:
+                bad += 1
+                print(f"!! {kind}  {name[:24]} → 详情链接要指向网站这一场（…/ai-events/?e=<id>）：{url[:60]}")
+            elif detail:
+                try:
+                    pg.goto(url, wait_until="networkidle", timeout=60000)
+                    pg.wait_for_timeout(1200)
+                    d = pg.locator('[role="dialog"]')
+                    title = d.first.inner_text(timeout=5000).split("\n")[0] if d.count() else ""
+                except Exception as e:
+                    title = ""
+                    print(f"   （打开 {url[:60]} 出错：{type(e).__name__}）")
                 ok = bool(title) and bool(name) and similar(name, title)   # 场次名为空（链接写在第一个编号之前）算没对上
                 bad += not ok
                 print(f"{'OK ' if ok else '!! '}{kind}  {name[:24]} → 弹窗「{title[:30] or '没弹出'}」")

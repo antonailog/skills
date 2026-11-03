@@ -63,16 +63,27 @@ def load():
         return json.loads(LOCAL_DATA.read_text(encoding="utf-8"))["items"], "本地"
 
 
-def original_text(i):
-    """网站把活动原文（多半是公众号文章、活动行详情）存成 text/<id>.txt；微信文章常被验证墙挡住，核实时先读这份"""
-    t = i.get("text") or ""
-    if not re.fullmatch(r"text/[\w-]+\.txt", t):
-        return t   # 精编记录直接写在字段里的原文
-    try:
-        return get(BASE + t).decode("utf-8")
-    except Exception:
-        f = PROJECT / "页面" / "app" / "dist-site" / t
-        return f.read_text(encoding="utf-8") if f.is_file() else ""
+def original_text(i, live=True):
+    """网站把活动原文（多半是公众号文章、活动行详情）存成 text/<id>.txt；微信文章常被验证墙挡住，核实时先读这份。
+    live=False（线上数据已经拉不下来）时只读本地构建产物，不再一场场等超时"""
+    t = (i.get("text") or "").strip()
+    if not t:
+        return ""
+    if not re.fullmatch(r"text/[\w./-]+\.txt", t) or ".." in t:
+        if t.startswith(("text/", "http")):
+            print(f"!! {i['id']}：原文字段「{t[:40]}」不是 text/<id>.txt，没取", file=sys.stderr)
+            return ""
+        return t   # 直接写在字段里的原文
+    if live:
+        try:
+            return get(BASE + t).decode("utf-8")
+        except Exception:
+            pass
+    f = PROJECT / "页面" / "app" / "dist-site" / t
+    if f.is_file():
+        return f.read_text(encoding="utf-8")
+    print(f"!! {i['id']}：原文 {t} 线上和本地都没取到", file=sys.stderr)
+    return ""
 
 
 def day(s):
@@ -178,7 +189,7 @@ def main():
     if a.out:
         rows = [{k: i.get(k) for k in KEEP} for i in picked]
         for r in rows:
-            r["原文"] = original_text(r)
+            r["原文"] = original_text(r, live=(src == "线上"))
         Path(a.out).write_text(json.dumps(rows, ensure_ascii=False, indent=1), encoding="utf-8")
         print(f"完整字段 → {a.out}（「原文」是网站存下的活动原文，微信文章读不到时用它）", file=sys.stderr)
     if a.draft:
