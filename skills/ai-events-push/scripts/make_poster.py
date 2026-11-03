@@ -27,6 +27,7 @@
 import datetime as dt
 import html
 import json
+import re
 import shutil
 import sys
 import urllib.request
@@ -229,7 +230,7 @@ def check_spec(spec):
     errs = []
     try:
         a, b = (dt.date.fromisoformat(x) for x in spec["week"])
-        ok = all(isinstance(x, str) and len(x) == 10 for x in spec["week"]) and a <= b
+        ok = all(isinstance(x, str) and re.fullmatch(r"\d{4}-\d{2}-\d{2}", x) for x in spec["week"]) and a <= b
     except Exception:
         ok = False
     if not ok:

@@ -33,8 +33,14 @@ def blocks(md):
     return out, odd
 
 
-CITIES = ("北京", "上海", "深圳", "杭州", "广州", "成都", "南京", "苏州", "武汉", "西安", "重庆", "天津", "香港", "新加坡", "线上",
-          "beijing", "shanghai", "shenzhen", "hangzhou", "guangzhou", "chengdu", "singapore")
+# 城市名 → 统一叫法：中英文写法算同一个城市
+CITY = {c: c for c in ("北京", "上海", "深圳", "杭州", "广州", "成都", "南京", "苏州", "武汉", "西安", "重庆", "天津", "长沙",
+                       "厦门", "合肥", "青岛", "大连", "宁波", "郑州", "济南", "福州", "无锡", "珠海", "东莞", "香港", "澳门",
+                       "台北", "新加坡", "东京", "线上")}
+CITY.update({"beijing": "北京", "shanghai": "上海", "shenzhen": "深圳", "hangzhou": "杭州", "guangzhou": "广州", "chengdu": "成都",
+             "nanjing": "南京", "suzhou": "苏州", "wuhan": "武汉", "xian": "西安", "chongqing": "重庆", "tianjin": "天津",
+             "changsha": "长沙", "xiamen": "厦门", "hefei": "合肥", "qingdao": "青岛", "hongkong": "香港", "singapore": "新加坡",
+             "tokyo": "东京", "online": "线上"})
 
 
 def similar(a, b):
@@ -44,7 +50,7 @@ def similar(a, b):
     a, b = (re.sub(r"[\W_]", "", x).casefold() for x in (a, b))
     if not a or not b:
         return False
-    ca, cb = {c for c in CITIES if c in a}, {c for c in CITIES if c in b}
+    ca, cb = ({v for k, v in CITY.items() if k in x} for x in (a, b))
     if ca and cb and not ca & cb:
         return False
     if a in b or b in a:
