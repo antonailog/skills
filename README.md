@@ -6,7 +6,7 @@
 
 知识整理、写作发布、写 Skill 和 prompt，以及写代码和做设计时用的 Skill，由 [@antonailog](https://github.com/antonailog) 构建与维护。开发流程的整套 Skill 在 [forge-skills](https://github.com/antonailog/forge-skills)。
 
-![Skills](https://img.shields.io/badge/skills-14-blue)
+![Skills](https://img.shields.io/badge/skills-15-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Platform](https://img.shields.io/badge/Claude%20Code-compatible-8A2BE2)
 
@@ -54,11 +54,11 @@
 
 ### 写作发布
 
-写小红书、公众号和工作文档，按各自的规矩排好、写好。
+写小红书、公众号、工作文档和活动推送，按各自的规矩排好、写好。
 
 <table>
 <tr><td width="50%" valign="top"><a href="skills/xhs-note/"><img src="skills/xhs-note/examples/sunzi-mindmap-note/shots/card.jpg" alt="xhs-note：写一篇能直接发的小红书笔记"></a><br><a href="skills/xhs-note/"><b>xhs-note</b></a> · 写一篇能直接发的小红书笔记<br><sub>自己写小红书笔记，常常不知道从哪开头，标题没人点，封面还要另外找人做，写出来一股 AI 味。这个 Skill 先问清你想表达什么、配图讲了什么，照你以前写过的笔记的口吻起草正文（分享工具和记录感悟是两种写法），给几个标题让你挑，再生成一张标题醒目的封面、配好标签。最后给出一篇封面、标题、正文、标签齐全，能直接发的笔记。</sub><br><sub><a href="skills/xhs-note/examples/sunzi-mindmap-note/">看这个例子 →</a></sub></td><td width="50%" valign="top"><a href="skills/wechat-publisher/"><img src="skills/wechat-publisher/examples/ai-assistant-article/shots/card.jpg" alt="wechat-publisher：把文章排好版推进公众号草稿箱"></a><br><a href="skills/wechat-publisher/"><b>wechat-publisher</b></a> · 把文章排好版推进公众号草稿箱<br><sub>在公众号后台发文章，要一张张传图、一段段调格式，从别处复制过来的表格和链接经常排乱，发完还得自己想怎么转发。这个 Skill 先把文章整理成发布版，压缩图片传到图床，列出要你确认的校对清单，再套上排版主题（自带多套，可以一次出几份对比）推进公众号草稿箱，最后附上朋友圈和群聊两版推广文案和发布时间建议，只推草稿、不替你点发表。最后给出一篇排好版、等你检查后就能发的公众号文章。</sub><br><sub><a href="skills/wechat-publisher/examples/ai-assistant-article/">看这个例子 →</a></sub></td></tr>
-<tr><td width="50%" valign="top"><a href="skills/pm-doc-write/"><img src="skills/pm-doc-write/examples/pomodoro-summary/shots/card.jpg" alt="pm-doc-write：写结论先行的工作文档"></a><br><a href="skills/pm-doc-write/"><b>pm-doc-write</b></a> · 写结论先行的工作文档<br><sub>写周报、项目总结，常常先铺一大段背景，结论埋在最后，数字没有对比基线，谁负责也说不清，AI 代写的还一股模板味。这个 Skill 按场景选模板（周报、OKR、项目总结、评测结论等），照「结论先行、表格承载、数字带基线、责任到人」的规矩写，每个数字都要能找到出处，写完对照你自己的范文调口吻，再过一遍终审清单。最后给出一份读者看开头就知道结论、可以直接发出去的工作文档。</sub><br><sub><a href="skills/pm-doc-write/examples/pomodoro-summary/">看这个例子 →</a></sub></td><td width="50%"></td></tr>
+<tr><td width="50%" valign="top"><a href="skills/pm-doc-write/"><img src="skills/pm-doc-write/examples/pomodoro-summary/shots/card.jpg" alt="pm-doc-write：写结论先行的工作文档"></a><br><a href="skills/pm-doc-write/"><b>pm-doc-write</b></a> · 写结论先行的工作文档<br><sub>写周报、项目总结，常常先铺一大段背景，结论埋在最后，数字没有对比基线，谁负责也说不清，AI 代写的还一股模板味。这个 Skill 按场景选模板（周报、OKR、项目总结、评测结论等），照「结论先行、表格承载、数字带基线、责任到人」的规矩写，每个数字都要能找到出处，写完对照你自己的范文调口吻，再过一遍终审清单。最后给出一份读者看开头就知道结论、可以直接发出去的工作文档。</sub><br><sub><a href="skills/pm-doc-write/examples/pomodoro-summary/">看这个例子 →</a></sub></td><td width="50%" valign="top"><a href="skills/ai-events-push/"><img src="skills/ai-events-push/examples/next-week-ai-events/shots/card.jpg" alt="ai-events-push：把几场 AI 活动做成群推送"></a><br><a href="skills/ai-events-push/"><b>ai-events-push</b></a> · 把几场 AI 活动做成群推送<br><sub>想往微信群推几场 AI 活动，要一场场查时间、地点、票价和讲者，排一张群里看得清的图，写一段能转发的文字，链接还得一条条点开确认。这个 Skill 从你挑的几场出发（网站截图、活动名或一张海报都行），先在「国内AI活动追踪」网站上对上这几场，按活动方海报和报名页核实，写好每场一段的标准介绍，出一张按城市分区、网站门票样式的长海报并自检排版和二维码，最后逐条打开详情和报名链接。最后给出一张图本身信息完整的海报和一段能直接复制进群的文字。</sub><br><sub><a href="skills/ai-events-push/examples/next-week-ai-events/">看这个例子 →</a></sub></td></tr>
 </table>
 
 ### Skill 与 Prompt
@@ -81,6 +81,7 @@
 <tr><td width="50%" valign="top"><a href="skills/paper-card/"><img src="docs/diagrams/paper-card.jpg" alt="paper-card 结构图"></a><br><a href="skills/paper-card/"><b>paper-card</b></a> · 一篇论文读成一张学习卡片</td><td width="50%" valign="top"><a href="skills/pm-doc-write/"><img src="docs/diagrams/pm-doc-write.jpg" alt="pm-doc-write 结构图"></a><br><a href="skills/pm-doc-write/"><b>pm-doc-write</b></a> · 按本人写法写周报、OKR、项目总结</td></tr>
 <tr><td width="50%" valign="top"><a href="skills/prompt-craft/"><img src="docs/diagrams/prompt-craft.jpg" alt="prompt-craft 结构图"></a><br><a href="skills/prompt-craft/"><b>prompt-craft</b></a> · 生产级 prompt 与对抗审查</td><td width="50%" valign="top"><a href="skills/skill-build/"><img src="docs/diagrams/skill-build.jpg" alt="skill-build 结构图"></a><br><a href="skills/skill-build/"><b>skill-build</b></a> · 造 Skill：设计、评测、迭代</td></tr>
 <tr><td width="50%" valign="top"><a href="skills/wechat-publisher/"><img src="docs/diagrams/wechat-publisher.jpg" alt="wechat-publisher 结构图"></a><br><a href="skills/wechat-publisher/"><b>wechat-publisher</b></a> · Markdown 推成公众号草稿</td><td width="50%" valign="top"><a href="skills/xhs-note/"><img src="docs/diagrams/xhs-note.jpg" alt="xhs-note 结构图"></a><br><a href="skills/xhs-note/"><b>xhs-note</b></a> · 写小红书笔记，含封面</td></tr>
+<tr><td width="50%" valign="top"><a href="skills/ai-events-push/"><img src="docs/diagrams/ai-events-push.jpg" alt="ai-events-push 结构图"></a><br><a href="skills/ai-events-push/"><b>ai-events-push</b></a> · 本周 AI 活动推荐的海报和群消息</td><td width="50%"></td></tr>
 </table>
 
 ## 已归档
@@ -127,6 +128,7 @@ Codex 用户加 `--target codex`（装到 `~/.agents/skills`），`--target both
 | lark-export | `FEISHU_APP_ID`、`FEISHU_APP_SECRET`、`FEISHU_EXPORT_HOME` | 环境变量（见该 skill 的 `SKILL.md`） |
 | wechat-publisher | `WECHAT_APP_ID`、`WECHAT_APP_SECRET`、`OSS_ACCESS_KEY_ID`、`OSS_ACCESS_KEY_SECRET`、`OSS_BUCKET` | 环境变量 |
 | deep-survey | `ZHIHU_ACCESS_SECRET`（可选，知乎数据开放平台）；`INFO2ACTION_REPO`（可选，作者自用的信息流） | 环境变量，或写进 `~/.config/deep-survey/secrets.env`；都没有时自动退回网页搜索 |
+| ai-events-push | `AI_EVENTS_DIR`（可选，作者自己的活动网站项目目录，加新活动、修网站信息时用） | 环境变量；没设就用 `~/claudecode_workspace/工具/活动监测`，只做海报和文字用不到 |
 
 `config/config.yaml`、`.env` 等本地密钥文件已被 git 忽略。
 
@@ -137,6 +139,7 @@ skills/
 ├── skills/
 │   ├── <skill>/examples/  # 每个 Skill 一个真实跑过的例子：README + input/ + output/ + shots/
 │   ├── _shared/     # 共享代码：figkit（图稿渲染成飞书画板 SVG 并校验），不是 skill，不随 install.sh 安装
+│   ├── ai-events-push/
 │   ├── avatar-look/
 │   ├── book-to-mindmap/
 │   ├── codex-delegate/

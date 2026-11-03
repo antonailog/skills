@@ -6,7 +6,7 @@
 
 Practical, production-tested skills for content workflows, product analysis, and knowledge management — built and maintained by [@antonailog](https://github.com/antonailog).
 
-![Skills](https://img.shields.io/badge/skills-13-blue)
+![Skills](https://img.shields.io/badge/skills-15-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Platform](https://img.shields.io/badge/Claude%20Code-compatible-8A2BE2)
 
@@ -39,6 +39,8 @@ This repository is where I keep my own reusable skills under version control, so
 | **[paper-card](./skills/paper-card/)** | Read a paper, official best-practice doc, or cookbook end to end and produce a study card: every number carries a how-to-read note, every term is explained by analogy, every takeaway lands on an executable action. Ships a layered-panel SVG diagram with a headless-render self-check. Structure adapts to the source material instead of forcing a fixed template. | `读一下这篇论文`, `整理成卡片`, `这批参考资料做成学习资料` |
 | **[codex-delegate](./skills/codex-delegate/)** | Claude Code hands code implementation to local Codex CLI background jobs: write a task brief → submit → liveness checks → accept against the brief → fix rounds resume the same session (max two) → take back → commit; includes blind arbitration. `delegate.sh` manages job state and resume; needs the Codex CLI bundled with the ChatGPT app. | `派给codex`, `delegate to codex` |
 | **[deep-survey](./skills/deep-survey/)** | Research a product, industry, company, AI tool, or event and produce a Markdown report a newcomer can read and decide from. Three roles relay without seeing each other's process: researchers split the evidence blocks and save page originals and notes; an independent writer who did no collection reads all notes, states three to five core judgments, and writes the report around them; a reviewer cold-reads the finished draft once. Before delivery, scripts renumber sources into clickable citations and check citations, images, and tables. Facts, inferences, and unknowns are kept apart. Build notes: [docs/deep-survey-build](./docs/deep-survey-build/). | `调研一下`, `竞品分析`, `值不值得做` |
+| **[prompt-vault](./skills/prompt-vault/)** | Keep good prompts you come across in one library: extract the prompt verbatim from a page or article, write it up as a card with example output and source, file it by use, rebuild the index, and push to GitHub. | `收录这条 prompt`, `存进 prompt 库` |
+| **[ai-events-push](./skills/ai-events-push/)** | Turn a handful of picked AI events into a weekly WeChat group push: one long poster grouped by city, each event drawn as the same ticket used on the author's events site (16:9 cover, date and time, venue, organizer, a three-line intro, price stub), plus a ready-to-paste message with one standard intro and two links (details, sign-up) per event. Event data comes from the live site; facts are checked against the organizer's poster and sign-up page; the poster script self-checks orphans, overflow and the QR code, and every link is opened before delivery. Tied to the author's events site, so outside that setup only the poster-and-text part is reusable. | `做个推送`, `本周活动推荐出一版`, `这几个活动发群里` |
 
 ### How each skill works
 
@@ -51,6 +53,7 @@ These diagrams cover selected skills: stages, gates, loops and outputs. Click a 
 <tr><td width="50%" valign="top"><a href="skills/paper-card/"><img src="docs/diagrams/paper-card.jpg" alt="paper-card 结构图"></a><br><a href="skills/paper-card/"><b>paper-card</b></a></td><td width="50%" valign="top"><a href="skills/pm-doc-write/"><img src="docs/diagrams/pm-doc-write.jpg" alt="pm-doc-write 结构图"></a><br><a href="skills/pm-doc-write/"><b>pm-doc-write</b></a></td></tr>
 <tr><td width="50%" valign="top"><a href="skills/prompt-craft/"><img src="docs/diagrams/prompt-craft.jpg" alt="prompt-craft 结构图"></a><br><a href="skills/prompt-craft/"><b>prompt-craft</b></a></td><td width="50%" valign="top"><a href="skills/skill-build/"><img src="docs/diagrams/skill-build.jpg" alt="skill-build 结构图"></a><br><a href="skills/skill-build/"><b>skill-build</b></a></td></tr>
 <tr><td width="50%" valign="top"><a href="skills/wechat-publisher/"><img src="docs/diagrams/wechat-publisher.jpg" alt="wechat-publisher 结构图"></a><br><a href="skills/wechat-publisher/"><b>wechat-publisher</b></a></td><td width="50%" valign="top"><a href="skills/xhs-note/"><img src="docs/diagrams/xhs-note.jpg" alt="xhs-note 结构图"></a><br><a href="skills/xhs-note/"><b>xhs-note</b></a></td></tr>
+<tr><td width="50%" valign="top"><a href="skills/ai-events-push/"><img src="docs/diagrams/ai-events-push.jpg" alt="ai-events-push 结构图"></a><br><a href="skills/ai-events-push/"><b>ai-events-push</b></a></td><td width="50%"></td></tr>
 </table>
 
 ## Archived
@@ -97,6 +100,7 @@ Some skills call third-party APIs and need credentials. **No secrets are committ
 | lark-export | `FEISHU_APP_ID`, `FEISHU_APP_SECRET`, `FEISHU_EXPORT_HOME` | Environment variables (see the skill's `SKILL.md`) |
 | wechat-publisher | `WECHAT_APP_ID`, `WECHAT_APP_SECRET`, `OSS_ACCESS_KEY_ID`, `OSS_ACCESS_KEY_SECRET`, `OSS_BUCKET` | Environment variables |
 | deep-survey | `ZHIHU_ACCESS_SECRET` (optional, Zhihu open platform); `INFO2ACTION_REPO` (optional, the author's own feed system) | Environment variables, or `~/.config/deep-survey/secrets.env`; falls back to web search when absent |
+| ai-events-push | `AI_EVENTS_DIR` (optional, the author's own events-site project, used only to add or fix events on the site) | Environment variable; defaults to `~/claudecode_workspace/工具/活动监测`; not needed for the poster and message alone |
 
 `config/config.yaml`, `.env`, and other local secret files are git-ignored.
 
@@ -106,6 +110,7 @@ Some skills call third-party APIs and need credentials. **No secrets are committ
 skills/
 ├── skills/
 │   ├── _shared/     # shared code: figkit (renders figure drafts to Feishu-board SVG and checks them); not a skill, not installed
+│   ├── ai-events-push/
 │   ├── avatar-look/
 │   ├── book-to-mindmap/
 │   ├── codex-delegate/
@@ -116,6 +121,7 @@ skills/
 │   ├── pm-doc-write/
 │   ├── podcast-summary/
 │   ├── prompt-craft/
+│   ├── prompt-vault/
 │   ├── skill-build/
 │   ├── wechat-publisher/
 │   └── xhs-note/
