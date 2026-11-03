@@ -36,21 +36,28 @@ def blocks(md):
 # 城市名 → 统一叫法：中英文写法算同一个城市
 CITY = {c: c for c in ("北京", "上海", "深圳", "杭州", "广州", "成都", "南京", "苏州", "武汉", "西安", "重庆", "天津", "长沙",
                        "厦门", "合肥", "青岛", "大连", "宁波", "郑州", "济南", "福州", "无锡", "珠海", "东莞", "香港", "澳门",
-                       "台北", "新加坡", "东京", "线上")}
+                       "台北", "新加坡", "东京")}
 CITY.update({"beijing": "北京", "shanghai": "上海", "shenzhen": "深圳", "hangzhou": "杭州", "guangzhou": "广州", "chengdu": "成都",
              "nanjing": "南京", "suzhou": "苏州", "wuhan": "武汉", "xian": "西安", "chongqing": "重庆", "tianjin": "天津",
              "changsha": "长沙", "xiamen": "厦门", "hefei": "合肥", "qingdao": "青岛", "hongkong": "香港", "singapore": "新加坡",
-             "tokyo": "东京", "online": "线上"})
+             "tokyo": "东京"})
+
+
+def cities(x):
+    """名字里点到的城市（「线上」不算城市）。英文按整词找，免得 Python Line 里拼出 online、Lixiang 里拼出 xian"""
+    low = x.casefold().replace("xi'an", "xian").replace("hong kong", "hongkong")
+    return {v for k, v in CITY.items()
+            if (re.search(rf"(?<![a-z]){k}(?![a-z])", low) if k.isascii() else k in low)}
 
 
 def similar(a, b):
     """弹窗标题和文案里的名字写法常不一样（「GTC2026 全球流量大会」和「GTC 全球流量大会」）。
     去掉空格标点、忽略大小写后：两边点名的城市不同就不是同一场（同系列的上海站、北京站）；
     一个包含另一个算同一场；否则按数字把名字切开（「2026」连着后面的字不能凑数），段内有两段以上 4 字相同才算"""
+    ca, cb = cities(a), cities(b)
     a, b = (re.sub(r"[\W_]", "", x).casefold() for x in (a, b))
     if not a or not b:
         return False
-    ca, cb = ({v for k, v in CITY.items() if k in x} for x in (a, b))
     if ca and cb and not ca & cb:
         return False
     if a in b or b in a:
