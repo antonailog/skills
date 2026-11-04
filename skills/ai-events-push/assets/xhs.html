@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>{{TITLE}}</title>
+<!-- ai-events-push 的小红书模板：768×1024，按 2 倍截图。
+     封面和活动页共用 338×190 宣传图、190 高门票；每天的页第一张是大票（头条）。
+     日期 Geist 粗、纸白底 + 顶部七彩柔光、副券城市色满底白字，是作者从 10 种方案里定的 02「头条大票」。 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-sc@5.1.1/900.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-sc@5.1.1/700.css">
+<style>
+@font-face { font-family: "Geist"; font-weight: 100 900; src: url("素材/geist-latin-wght-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+2000-206F, U+2212; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root { --ink: #2B2A26; --ink-2: #5F5E5B; --ink-3: #8A8884; --ink-4: #B3B1AC; --line-2: #DCDBD8; --due: #D44C47; --due-bg: #FDEBEC;
+  --rainbow: #F9AFCB 0%, #FFC59A 18%, #FFE88A 36%, #B3EBC4 54%, #A6DDF2 70%, #B5C7FA 85%, #D8BBF6 100%;
+  --sans: "Geist", "Noto Sans SC", "PingFang SC", sans-serif;
+  --paper: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxNDAnIGhlaWdodD0nMTQwJz48ZmlsdGVyIGlkPSduJz48ZmVUdXJidWxlbmNlIHR5cGU9J2ZyYWN0YWxOb2lzZScgYmFzZUZyZXF1ZW5jeT0nLjg1JyBudW1PY3RhdmVzPScyJyBzdGl0Y2hUaWxlcz0nc3RpdGNoJy8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPScwIDAgMCAwIC40NSAgMCAwIDAgMCAuNDIgIDAgMCAwIDAgLjM4ICAwIDAgMCAuMDkgMCcvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPScxMDAlJyBoZWlnaHQ9JzEwMCUnIGZpbHRlcj0ndXJsKCNuKScvPjwvc3ZnPg=="); }
+body { background: #e9e9e9; color: var(--ink); font-family: var(--sans); font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; }
+.page { position: relative; width: 768px; height: 1024px; overflow: hidden; margin: 0 0 20px; padding: 28px 22px 0;
+  background: #FBFAF8; }
+.page::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 360px; pointer-events: none;
+  background: linear-gradient(180deg, rgba(255,255,255,.25), rgba(255,255,255,.78)), linear-gradient(90deg, var(--rainbow));
+  -webkit-mask-image: linear-gradient(to bottom, #000 40%, transparent); }
+.page::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .5; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxNjAnIGhlaWdodD0nMTYwJz48ZmlsdGVyIGlkPSduJz48ZmVUdXJidWxlbmNlIHR5cGU9J2ZyYWN0YWxOb2lzZScgYmFzZUZyZXF1ZW5jeT0nLjknIG51bU9jdGF2ZXM9JzInIHN0aXRjaFRpbGVzPSdzdGl0Y2gnLz48ZmVDb2xvck1hdHJpeCB2YWx1ZXM9JzAgMCAwIDAgLjQgIDAgMCAwIDAgLjM3ICAwIDAgMCAwIC4zMyAgMCAwIDAgLjEgMCcvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPScxMDAlJyBoZWlnaHQ9JzEwMCUnIGZpbHRlcj0ndXJsKCNuKScvPjwvc3ZnPg=="); z-index: 5; }
+.page > * { position: relative; z-index: 1; }
+
+/* 门票：ai-events-push 模板同款——票根宣传图 16:9｜正文｜副券价格，齿孔撕线、四角缺口 */
+.ticket { --r: 8px; filter: drop-shadow(0 0 .6px rgba(15,15,15,.34)) drop-shadow(0 2px 6px rgba(15,15,15,.06)); }
+.tk { display: grid; grid-template-columns: 338px minmax(0, 1fr) 46px; height: 190px; }
+.seg { position: relative; min-width: 0; overflow: hidden; }
+.body, .tail { background-color: #fff; background-image: var(--paper); }
+.stub { border-radius: 12px 0 0 12px; background: #F7F7F5;
+  -webkit-mask: radial-gradient(circle var(--r) at 100% 0, transparent calc(var(--r) - .5px), #000 var(--r)), radial-gradient(circle var(--r) at 100% 100%, transparent calc(var(--r) - .5px), #000 var(--r)); -webkit-mask-composite: source-in; }
+.stub .bg { position: absolute; inset: -12%; width: 124%; height: 124%; object-fit: cover; filter: blur(14px) saturate(1.15); opacity: .9; }
+.stub .fg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.body { padding: 11px 12px 12px 16px;
+  -webkit-mask: radial-gradient(circle var(--r) at 0 0, transparent calc(var(--r) - .5px), #000 var(--r)), radial-gradient(circle var(--r) at 0 100%, transparent calc(var(--r) - .5px), #000 var(--r)), radial-gradient(circle var(--r) at 100% 0, transparent calc(var(--r) - .5px), #000 var(--r)), radial-gradient(circle var(--r) at 100% 100%, transparent calc(var(--r) - .5px), #000 var(--r)); -webkit-mask-composite: source-in; }
+.tail { display: flex; align-items: center; justify-content: center; border-radius: 0 12px 12px 0; background-color: var(--c);
+  -webkit-mask: radial-gradient(circle var(--r) at 0 0, transparent calc(var(--r) - .5px), #000 var(--r)), radial-gradient(circle var(--r) at 0 100%, transparent calc(var(--r) - .5px), #000 var(--r)); -webkit-mask-composite: source-in; }
+.body::before, .tail::before { content: ""; position: absolute; left: 0; top: calc(var(--r) + 5px); bottom: calc(var(--r) + 5px); width: 5px; background: radial-gradient(circle, var(--line-2) 1.4px, transparent 1.8px) 50% 0 / 5px 7px repeat-y; }
+.price { writing-mode: vertical-rl; font: 800 17px/1 var(--sans); letter-spacing: .08em; white-space: nowrap; color: #fff; }
+.price.dim { font-size: 13px; font-weight: 700; color: rgba(255,255,255,.86); }
+.price.big { font-size: 24px; }
+.price.hz { writing-mode: horizontal-tb; font-size: 18px; letter-spacing: .04em; }
+.price.hz.big { font-size: 30px; letter-spacing: .02em; }
+.r1 { display: flex; align-items: center; gap: 7px; font: 600 12.5px/20px var(--sans); color: var(--ink-2); white-space: nowrap; }
+.r1 b { font-weight: 800; font-size: 13.5px; color: var(--c); }
+.tag { display: inline-flex; align-items: center; gap: 4px; height: 20px; padding: 0 7px; border-radius: 4px; font: 800 11.5px/1 var(--sans);
+  color: var(--c); background: color-mix(in srgb, var(--c) 11%, #fff); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c) 30%, transparent); }
+.tag i { width: 3px; height: 3px; border-radius: 50%; background: currentColor; opacity: .6; }
+.tag.on { color: #fff; background: var(--c); box-shadow: none; }
+.due { display: inline-flex; align-items: center; height: 19px; padding: 0 6px; border-radius: 4px; background: var(--due-bg); font: 700 11.5px/1 var(--sans); color: var(--due); }
+.name { margin-top: 3px; font: 900 15.5px/1.36 var(--sans); }
+.meta { margin-top: 5px; display: grid; grid-template-columns: 12px minmax(0, 1fr); gap: 5px; font: 500 12px/1.45 "PingFang SC", var(--sans); color: var(--ink-2); }
+.meta + .meta { margin-top: 1px; }
+.meta svg { width: 12px; height: 12px; margin-top: 2.5px; color: var(--ink-4); }
+.why { margin-top: 7px; padding-top: 7px; border-top: 1px solid #F0EEEA; font: 400 12.5px/1.55 "PingFang SC", var(--sans); color: var(--ink); }
+
+/* 大票：宣传图 16:9 在左上，副券在右边，正文在下面；各段自己挖缺口，齿孔画在交界线上 */
+.hg { display: grid; }
+.hg .seg { position: relative; min-width: 0; overflow: hidden; }
+.im { background: #F7F7F5; }
+.im .bg { position: absolute; inset: -12%; width: 124%; height: 124%; object-fit: cover; filter: blur(14px) saturate(1.15); opacity: .9; }
+.im .fg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.htail { display: flex; align-items: center; justify-content: center; background-color: var(--c); background-image: var(--paper); }
+.hb { padding: 11px 14px 12px 16px; background-color: #fff; background-image: var(--paper); }
+.pv::before { content: ""; position: absolute; left: 0; top: 13px; bottom: 13px; width: 5px; z-index: 2; background: radial-gradient(circle, var(--line-2) 1.4px, transparent 1.8px) 50% 0 / 5px 7px repeat-y; }
+.ph::before { content: ""; position: absolute; top: 0; left: 13px; right: 13px; height: 5px; z-index: 2; background: radial-gradient(circle, var(--line-2) 1.4px, transparent 1.8px) 0 50% / 7px 5px repeat-x; }
+.m1 { margin-top: 4px; display: flex; gap: 14px; font: 500 12px/1.45 "PingFang SC", var(--sans); color: var(--ink-2); white-space: nowrap; overflow: hidden; }
+.m1 span { display: inline-flex; align-items: center; gap: 4px; min-width: 0; }
+.m1 .v { flex: 0 1 auto; max-width: 62%; }
+.m1 .o { flex: 1 1 0; }
+.m1 em { font-style: normal; overflow: hidden; text-overflow: ellipsis; }
+.m1 svg { flex: none; width: 12px; height: 12px; color: var(--ink-4); }
+.clamp { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: var(--cl, 2); overflow: hidden; }
+
+/* 活动页：一天单独占页，顶上一行日期，票从上往下排 */
+.page.pg { display: flex; flex-direction: column; padding: 22px 22px 20px; }
+.stack { display: flex; flex-direction: column; }
+.sh { display: flex; align-items: center; gap: 12px; height: 50px; margin-bottom: 10px; }
+.sh .md { font: 800 48px/1 "Geist", var(--sans); letter-spacing: -.035em; }
+.sh .wd { font: 900 22px/1 var(--sans); }
+.sh i { flex: 1; height: 2px; margin-left: 6px; background: var(--ink); opacity: .85; }
+.sh .sign { font: 700 15px/1 var(--sans); color: var(--ink-2); letter-spacing: .04em; }
+
+/* 封面：标题 + 同一张门票叠放 */
+.csign { text-align: right; font: 700 15px/1 var(--sans); color: var(--ink-2); letter-spacing: .04em; }
+.cover h1 { margin-top: 8px; display: flex; flex-direction: column; gap: 10px; }
+.cover .t1 { font: 800 62px/1 "Geist", var(--sans); letter-spacing: -.035em; }
+.cover .t1 em { font-style: normal; margin: 0 8px; color: var(--ink-3); }
+.cover .t2 { font: 900 84px/1 var(--sans); letter-spacing: .02em; }
+.cities { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 8px 16px; font: 800 18px/1 var(--sans); color: var(--ink); }
+.cities span { display: inline-flex; align-items: center; gap: 7px; }
+.cities i { width: 10px; height: 10px; border-radius: 50%; background: var(--c); }
+.fan { position: relative; margin-top: 30px; height: 700px; }
+.fi { position: absolute; width: 724px; transform: rotate(var(--rot)) scale(.9); transform-origin: 50% 50%; }
+.fi .ticket { filter: drop-shadow(0 0 .6px rgba(15,15,15,.4)) drop-shadow(0 10px 22px rgba(15,15,15,.16)); }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="org" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></symbol>
+</svg>
+
+{{PAGES}}
+</body>
+</html>

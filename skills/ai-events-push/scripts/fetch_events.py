@@ -6,6 +6,8 @@
   python3 fetch_events.py --match 聚上地 "AI Engineer" --out 选中.json       按名字片段挑，完整字段写进 选中.json
   python3 fetch_events.py --ids aie-sh-1105 dbd5e2aace --draft 活动.json \
       --week 2026-11-02 2026-11-08                                            挑好的几场直接起海报数据草稿（介绍留空，要自己写）
+  python3 fetch_events.py --ids … --out 选中.json --xhs 小红书.json \
+      --week 2026-11-04 2026-11-10                                            小红书多图的数据草稿（排在哪天、钟点、地点、价格已填，介绍留空）
 
 线上数据拉不下来时退回活动监测项目里的 页面/app/src/data.json（可能不是最新，会提示）；
 项目目录取环境变量 AI_EVENTS_DIR，没设就用 ~/claudecode_workspace/工具/活动监测。
@@ -140,6 +142,37 @@ def draft(items, week):
     return {"week": week, "title": "本周活动推荐", "events": evs}
 
 
+def xhs_draft(items, rng):
+    """小红书.json 草稿：每场排在哪一天（征集类排在截止那天，开始得比范围早、还在进行的排在范围第一天），钟点只写开始和结束。
+    完全在范围外的照它自己的日子排，并报出来（单日活动票上只印钟点，挪到别的天就是排错天）。
+    介绍、封面挑哪几场、跨天活动的钟点要自己写；地点、价格核实后再定"""
+    r0, r1 = (dt.date.fromisoformat(x) for x in rng)
+    evs = []
+    for i in items:
+        s, e = day(i["start"]), day(i["end"] or i["start"])
+        sc, ec = clock(i["start"]), clock(i["end"])
+        online = i.get("form") == "线上"
+        collect = i.get("category") == "征集榜单" and day(i.get("deadline") or "")
+        if collect:   # 征集、榜单是线上申报：排在截止那天，算线上（网站上的地点多半是颁奖地）
+            d = day(i["deadline"])
+            date, time, online = f"{d.month}/{d.day}", "申报截止", True
+        else:
+            d = max(s, r0) if s and s <= r1 and e >= r0 else (s or r0)
+            date = date_label(i)
+            time = (f"{sc}–{ec}" if sc and ec else sc or "钟点未写") if e == s else (f"{sc} 起" if sc else "钟点未写")
+        if not r0 <= d <= r1:
+            print(f"!! {i['id']} 排在 {d.month}/{d.day}，不在范围 {r0.month}/{r0.day}–{r1.month}/{r1.day} 里，确认要不要放", file=sys.stderr)
+        evs.append({
+            "id": i["id"], "day": d.isoformat(), "form": "线上" if online else "线下",
+            "city": "线上" if online else i["city"], "date": date, "time": time, "due": "",
+            "name": i["name"], "venue": "线上申报" if collect else "线上直播" if online and not i.get("venue") else venue_label(i),
+            "org": i.get("org", ""), "intro": "", "price": i.get("feeShort", ""), "cover": cover_of(i),
+            "category": i.get("category", ""),
+        })
+    evs.sort(key=lambda x: (x["day"], next((i["start"] for i in items if i["id"] == x["id"]), "")))
+    return {"range": list(rng), "title": "AI 活动推荐", "sign": "by 阿東", "cover_ids": [], "events": evs}
+
+
 def overlaps(i, a, b):
     s, e = day(i["start"]), day(i["end"] or i["start"])
     return bool(s) and s <= b and e >= a
@@ -154,6 +187,8 @@ def main():
     ap.add_argument("--out")
     ap.add_argument("--draft")
     ap.add_argument("--week", nargs=2, metavar=("周一", "周日"))
+    ap.add_argument("--xhs", help="写小红书.json 草稿，日期范围取 --week（没给就取 --range）")
+    ap.add_argument("--force", action="store_true", help="--draft / --xhs 的文件已经存在时照样覆盖")
     a = ap.parse_args()
 
     items, src = load()
@@ -192,11 +227,20 @@ def main():
             r["原文"] = original_text(r, live=(src == "线上"))
         Path(a.out).write_text(json.dumps(rows, ensure_ascii=False, indent=1), encoding="utf-8")
         print(f"完整字段 → {a.out}（「原文」是网站存下的活动原文，微信文章读不到时用它）", file=sys.stderr)
+    for target in (a.draft, a.xhs):
+        if target and Path(target).exists() and not a.force:
+            sys.exit(f"{target} 已经存在（可能是改过的稿），不覆盖；确定要重起草稿加 --force")
     if a.draft:
         if not a.week:
             sys.exit("--draft 要同时给 --week 周一 周日")
         Path(a.draft).write_text(json.dumps(draft(picked, a.week), ensure_ascii=False, indent=1), encoding="utf-8")
         print(f"海报数据草稿 → {a.draft}（intro 还空着，地点、钟点、价格要核对）", file=sys.stderr)
+    if a.xhs:
+        rng = a.week or a.range
+        if not rng:
+            sys.exit("--xhs 要同时给 --week 起 止（或 --range 起 止）")
+        Path(a.xhs).write_text(json.dumps(xhs_draft(picked, rng), ensure_ascii=False, indent=1), encoding="utf-8")
+        print(f"小红书数据草稿 → {a.xhs}（intro、cover_ids 还空着；跨天活动的钟点、地点、价格要核对）", file=sys.stderr)
 
 
 if __name__ == "__main__":

@@ -81,7 +81,7 @@
 <tr><td width="50%" valign="top"><a href="skills/paper-card/"><img src="docs/diagrams/paper-card.jpg" alt="paper-card 结构图"></a><br><a href="skills/paper-card/"><b>paper-card</b></a> · 一篇论文读成一张学习卡片</td><td width="50%" valign="top"><a href="skills/pm-doc-write/"><img src="docs/diagrams/pm-doc-write.jpg" alt="pm-doc-write 结构图"></a><br><a href="skills/pm-doc-write/"><b>pm-doc-write</b></a> · 按本人写法写周报、OKR、项目总结</td></tr>
 <tr><td width="50%" valign="top"><a href="skills/prompt-craft/"><img src="docs/diagrams/prompt-craft.jpg" alt="prompt-craft 结构图"></a><br><a href="skills/prompt-craft/"><b>prompt-craft</b></a> · 生产级 prompt 与对抗审查</td><td width="50%" valign="top"><a href="skills/skill-build/"><img src="docs/diagrams/skill-build.jpg" alt="skill-build 结构图"></a><br><a href="skills/skill-build/"><b>skill-build</b></a> · 造 Skill：设计、评测、迭代</td></tr>
 <tr><td width="50%" valign="top"><a href="skills/wechat-publisher/"><img src="docs/diagrams/wechat-publisher.jpg" alt="wechat-publisher 结构图"></a><br><a href="skills/wechat-publisher/"><b>wechat-publisher</b></a> · Markdown 推成公众号草稿</td><td width="50%" valign="top"><a href="skills/xhs-note/"><img src="docs/diagrams/xhs-note.jpg" alt="xhs-note 结构图"></a><br><a href="skills/xhs-note/"><b>xhs-note</b></a> · 写小红书笔记，含封面</td></tr>
-<tr><td width="50%" valign="top"><a href="skills/ai-events-push/"><img src="docs/diagrams/ai-events-push.jpg" alt="ai-events-push 结构图"></a><br><a href="skills/ai-events-push/"><b>ai-events-push</b></a> · 本周 AI 活动推荐的海报和群消息</td><td width="50%"></td></tr>
+<tr><td width="50%" valign="top"><a href="skills/ai-events-push/"><img src="docs/diagrams/ai-events-push.jpg" alt="ai-events-push 结构图"></a><br><a href="skills/ai-events-push/"><b>ai-events-push</b></a> · AI 活动推荐的群推送和小红书多图</td><td width="50%"></td></tr>
 </table>
 
 ## 已归档
@@ -128,7 +128,7 @@ Codex 用户加 `--target codex`（装到 `~/.agents/skills`），`--target both
 | lark-export | `FEISHU_APP_ID`、`FEISHU_APP_SECRET`、`FEISHU_EXPORT_HOME` | 环境变量（见该 skill 的 `SKILL.md`） |
 | wechat-publisher | `WECHAT_APP_ID`、`WECHAT_APP_SECRET`、`OSS_ACCESS_KEY_ID`、`OSS_ACCESS_KEY_SECRET`、`OSS_BUCKET` | 环境变量 |
 | deep-survey | `ZHIHU_ACCESS_SECRET`（可选，知乎数据开放平台）；`INFO2ACTION_REPO`（可选，作者自用的信息流） | 环境变量，或写进 `~/.config/deep-survey/secrets.env`；都没有时自动退回网页搜索 |
-| ai-events-push | `AI_EVENTS_DIR`（可选，作者自己的活动网站项目目录，加新活动、修网站信息时用） | 环境变量；没设就用 `~/claudecode_workspace/工具/活动监测`，只做海报和文字用不到 |
+| ai-events-push | `AI_EVENTS_DIR`（可选，作者自己的活动网站项目目录，加新活动、修网站信息时用） | 环境变量；没设就用 `~/claudecode_workspace/工具/活动监测`；小红书出图会读其中的活动库找活动行原图，没有这个目录就用网站存的图 |
 
 `config/config.yaml`、`.env` 等本地密钥文件已被 git 忽略。
 
