@@ -4,20 +4,20 @@
 <meta charset="utf-8">
 <title>{{TITLE}}</title>
 <!-- ai-events-push 的小红书模板：768×1024，按 2 倍截图。
-     封面和活动页共用 338×190 宣传图、190 高门票；字号、颜色和叠放沿用作者定下的样图 v3。 -->
+     封面和活动页共用 338×190 宣传图、190 高门票；每天的页第一张是大票（头条）。
+     日期 Geist 粗、纸白底 + 顶部七彩柔光、副券城市色满底白字，是作者从 10 种方案里定的 02「头条大票」。 -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-sc@5.1.1/900.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-sc@5.1.1/700.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/zcool-qingke-huangyou@5.1.1/400.css">
 <style>
 @font-face { font-family: "Geist"; font-weight: 100 900; src: url("素材/geist-latin-wght-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+2000-206F, U+2212; }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 :root { --ink: #2B2A26; --ink-2: #5F5E5B; --ink-3: #8A8884; --ink-4: #B3B1AC; --line-2: #DCDBD8; --due: #D44C47; --due-bg: #FDEBEC;
   --rainbow: #F9AFCB 0%, #FFC59A 18%, #FFE88A 36%, #B3EBC4 54%, #A6DDF2 70%, #B5C7FA 85%, #D8BBF6 100%;
-  --sans: "Geist", "Noto Sans SC", "PingFang SC", sans-serif; --title: "ZCOOL QingKe HuangYou", "Noto Sans SC", sans-serif;
+  --sans: "Geist", "Noto Sans SC", "PingFang SC", sans-serif;
   --paper: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxNDAnIGhlaWdodD0nMTQwJz48ZmlsdGVyIGlkPSduJz48ZmVUdXJidWxlbmNlIHR5cGU9J2ZyYWN0YWxOb2lzZScgYmFzZUZyZXF1ZW5jeT0nLjg1JyBudW1PY3RhdmVzPScyJyBzdGl0Y2hUaWxlcz0nc3RpdGNoJy8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPScwIDAgMCAwIC40NSAgMCAwIDAgMCAuNDIgIDAgMCAwIDAgLjM4ICAwIDAgMCAuMDkgMCcvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPScxMDAlJyBoZWlnaHQ9JzEwMCUnIGZpbHRlcj0ndXJsKCNuKScvPjwvc3ZnPg=="); }
 body { background: #e9e9e9; color: var(--ink); font-family: var(--sans); font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; }
 .page { position: relative; width: 768px; height: 1024px; overflow: hidden; margin: 0 0 20px; padding: 28px 22px 0;
-  background: linear-gradient(180deg, rgba(255,255,255,.86), rgba(255,255,255,.80)), linear-gradient(160deg, var(--rainbow)); }
+  background: #FBFAF8; }
 .page::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 360px; pointer-events: none;
   background: linear-gradient(180deg, rgba(255,255,255,.25), rgba(255,255,255,.78)), linear-gradient(90deg, var(--rainbow));
   -webkit-mask-image: linear-gradient(to bottom, #000 40%, transparent); }
@@ -36,11 +36,14 @@ body { background: #e9e9e9; color: var(--ink); font-family: var(--sans); font-va
 .stub .fg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
 .body { padding: 11px 12px 12px 16px;
   -webkit-mask: radial-gradient(circle var(--r) at 0 0, transparent calc(var(--r) - .5px), #000 var(--r)), radial-gradient(circle var(--r) at 0 100%, transparent calc(var(--r) - .5px), #000 var(--r)), radial-gradient(circle var(--r) at 100% 0, transparent calc(var(--r) - .5px), #000 var(--r)), radial-gradient(circle var(--r) at 100% 100%, transparent calc(var(--r) - .5px), #000 var(--r)); -webkit-mask-composite: source-in; }
-.tail { display: flex; align-items: center; justify-content: center; border-radius: 0 12px 12px 0; background-color: color-mix(in srgb, var(--c) 9%, #fff);
+.tail { display: flex; align-items: center; justify-content: center; border-radius: 0 12px 12px 0; background-color: var(--c);
   -webkit-mask: radial-gradient(circle var(--r) at 0 0, transparent calc(var(--r) - .5px), #000 var(--r)), radial-gradient(circle var(--r) at 0 100%, transparent calc(var(--r) - .5px), #000 var(--r)); -webkit-mask-composite: source-in; }
 .body::before, .tail::before { content: ""; position: absolute; left: 0; top: calc(var(--r) + 5px); bottom: calc(var(--r) + 5px); width: 5px; background: radial-gradient(circle, var(--line-2) 1.4px, transparent 1.8px) 50% 0 / 5px 7px repeat-y; }
-.price { writing-mode: vertical-rl; font: 800 17px/1 var(--sans); letter-spacing: .08em; white-space: nowrap; }
-.price.dim { font-size: 13px; font-weight: 700; color: var(--ink-3); }
+.price { writing-mode: vertical-rl; font: 800 17px/1 var(--sans); letter-spacing: .08em; white-space: nowrap; color: #fff; }
+.price.dim { font-size: 13px; font-weight: 700; color: rgba(255,255,255,.86); }
+.price.big { font-size: 24px; }
+.price.hz { writing-mode: horizontal-tb; font-size: 18px; letter-spacing: .04em; }
+.price.hz.big { font-size: 30px; letter-spacing: .02em; }
 .r1 { display: flex; align-items: center; gap: 7px; font: 600 12.5px/20px var(--sans); color: var(--ink-2); white-space: nowrap; }
 .r1 b { font-weight: 800; font-size: 13.5px; color: var(--c); }
 .tag { display: inline-flex; align-items: center; gap: 4px; height: 20px; padding: 0 7px; border-radius: 4px; font: 800 11.5px/1 var(--sans);
@@ -54,20 +57,37 @@ body { background: #e9e9e9; color: var(--ink); font-family: var(--sans); font-va
 .meta svg { width: 12px; height: 12px; margin-top: 2.5px; color: var(--ink-4); }
 .why { margin-top: 7px; padding-top: 7px; border-top: 1px solid #F0EEEA; font: 400 12.5px/1.55 "PingFang SC", var(--sans); color: var(--ink); }
 
+/* 大票：宣传图 16:9 在左上，副券在右边，正文在下面；各段自己挖缺口，齿孔画在交界线上 */
+.hg { display: grid; }
+.hg .seg { position: relative; min-width: 0; overflow: hidden; }
+.im { background: #F7F7F5; }
+.im .bg { position: absolute; inset: -12%; width: 124%; height: 124%; object-fit: cover; filter: blur(14px) saturate(1.15); opacity: .9; }
+.im .fg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.htail { display: flex; align-items: center; justify-content: center; background-color: var(--c); background-image: var(--paper); }
+.hb { padding: 11px 14px 12px 16px; background-color: #fff; background-image: var(--paper); }
+.pv::before { content: ""; position: absolute; left: 0; top: 13px; bottom: 13px; width: 5px; z-index: 2; background: radial-gradient(circle, var(--line-2) 1.4px, transparent 1.8px) 50% 0 / 5px 7px repeat-y; }
+.ph::before { content: ""; position: absolute; top: 0; left: 13px; right: 13px; height: 5px; z-index: 2; background: radial-gradient(circle, var(--line-2) 1.4px, transparent 1.8px) 0 50% / 7px 5px repeat-x; }
+.m1 { margin-top: 4px; display: flex; gap: 14px; font: 500 12px/1.45 "PingFang SC", var(--sans); color: var(--ink-2); white-space: nowrap; overflow: hidden; }
+.m1 span { display: inline-flex; align-items: center; gap: 4px; min-width: 0; }
+.m1 .v { flex: 0 1 auto; max-width: 62%; }
+.m1 .o { flex: 1 1 0; }
+.m1 em { font-style: normal; overflow: hidden; text-overflow: ellipsis; }
+.m1 svg { flex: none; width: 12px; height: 12px; color: var(--ink-4); }
+.clamp { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: var(--cl, 2); overflow: hidden; }
 
-/* 活动页：一天单独占页，门票从上往下排，剩下的留白 */
-.flow { display: flex; flex-direction: column; gap: 22px; padding: 26px 22px 26px; }
-.sh { display: flex; align-items: center; gap: 12px; height: 58px; margin-bottom: 14px; }
-.sh .md { font: 400 54px/1 var(--title); }
-.sh .wd { font: 900 24px/1 var(--sans); }
+/* 活动页：一天单独占页，顶上一行日期，票从上往下排 */
+.page.pg { display: flex; flex-direction: column; padding: 22px 22px 20px; }
+.stack { display: flex; flex-direction: column; }
+.sh { display: flex; align-items: center; gap: 12px; height: 50px; margin-bottom: 10px; }
+.sh .md { font: 800 48px/1 "Geist", var(--sans); letter-spacing: -.035em; }
+.sh .wd { font: 900 22px/1 var(--sans); }
 .sh i { flex: 1; height: 2px; margin-left: 6px; background: var(--ink); opacity: .85; }
 .sh .sign { font: 700 15px/1 var(--sans); color: var(--ink-2); letter-spacing: .04em; }
-.tickets { display: flex; flex-direction: column; gap: 12px; }
 
 /* 封面：标题 + 同一张门票叠放 */
 .csign { text-align: right; font: 700 15px/1 var(--sans); color: var(--ink-2); letter-spacing: .04em; }
 .cover h1 { margin-top: 8px; display: flex; flex-direction: column; gap: 10px; }
-.cover .t1 { font: 400 62px/1 var(--title); }
+.cover .t1 { font: 800 62px/1 "Geist", var(--sans); letter-spacing: -.035em; }
 .cover .t1 em { font-style: normal; margin: 0 8px; color: var(--ink-3); }
 .cover .t2 { font: 900 84px/1 var(--sans); letter-spacing: .02em; }
 .cities { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 8px 16px; font: 800 18px/1 var(--sans); color: var(--ink); }
