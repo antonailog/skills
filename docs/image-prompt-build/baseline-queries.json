@@ -1,0 +1,57 @@
+{
+  "user_confirmed": true,
+  "runs": 1,
+  "queries": [
+    {
+      "id": "b1",
+      "query": "横评再加一题：DeepSeek 的大肥鱼坐在工位上抱着一大碗白米饭吃，二次元风，3:4，GPT Image 2.6 Sunburst、GPT Image 2.5、Nano Banana 2.1、Seedream 5.0 Pro 四个模型都要跑，先把 prompt 写出来我看看",
+      "tests": "梗角色外观核对；多模型参数"
+    },
+    {
+      "id": "b2",
+      "query": "猫子柒那种 写实 异瞳白猫在四川小院土灶前炒回锅肉 给seedance当首帧 16:9 用nano banana 2.1，prompt 和参数给我",
+      "tests": "动物首帧；NB 2.1 参数"
+    },
+    {
+      "id": "b3",
+      "query": "做一张豆姐和大肥鱼的电影海报，用 GPT Image 2.6 sunburst 走 API。片名《在线等，挺急的》，标语「一个总在线，一个总在摸鱼」，底部写「主演 豆姐 大肥鱼｜11月11日 全国上映」，字一个都不能错",
+      "tests": "画面文字；2.6 参数"
+    },
+    {
+      "id": "b4",
+      "query": "照着这张 1985 年的西宁街景（{IMG}/参考图/真实80年代/真实-西宁街头1985-a.jpg）写段描述，让模型生成一张能以假乱真的，原图不给它看",
+      "tests": "照图复刻"
+    },
+    {
+      "id": "b5",
+      "query": "{IMG}/参考图/ref-人像.png 这个女生放到海边 换白衬衫 脸别变，跟模型怎么说",
+      "tests": "编辑：同一人换场景"
+    },
+    {
+      "id": "b6",
+      "query": "公众号这篇讲ai模特图翻车的，配个头图，别太吓人，描述你先写好我拿去gpt里跑",
+      "tests": "弱意图：封面"
+    },
+    {
+      "id": "b7",
+      "query": "这个提示词出来字老是错：一张科技感海报，写上未来已来，8k，大师作品，超高清。帮我改成 gpt image 2.6 能用的",
+      "tests": "改已有 prompt"
+    },
+    {
+      "id": "b8",
+      "query": "信息图：帝王蝶生命周期四个阶段，只要四个标签（卵、幼虫、蛹、成虫），用 2.6 sunburst，quality 和 complexity 怎么选，prompt 也一起给",
+      "tests": "信息图；quality/complexity"
+    },
+    {
+      "id": "b9",
+      "query": "帮我反推一下这张图的prompt：{IMG}/3-05-砼核地下大厅/NB-2.1-1.jpeg 我想改成沙漠里的版本",
+      "tests": "照图复刻 + 换场景"
+    },
+    {
+      "id": "b10",
+      "query": "用 Seedream 5.0 Pro 做一组 4 张同一只橘猫的四季手机壁纸，9:16，要 4K，prompt 怎么写",
+      "tests": "Seedream 限制：Pro 无 4K、无组图"
+    }
+  ],
+  "confirmed_note": "2026-11-06 作者确认：只跑对照、不跑触发"
+}
