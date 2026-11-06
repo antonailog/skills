@@ -1,0 +1,147 @@
+{
+  "skill_name": "image-prompt",
+  "runs_per_query": 3,
+  "user_confirmed": false,
+  "queries": [
+    {
+      "id": "t1",
+      "query": "横评再加一题：DeepSeek 的大肥鱼坐在工位上抱着一大碗白米饭吃，二次元风，3:4，四个模型都要跑，先把 prompt 写出来我看看",
+      "why": "梗角色 + 多模型，强意图",
+      "split": "train",
+      "should_trigger": true
+    },
+    {
+      "id": "t2",
+      "query": "给公众号这篇讲ai模特图翻车的文章配个头图 16:9 别太吓人，描述你先写好我拿去gpt里跑",
+      "why": "只有主题没有画面，弱意图；没说 prompt 二字",
+      "split": "train",
+      "should_trigger": true
+    },
+    {
+      "id": "t3",
+      "query": "这个提示词出来字老是错：一张科技感海报，写上未来已来，8k，大师作品，超高清。帮我改成 gpt image 2.6 能用的",
+      "why": "改已有 prompt；和 prompt-craft 抢「改 prompt」",
+      "split": "train",
+      "should_trigger": true
+    },
+    {
+      "id": "t4",
+      "query": "{IMG}/参考图/ref-人像.png 这个女生放到海边 换白衬衫 脸别变，跟模型怎么说",
+      "why": "编辑 / 同一人换场景，口语无标点",
+      "split": "train",
+      "should_trigger": true
+    },
+    {
+      "id": "t5",
+      "query": "三张图：{IMG}/参考图/ref-人像.png 是人，{IMG}/参考图/ref-开衫平铺.png 是开衫，{IMG}/参考图/ref-客厅.png 是客厅，想合成一张模特在客厅穿这件开衫的图，nano banana pro 怎么写",
+      "why": "多参考图合成",
+      "split": "train",
+      "should_trigger": true
+    },
+    {
+      "id": "t6",
+      "query": "帮我反推一下这张图的prompt：{IMG}/3-05-砼核地下大厅/NB-2.1-1.jpeg 我想改成沙漠里的版本",
+      "why": "照图复刻 + 换场景（11-06 作者追加）",
+      "split": "train",
+      "should_trigger": true
+    },
+    {
+      "id": "t7",
+      "query": "信息图：帝王蝶生命周期四个阶段，只要四个标签，用 2.6 sunburst，quality 和 complexity 怎么选，prompt 也一起给",
+      "why": "参数 + 带字信息图",
+      "split": "test",
+      "should_trigger": true
+    },
+    {
+      "id": "t8",
+      "query": "write me an image prompt for a product shot of a matte black ceramic mug on a walnut desk, morning window light, leave space on the right for copy",
+      "why": "英文",
+      "split": "test",
+      "should_trigger": true
+    },
+    {
+      "id": "t9",
+      "query": "猫子柒那种 写实 异瞳白猫在四川小院土灶前炒回锅肉 给seedance当首帧 16:9 用nano banana 2.1",
+      "why": "视频首帧的图（不是视频 prompt）；指定 NB 2.1",
+      "split": "test",
+      "should_trigger": true
+    },
+    {
+      "id": "t10",
+      "query": "照着这张 1985 年的西宁街景（{IMG}/参考图/真实80年代/真实-西宁街头1985-a.jpg）写段描述，让模型生成一张能以假乱真的，原图不给它看",
+      "why": "照图复刻，没说 prompt",
+      "split": "test",
+      "should_trigger": true
+    },
+    {
+      "id": "n1",
+      "query": "帮我写个 prompt，让 claude 给小红书评论区每条打情绪分，输出 json",
+      "why": "prompt-craft：LLM 指令",
+      "split": "train",
+      "should_trigger": false
+    },
+    {
+      "id": "n2",
+      "query": "这篇公众号里那几条 midjourney 提示词挺好的 https://mp.weixin.qq.com/s/Abc123xyz 帮我收进 prompt 库",
+      "why": "prompt-vault：收藏已有 prompt",
+      "split": "train",
+      "should_trigger": false
+    },
+    {
+      "id": "n3",
+      "query": "给 seedance 写个视频提示词：橘猫在灶台前炒菜，镜头慢慢推近，5 秒",
+      "why": "视频提示词",
+      "split": "train",
+      "should_trigger": false
+    },
+    {
+      "id": "n4",
+      "query": "这篇小红书笔记写完了（内容/自媒体/小红书/2026-11-06-生图横评/笔记.md），配个封面发出去",
+      "why": "xhs-note",
+      "split": "train",
+      "should_trigger": false
+    },
+    {
+      "id": "n5",
+      "query": "prompt 我已经写好了在 审题-第三轮.md 里，直接用 lovart 把 3-01 那条跑出来",
+      "why": "只要出图",
+      "split": "train",
+      "should_trigger": false
+    },
+    {
+      "id": "n6",
+      "query": "gpt image 2.6 和 nano banana 2.1 哪个画真人更像真的？横评文里我该怎么下结论",
+      "why": "模型比较问答",
+      "split": "train",
+      "should_trigger": false
+    },
+    {
+      "id": "n7",
+      "query": "我网站头像想做成会看向鼠标的 3D 头像，照片我有",
+      "why": "avatar-look",
+      "split": "test",
+      "should_trigger": false
+    },
+    {
+      "id": "n8",
+      "query": "{IMG}/2-11-爆款封面/GPT-2.6-1.png 这张封面上的字帮我识别出来，转成文字",
+      "why": "给了图但要的是识别文字，不是复刻",
+      "split": "test",
+      "should_trigger": false
+    },
+    {
+      "id": "n9",
+      "query": "帮我优化一下客服机器人的 system prompt，现在回答太啰嗦了，原文我贴下面：你是一个耐心的客服……",
+      "why": "prompt-craft：改 LLM prompt",
+      "split": "test",
+      "should_trigger": false
+    },
+    {
+      "id": "n10",
+      "query": "{IMG}/3-11-猜真假a西宁街头/GPT-2.6-1.png 这张是不是 AI 画的？哪里露馅了",
+      "why": "给了图但要的是鉴别",
+      "split": "test",
+      "should_trigger": false
+    }
+  ]
+}

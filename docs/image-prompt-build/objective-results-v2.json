@@ -1,0 +1,44 @@
+{
+  "b1": {
+    "with": {
+      "O1": 2,
+      "O2": 2,
+      "O2_bad": [],
+      "n_blocks": 2
+    },
+    "without": {
+      "O1": 2,
+      "n_blocks": 1
+    }
+  },
+  "b5": {
+    "with": {
+      "O1": 2,
+      "n_blocks": 1
+    },
+    "without": {
+      "O1": 2,
+      "n_blocks": 2
+    }
+  },
+  "b10": {
+    "with": {
+      "O1": 2,
+      "O2": 2,
+      "O2_bad": [],
+      "O4": 2,
+      "O4_len": 282,
+      "n_blocks": 4
+    },
+    "without": {
+      "O1": 2,
+      "O2": 0,
+      "O2_bad": [
+        "doubao-seedream-5-0-260128"
+      ],
+      "O4": 0,
+      "O4_len": 525,
+      "n_blocks": 3
+    }
+  }
+}
