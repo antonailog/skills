@@ -64,11 +64,11 @@
 
 ### Skill 与 Prompt
 
-做 Skill、写 prompt、收 prompt：给 AI 写说明书的三件事。
+做 Skill、写 prompt、写生图 prompt、收 prompt：给 AI 写说明书的几件事。
 
 <table>
 <tr><td width="50%" valign="top"><a href="skills/skill-build/"><img src="skills/skill-build/examples/meeting-minutes/shots/card.jpg" alt="skill-build：把重复的活做成测过的 Skill"></a><br><a href="skills/skill-build/"><b>skill-build</b></a> · 把重复的活做成测过的 Skill<br><sub>想把天天重复的活交给 AI，自己写的 skill 常常该用的时候不触发、不该用的时候乱触发，规则越堆越长，也说不清到底比不用强在哪。这个 Skill 先判断这件事值不值得做成 skill，再问清边界（哪些请求长得像但不归它管、出错了怎么办），出一份设计文档过完备性检查，然后才写 SKILL.md；写完自己造测试题，用和不用各跑几遍对比，需要时请不知情的评委盲评，按差在哪去改。最后给出一个触发准确、说得清比不用强在哪的 Skill。</sub><br><sub><a href="skills/skill-build/examples/meeting-minutes/">看这个例子 →</a></sub></td><td width="50%" valign="top"><a href="skills/prompt-craft/"><img src="skills/prompt-craft/examples/review-classifier/shots/card.jpg" alt="prompt-craft：写能上线的 prompt"></a><br><a href="skills/prompt-craft/"><b>prompt-craft</b></a> · 写能上线的 prompt<br><sub>手搓的 prompt 常写成「你是一位资深专家」「请输出高质量、准确的结果」，这些要求模型没法照着执行；结构也东一句西一句，空输入、长文被截断、内容里夹带指令这些情况都没考虑。这个 Skill 维护了一套固定的 prompt 结构和一份审查清单：先问清需求（结果给谁用、哪种错误更伤），再按九个模块（背景、角色、步骤、判断标准、样例、兜底、输入边界、输出格式等）写，写完换成审查者的眼光，拿边界输入、注入和模型的常见坏毛病逐项挑错。最后给出一份能稳定执行、考虑周全、细节足够的 prompt。</sub><br><sub><a href="skills/prompt-craft/examples/review-classifier/">看这个例子 →</a></sub></td></tr>
-<tr><td width="50%" valign="top"><a href="skills/prompt-vault/"><img src="skills/prompt-vault/examples/anthropic-prompt-library/shots/card.jpg" alt="prompt-vault：把看到的好 prompt 收进库"></a><br><a href="skills/prompt-vault/"><b>prompt-vault</b></a> · 把看到的好 prompt 收进库<br><sub>在网上看到好用的 prompt，常常随手存进收藏夹或备忘录，过几天就找不到，找到了也忘了当初是在什么场景下用的、效果怎么样。这个 Skill 维护一个统一格式的 prompt 库：从网页或文章里把 prompt 原文完整摘出来，连同效果案例图和出处写成一张卡片，按用途归类，自动重建目录索引，再推到 GitHub 上。最后给出一个随时能查、拿来就能用的 prompt 库。</sub><br><sub><a href="skills/prompt-vault/examples/anthropic-prompt-library/">看这个例子 →</a></sub></td><td width="50%"></td></tr>
+<tr><td width="50%" valign="top"><a href="skills/prompt-vault/"><img src="skills/prompt-vault/examples/anthropic-prompt-library/shots/card.jpg" alt="prompt-vault：把看到的好 prompt 收进库"></a><br><a href="skills/prompt-vault/"><b>prompt-vault</b></a> · 把看到的好 prompt 收进库<br><sub>在网上看到好用的 prompt，常常随手存进收藏夹或备忘录，过几天就找不到，找到了也忘了当初是在什么场景下用的、效果怎么样。这个 Skill 维护一个统一格式的 prompt 库：从网页或文章里把 prompt 原文完整摘出来，连同效果案例图和出处写成一张卡片，按用途归类，自动重建目录索引，再推到 GitHub 上。最后给出一个随时能查、拿来就能用的 prompt 库。</sub><br><sub><a href="skills/prompt-vault/examples/anthropic-prompt-library/">看这个例子 →</a></sub></td><td width="50%" valign="top"><a href="skills/image-prompt/"><img src="skills/image-prompt/examples/autumn-cafe-poster/shots/card.jpg" alt="image-prompt：把出图需求写成生图 prompt"></a><br><a href="skills/image-prompt/"><b>image-prompt</b></a> · 把出图需求写成生图 prompt<br><sub>让 AI 出一张图，常写成「高级感海报，8K」这样一句：画面里的字常常写错，版式全靠模型猜，改件衣服脸也跟着变；各家生图模型的参数又不一样，记错一个就白跑一次。这个 Skill 从一句出图需求或一张参考图出发：先读懂用途、画面和要上图的字，拿不准长相的梗角色先找图请你确认，再按选定的模型写一段只描述看得见东西的 prompt，参数按官方文档单独列好，改图写清改什么、留什么。最后给出一段能直接粘进生图工具的 prompt，附上出图后该查的几处。</sub><br><sub><a href="skills/image-prompt/examples/autumn-cafe-poster/">看这个例子 →</a></sub></td></tr>
 </table>
 
 ### 每个 Skill 怎么运转
@@ -83,6 +83,7 @@
 <tr><td width="50%" valign="top"><a href="skills/prompt-craft/"><img src="docs/diagrams/prompt-craft.jpg" alt="prompt-craft 结构图"></a><br><a href="skills/prompt-craft/"><b>prompt-craft</b></a> · 生产级 prompt 与对抗审查</td><td width="50%" valign="top"><a href="skills/skill-build/"><img src="docs/diagrams/skill-build.jpg" alt="skill-build 结构图"></a><br><a href="skills/skill-build/"><b>skill-build</b></a> · 造 Skill：设计、评测、迭代</td></tr>
 <tr><td width="50%" valign="top"><a href="skills/wechat-publisher/"><img src="docs/diagrams/wechat-publisher.jpg" alt="wechat-publisher 结构图"></a><br><a href="skills/wechat-publisher/"><b>wechat-publisher</b></a> · Markdown 推成公众号草稿</td><td width="50%" valign="top"><a href="skills/xhs-note/"><img src="docs/diagrams/xhs-note.jpg" alt="xhs-note 结构图"></a><br><a href="skills/xhs-note/"><b>xhs-note</b></a> · 写小红书笔记，含封面</td></tr>
 <tr><td width="50%" valign="top"><a href="skills/ai-events-push/"><img src="docs/diagrams/ai-events-push.jpg" alt="ai-events-push 结构图"></a><br><a href="skills/ai-events-push/"><b>ai-events-push</b></a> · AI 活动推荐的群推送和小红书多图</td><td width="50%" valign="top"><a href="skills/human-article/"><img src="docs/diagrams/human-article.jpg" alt="human-article 结构图"></a><br><a href="skills/human-article/"><b>human-article</b></a> · 以作者身份写公众号宣传和知识介绍</td></tr>
+<tr><td width="50%" valign="top"><a href="skills/image-prompt/"><img src="docs/diagrams/image-prompt.jpg" alt="image-prompt 结构图"></a><br><a href="skills/image-prompt/"><b>image-prompt</b></a> · 把出图需求写成生图 prompt</td><td width="50%"></td></tr>
 </table>
 
 ## 已归档
@@ -147,6 +148,7 @@ skills/
 │   ├── codex-delegate/
 │   ├── deep-survey/
 │   ├── human-article/
+│   ├── image-prompt/
 │   ├── knowledge-canvas/
 │   ├── lark-export/
 │   ├── paper-card/
