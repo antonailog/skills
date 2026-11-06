@@ -24,6 +24,6 @@ node_modules/
 # OS
 .DS_Store
 
-# human-writing 的范文是别人的文章全文，只留本机，仓库里只放原文链接（2026-11-05）
-skills/human-writing/references/范文/*
-!skills/human-writing/references/范文/README.md
+# human-article 的范文是别人的文章全文，只留本机，仓库里只放原文链接（2026-11-05）
+skills/human-article/references/范文/*
+!skills/human-article/references/范文/README.md
