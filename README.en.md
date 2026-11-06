@@ -41,6 +41,7 @@ This repository is where I keep my own reusable skills under version control, so
 | **[codex-delegate](./skills/codex-delegate/)** | Claude Code hands code implementation to local Codex CLI background jobs: write a task brief → submit → liveness checks → accept against the brief → fix rounds resume the same session (max two) → take back → commit; includes blind arbitration. `delegate.sh` manages job state and resume; needs the Codex CLI bundled with the ChatGPT app. | `派给codex`, `delegate to codex` |
 | **[deep-survey](./skills/deep-survey/)** | Research a product, industry, company, AI tool, or event and produce a Markdown report a newcomer can read and decide from. Three roles relay without seeing each other's process: researchers split the evidence blocks and save page originals and notes; an independent writer who did no collection reads all notes, states three to five core judgments, and writes the report around them; a reviewer cold-reads the finished draft once. Before delivery, scripts renumber sources into clickable citations and check citations, images, and tables. Facts, inferences, and unknowns are kept apart. Build notes: [docs/deep-survey-build](./docs/deep-survey-build/). | `调研一下`, `竞品分析`, `值不值得做` |
 | **[prompt-vault](./skills/prompt-vault/)** | Keep good prompts you come across in one library: extract the prompt verbatim from a page or article, write it up as a card with example output and source, file it by use, rebuild the index, and push to GitHub. | `收录这条 prompt`, `存进 prompt 库` |
+| **[image-prompt](./skills/image-prompt/)** | Turn a one-line image request, or a reference image, into a prompt you can paste straight into an image model: open with what the image is for, describe only what is visible, give on-image text word for word, and for edits say what changes and what stays. Model settings for GPT Image 2.6/2.5, Nano Banana Pro/2.1, Seedream 5.0 Pro and Codex image generation are listed separately, checked against the official docs. Unsure what a meme character looks like? It finds a picture for you to confirm first. Writes the prompt only; you run the image tool. | `写个生图 prompt`, `给我提示词`, `反推这张图的 prompt` |
 | **[ai-events-push](./skills/ai-events-push/)** | Turn a handful of picked AI events into a weekly WeChat group push: one long poster grouped by city, each event drawn as the same ticket used on the author's events site (16:9 cover, date and time, venue, organizer, a three-line intro, price stub), plus a ready-to-paste message with one standard intro and two links (details, sign-up) per event. Event data comes from the live site; facts are checked against the organizer's poster and sign-up page; the poster script self-checks orphans, overflow and the QR code, and every link is opened before delivery. Tied to the author's events site, so outside that setup only the poster-and-text part is reusable. | `做个推送`, `本周活动推荐出一版`, `这几个活动发群里` |
 
 ### How each skill works
@@ -55,6 +56,7 @@ These diagrams cover selected skills: stages, gates, loops and outputs. Click a 
 <tr><td width="50%" valign="top"><a href="skills/prompt-craft/"><img src="docs/diagrams/prompt-craft.jpg" alt="prompt-craft 结构图"></a><br><a href="skills/prompt-craft/"><b>prompt-craft</b></a></td><td width="50%" valign="top"><a href="skills/skill-build/"><img src="docs/diagrams/skill-build.jpg" alt="skill-build 结构图"></a><br><a href="skills/skill-build/"><b>skill-build</b></a></td></tr>
 <tr><td width="50%" valign="top"><a href="skills/wechat-publisher/"><img src="docs/diagrams/wechat-publisher.jpg" alt="wechat-publisher 结构图"></a><br><a href="skills/wechat-publisher/"><b>wechat-publisher</b></a></td><td width="50%" valign="top"><a href="skills/xhs-note/"><img src="docs/diagrams/xhs-note.jpg" alt="xhs-note 结构图"></a><br><a href="skills/xhs-note/"><b>xhs-note</b></a></td></tr>
 <tr><td width="50%" valign="top"><a href="skills/ai-events-push/"><img src="docs/diagrams/ai-events-push.jpg" alt="ai-events-push 结构图"></a><br><a href="skills/ai-events-push/"><b>ai-events-push</b></a></td><td width="50%" valign="top"><a href="skills/human-article/"><img src="docs/diagrams/human-article.jpg" alt="human-article 结构图"></a><br><a href="skills/human-article/"><b>human-article</b></a></td></tr>
+<tr><td width="50%" valign="top"><a href="skills/image-prompt/"><img src="docs/diagrams/image-prompt.jpg" alt="image-prompt 结构图"></a><br><a href="skills/image-prompt/"><b>image-prompt</b></a></td><td width="50%"></td></tr>
 </table>
 
 ## Archived
@@ -118,6 +120,7 @@ skills/
 │   ├── codex-delegate/
 │   ├── deep-survey/
 │   ├── human-article/
+│   ├── image-prompt/
 │   ├── knowledge-canvas/
 │   ├── lark-export/
 │   ├── paper-card/
