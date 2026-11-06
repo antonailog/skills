@@ -59,7 +59,7 @@
 <table>
 <tr><td width="50%" valign="top"><a href="skills/xhs-note/"><img src="skills/xhs-note/examples/sunzi-mindmap-note/shots/card.jpg" alt="xhs-note：写一篇能直接发的小红书笔记"></a><br><a href="skills/xhs-note/"><b>xhs-note</b></a> · 写一篇能直接发的小红书笔记<br><sub>自己写小红书笔记，常常不知道从哪开头，标题没人点，封面还要另外找人做，写出来一股 AI 味。这个 Skill 先问清你想表达什么、配图讲了什么，照你以前写过的笔记的口吻起草正文（分享工具和记录感悟是两种写法），给几个标题让你挑，再生成一张标题醒目的封面、配好标签。最后给出一篇封面、标题、正文、标签齐全，能直接发的笔记。</sub><br><sub><a href="skills/xhs-note/examples/sunzi-mindmap-note/">看这个例子 →</a></sub></td><td width="50%" valign="top"><a href="skills/wechat-publisher/"><img src="skills/wechat-publisher/examples/ai-assistant-article/shots/card.jpg" alt="wechat-publisher：把文章排好版推进公众号草稿箱"></a><br><a href="skills/wechat-publisher/"><b>wechat-publisher</b></a> · 把文章排好版推进公众号草稿箱<br><sub>在公众号后台发文章，要一张张传图、一段段调格式，从别处复制过来的表格和链接经常排乱，发完还得自己想怎么转发。这个 Skill 先把文章整理成发布版，压缩图片传到图床，列出要你确认的校对清单，再套上排版主题（自带多套，可以一次出几份对比）推进公众号草稿箱，最后附上朋友圈和群聊两版推广文案和发布时间建议，只推草稿、不替你点发表。最后给出一篇排好版、等你检查后就能发的公众号文章。</sub><br><sub><a href="skills/wechat-publisher/examples/ai-assistant-article/">看这个例子 →</a></sub></td></tr>
 <tr><td width="50%" valign="top"><a href="skills/pm-doc-write/"><img src="skills/pm-doc-write/examples/pomodoro-summary/shots/card.jpg" alt="pm-doc-write：写结论先行的工作文档"></a><br><a href="skills/pm-doc-write/"><b>pm-doc-write</b></a> · 写结论先行的工作文档<br><sub>写周报、项目总结，常常先铺一大段背景，结论埋在最后，数字没有对比基线，谁负责也说不清，AI 代写的还一股模板味。这个 Skill 按场景选模板（周报、OKR、项目总结、评测结论等），照「结论先行、表格承载、数字带基线、责任到人」的规矩写，每个数字都要能找到出处，写完对照你自己的范文调口吻，再过一遍终审清单。最后给出一份读者看开头就知道结论、可以直接发出去的工作文档。</sub><br><sub><a href="skills/pm-doc-write/examples/pomodoro-summary/">看这个例子 →</a></sub></td><td width="50%" valign="top"><a href="skills/ai-events-push/"><img src="skills/ai-events-push/examples/next-week-ai-events/shots/card.jpg" alt="ai-events-push：把几场 AI 活动做成群推送"></a><br><a href="skills/ai-events-push/"><b>ai-events-push</b></a> · 把几场 AI 活动做成群推送<br><sub>想往微信群推几场 AI 活动，要一场场查时间、地点、票价和讲者，排一张群里看得清的图，写一段能转发的文字，链接还得一条条点开确认。这个 Skill 从你挑的几场出发（网站截图、活动名或一张海报都行），先在「国内AI活动追踪」网站上对上这几场，按活动方海报和报名页核实，写好每场一段的标准介绍，出一张按城市分区、网站门票样式的长海报并自检排版和二维码，最后逐条打开详情和报名链接。最后给出一张图本身信息完整的海报和一段能直接复制进群的文字。</sub><br><sub><a href="skills/ai-events-push/examples/next-week-ai-events/">看这个例子 →</a></sub></td></tr>
-<tr><td width="50%" valign="top"><a href="skills/human-writing/"><img src="skills/human-writing/examples/ai-assistant-article/shots/card.jpg" alt="human-writing：写一篇像你本人在说话的公众号"></a><br><a href="skills/human-writing/"><b>human-writing</b></a> · 写一篇像你本人在说话的公众号<br><sub>让 AI 写公众号，常常读两段就看出是 AI：开头预告结构，满篇排比和破折号，还会替你编出没发生过的数字和用户反馈。这个 Skill 先分清是产品宣传还是知识介绍，带着读者会问的问题找材料、想好主线，缺的信息攒到一起只问你一次；写完从头改七遍，用脚本把禁用写法清零，替你写的每一句都单独列出来给你审。最后给出一篇配好图、读者愿意读完、你认得出是自己在说话的公众号文章。</sub><br><sub><a href="skills/human-writing/examples/ai-assistant-article/">看这个例子 →</a></sub></td><td width="50%"></td></tr>
+<tr><td width="50%" valign="top"><a href="skills/human-article/"><img src="skills/human-article/examples/ai-assistant-article/shots/card.jpg" alt="human-article：写一篇像你本人在说话的公众号"></a><br><a href="skills/human-article/"><b>human-article</b></a> · 写一篇像你本人在说话的公众号<br><sub>让 AI 写公众号，常常读两段就看出是 AI：开头预告结构，满篇排比和破折号，还会替你编出没发生过的数字和用户反馈。这个 Skill 先分清是产品宣传还是知识介绍，带着读者会问的问题找材料、想好主线，缺的信息攒到一起只问你一次；写完从头改七遍，用脚本把禁用写法清零，替你写的每一句都单独列出来给你审。最后给出一篇配好图、读者愿意读完、你认得出是自己在说话的公众号文章。</sub><br><sub><a href="skills/human-article/examples/ai-assistant-article/">看这个例子 →</a></sub></td><td width="50%"></td></tr>
 </table>
 
 ### Skill 与 Prompt
@@ -82,7 +82,7 @@
 <tr><td width="50%" valign="top"><a href="skills/paper-card/"><img src="docs/diagrams/paper-card.jpg" alt="paper-card 结构图"></a><br><a href="skills/paper-card/"><b>paper-card</b></a> · 一篇论文读成一张学习卡片</td><td width="50%" valign="top"><a href="skills/pm-doc-write/"><img src="docs/diagrams/pm-doc-write.jpg" alt="pm-doc-write 结构图"></a><br><a href="skills/pm-doc-write/"><b>pm-doc-write</b></a> · 按本人写法写周报、OKR、项目总结</td></tr>
 <tr><td width="50%" valign="top"><a href="skills/prompt-craft/"><img src="docs/diagrams/prompt-craft.jpg" alt="prompt-craft 结构图"></a><br><a href="skills/prompt-craft/"><b>prompt-craft</b></a> · 生产级 prompt 与对抗审查</td><td width="50%" valign="top"><a href="skills/skill-build/"><img src="docs/diagrams/skill-build.jpg" alt="skill-build 结构图"></a><br><a href="skills/skill-build/"><b>skill-build</b></a> · 造 Skill：设计、评测、迭代</td></tr>
 <tr><td width="50%" valign="top"><a href="skills/wechat-publisher/"><img src="docs/diagrams/wechat-publisher.jpg" alt="wechat-publisher 结构图"></a><br><a href="skills/wechat-publisher/"><b>wechat-publisher</b></a> · Markdown 推成公众号草稿</td><td width="50%" valign="top"><a href="skills/xhs-note/"><img src="docs/diagrams/xhs-note.jpg" alt="xhs-note 结构图"></a><br><a href="skills/xhs-note/"><b>xhs-note</b></a> · 写小红书笔记，含封面</td></tr>
-<tr><td width="50%" valign="top"><a href="skills/ai-events-push/"><img src="docs/diagrams/ai-events-push.jpg" alt="ai-events-push 结构图"></a><br><a href="skills/ai-events-push/"><b>ai-events-push</b></a> · AI 活动推荐的群推送和小红书多图</td><td width="50%" valign="top"><a href="skills/human-writing/"><img src="docs/diagrams/human-writing.jpg" alt="human-writing 结构图"></a><br><a href="skills/human-writing/"><b>human-writing</b></a> · 以作者身份写公众号宣传和知识介绍</td></tr>
+<tr><td width="50%" valign="top"><a href="skills/ai-events-push/"><img src="docs/diagrams/ai-events-push.jpg" alt="ai-events-push 结构图"></a><br><a href="skills/ai-events-push/"><b>ai-events-push</b></a> · AI 活动推荐的群推送和小红书多图</td><td width="50%" valign="top"><a href="skills/human-article/"><img src="docs/diagrams/human-article.jpg" alt="human-article 结构图"></a><br><a href="skills/human-article/"><b>human-article</b></a> · 以作者身份写公众号宣传和知识介绍</td></tr>
 </table>
 
 ## 已归档
@@ -130,7 +130,7 @@ Codex 用户加 `--target codex`（装到 `~/.agents/skills`），`--target both
 | wechat-publisher | `WECHAT_APP_ID`、`WECHAT_APP_SECRET`、`OSS_ACCESS_KEY_ID`、`OSS_ACCESS_KEY_SECRET`、`OSS_BUCKET` | 环境变量 |
 | deep-survey | `ZHIHU_ACCESS_SECRET`（可选，知乎数据开放平台）；`INFO2ACTION_REPO`（可选，作者自用的信息流） | 环境变量，或写进 `~/.config/deep-survey/secrets.env`；都没有时自动退回网页搜索 |
 | ai-events-push | `AI_EVENTS_DIR`（可选，作者自己的活动网站项目目录，加新活动、修网站信息时用） | 环境变量；没设就用 `~/claudecode_workspace/工具/活动监测`；小红书出图会读其中的活动库找活动行原图，没有这个目录就用网站存的图 |
-| human-writing | `HUMAN_WRITING_OUT_DIR`、`HUMAN_WRITING_PROFILE_DIR`、`HUMAN_WRITING_FEEDBACK_DIR`（可选，文章目录、写作档案、反馈账本）；`GEMINI_API_KEY`、`GEMINI_PROXY`（只在第八步交给 Gemini 改稿时用） | 环境变量；目录没设就用 `~/claudecode_workspace/` 下作者自己的位置；Gemini key 也可以写进 `~/.config/gemini/api_key` |
+| human-article | `HUMAN_ARTICLE_OUT_DIR`、`HUMAN_ARTICLE_PROFILE_DIR`、`HUMAN_ARTICLE_FEEDBACK_DIR`（可选，文章目录、写作档案、反馈账本）；`GEMINI_API_KEY`、`GEMINI_PROXY`（只在第八步交给 Gemini 改稿时用） | 环境变量；目录没设就用 `~/claudecode_workspace/` 下作者自己的位置；Gemini key 也可以写进 `~/.config/gemini/api_key` |
 
 `config/config.yaml`、`.env` 等本地密钥文件已被 git 忽略。
 
@@ -146,7 +146,7 @@ skills/
 │   ├── book-to-mindmap/
 │   ├── codex-delegate/
 │   ├── deep-survey/
-│   ├── human-writing/
+│   ├── human-article/
 │   ├── knowledge-canvas/
 │   ├── lark-export/
 │   ├── paper-card/

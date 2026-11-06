@@ -1,4 +1,4 @@
-# human-writing
+# human-article
 
 以作者本人的身份写公众号的产品宣传和知识介绍
 
@@ -8,13 +8,13 @@
 
 ## 运行方式
 
-![human-writing 结构图](../../docs/diagrams/human-writing.jpg)
+![human-article 结构图](../../docs/diagrams/human-article.jpg)
 
 先按读者为什么点开，分成产品宣传或知识介绍，在 `材料笔记.md` 开头写下读者会问的几个问题，带着问题读项目、看线上、截图。构思在心里完成：把读者读完能得到什么当主线，顺着读者心里的下一个问题往下排。缺的信息攒到第四步，一次问完作者。写完按改稿规则从头改七遍，`check_prose.py` 把禁用写法清零，脚本把图和二维码放进成稿，连同交稿说明和「替你写的」句子清单一起交。作者要的时候，再交给 Gemini 改一版，对照两版差异后两版一起交。
 
 ## 关键设计
 
-一篇公众号要同时做到：读者从头读到尾，读得出对面是作者本人在说话，写进去的事实都站得住。human-writing 把这三件事拆到不同的文件里管：体裁和写法管读者，现实与边界管事实，改稿和脚本管 AI 味。
+一篇公众号要同时做到：读者从头读到尾，读得出对面是作者本人在说话，写进去的事实都站得住。human-article 把这三件事拆到不同的文件里管：体裁和写法管读者，现实与边界管事实，改稿和脚本管 AI 味。
 
 - **只写两种文章**：产品宣传和知识介绍，每种写清读者为什么点开、文章怎么走、问作者时可以问什么，附一个例子和一篇范文（`references/体裁.md`）。
 - **读者在前，作者带路**：文章主体是读者想知道的事，作者只在他做过的、看到的、判断的地方出来说一两句（`references/写作.md`）。规则顶住时，先保主线清晰和段落通顺，再保读者得到什么和活人感（`SKILL.md`「规则冲突时的先后」）。
@@ -24,7 +24,7 @@
 - **Gemini 改完逐处核对**：第八步把改稿交给 Gemini，`scripts/compare_revision.py` 列出少了的图、新冒出来的数字、名字和程度词。只把这几类修回去，其余保留 Gemini 的说法，两版一起交给作者挑。
 
 ```text
-human-writing/
+human-article/
 ├── SKILL.md                       定位、红线、规则冲突时的先后、八个步骤
 ├── references/
 │   ├── 体裁.md                    产品宣传、知识介绍各怎么走，问作者时可以问什么
@@ -50,7 +50,7 @@ human-writing/
 ## 其他
 
 - 来源：定位、问作者和改稿的不少写法来自 [KKKKhazix/human-writing](https://github.com/KKKKhazix/human-writing)（MIT 许可），原许可见 `LICENSE-human-writing`
-- 前提：写作档案里要有 `公众号固定开头结尾.md` 和 `素材/公众号二维码.jpg`，目录用环境变量 `HUMAN_WRITING_PROFILE_DIR` 指定；文章默认写在 `HUMAN_WRITING_OUT_DIR` 下；反馈账本和改规则的说明放在 `HUMAN_WRITING_FEEDBACK_DIR`，没有这个目录就记进当篇工作目录的 `反馈.md`
+- 前提：写作档案里要有 `公众号固定开头结尾.md` 和 `素材/公众号二维码.jpg`，目录用环境变量 `HUMAN_ARTICLE_PROFILE_DIR` 指定；文章默认写在 `HUMAN_ARTICLE_OUT_DIR` 下；反馈账本和改规则的说明放在 `HUMAN_ARTICLE_FEEDBACK_DIR`，没有这个目录就记进当篇工作目录的 `反馈.md`
 - 注意：定位里的作者是一个二三十岁的 AI 行业独立开发者，读者关注 AI；`references/gemini改稿.md` 写了开头「大家好，我是阿東。」。换人用要改这两处，范文也换成自己挑的
 - 注意：`check_repeats.py` 的词表来自作者本人的改稿记录，换人用可以清空
 - 注意：第八步要 Gemini API key（`GEMINI_API_KEY` 或 `~/.config/gemini/api_key`），默认走 `http://127.0.0.1:7897` 代理，用 `GEMINI_PROXY` 改，设成空字符串就直连
