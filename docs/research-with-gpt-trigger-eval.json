@@ -1,0 +1,27 @@
+{
+  "skill_name": "research-with-gpt",
+  "runs_per_query": 3,
+  "split": { "train": 0.6, "test": 0.4 },
+  "should_trigger": [
+    { "id": "t1", "query": "我想系统学一下 agent 的记忆机制怎么设计，用 deep research 调研，你先给我 prompt", "why": "标准场景", "split": "train" },
+    { "id": "t2", "query": "MCP 和 skill 这块我一直没搞明白，帮我拆几个 deep research 的方向，我去 GPT 上跑", "why": "口语版", "split": "train" },
+    { "id": "t3", "query": "想搞懂独立开发者怎么做海外 SEO，gpt 深度研究跑一下，prompt 给我", "why": "中文说法「深度研究」", "split": "train" },
+    { "id": "t4", "query": "我打算下个月看看 AI 硬件这个赛道，先用 chatgpt 的 deep research 摸个底，你看怎么拆", "why": "没说 prompt 但要拆任务", "split": "test" },
+    { "id": "t5", "query": "deep research 报告下好了，都拖进 AI 设计那个文件夹了", "why": "收卷", "split": "train" },
+    { "id": "t6", "query": "③ 那份报告回来了，其他几份还在跑，先帮我看下这份", "why": "收卷，只回来一部分，没提 deep research", "split": "test" },
+    { "id": "t7", "query": "上次那个 SEO 调研再补两个方向：外链和 AI 搜索优化", "why": "追加方向", "split": "train" },
+    { "id": "t8", "query": "知识/调研/AI设计协作-2026-11-09/2-报告原件 里放了 7 个 pdf，整理一下", "why": "只给路径", "split": "test" },
+    { "id": "t9", "query": "播客商业化我不太懂，想用 deep reserch 研究下，给我几个任务", "why": "错别字", "split": "train" }
+  ],
+  "should_not_trigger": [
+    { "id": "n1", "query": "深度调研一下国内 AI 陪伴产品赛道，出份报告", "why": "没点名 Deep Research，归 deep-survey", "split": "train" },
+    { "id": "n2", "query": "帮我写个 prompt，让 GPT 给小红书评论按情绪打分", "why": "给模型写任务指令，归 prompt-craft", "split": "train" },
+    { "id": "n3", "query": "这条 deep research 的 prompt 写得不错，存进 prompt 库", "why": "收藏 prompt，归 prompt-vault", "split": "train" },
+    { "id": "n4", "query": "~/Downloads/2026具身智能行业报告.pdf 帮我转成思维导图", "why": "单篇报告转导图，归 book-to-mindmap", "split": "test" },
+    { "id": "n5", "query": "chatgpt 的 deep research 和 claude 的 research 功能有啥区别", "why": "顺口问答，直接答", "split": "train" },
+    { "id": "n6", "query": "研究一下 11 月深圳那场 AI 开发者大会值不值得去", "why": "活动调研，归 deep-survey", "split": "test" },
+    { "id": "n7", "query": "整理一下这期播客，我刚听完，转写在 ~/Downloads/ep88.txt", "why": "播客笔记，归 podcast-summary", "split": "train" },
+    { "id": "n8", "query": "我想系统学习口播稿怎么写", "why": "没点名 Deep Research，直接写方法论", "split": "test" },
+    { "id": "n9", "query": "用 codex 联网查一下 Anthropic frontend-design skill 最近更新了啥", "why": "要 Codex 联网查，不是这个 skill", "split": "test" }
+  ]
+}

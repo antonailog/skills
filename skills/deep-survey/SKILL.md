@@ -1,6 +1,6 @@
 ---
 name: deep-survey
-description: 把产品、行业、公司、AI 工具或活动研究清楚，写成读完能做决定的 Markdown 报告，每个数字能点回原文。用户明确要调研或报告时用：「深度调研 X」「全面调研一下 X」「研究一下 X」「出一份竞品 / 行业报告」「调研这场会值不值得去」，或点名 /deep-survey。不处理：顺口的比较与定义（直接回答）、单篇总结、整理已有材料（知识整理 SOP 或 book-to-mindmap）、头脑风暴（forge-brainstorm）、代码仓库分析、PRD 评审。
+description: 把产品、行业、公司、AI 工具或活动研究清楚，写成读完能做决定的 Markdown 报告，每个数字能点回原文。用户明确要调研或报告时用：「深度调研 X」「全面调研一下 X」「研究一下 X」「出一份竞品 / 行业报告」「调研这场会值不值得去」，或点名 /deep-survey。不处理：顺口的比较与定义（直接回答）、单篇总结、整理已有材料（知识整理 SOP 或 book-to-mindmap）、头脑风暴（forge-brainstorm）、代码仓库分析、PRD 评审、点名用 ChatGPT Deep Research 自己去跑、要 prompt 的（research-with-gpt）。
 ---
 
 # deep-survey
