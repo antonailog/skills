@@ -128,6 +128,7 @@ skills/
 │   ├── podcast-summary/
 │   ├── prompt-craft/
 │   ├── prompt-vault/
+│   ├── research-with-gpt/
 │   ├── skill-build/
 │   ├── wechat-publisher/
 │   └── xhs-note/
