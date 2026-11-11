@@ -102,6 +102,7 @@ PIVOT_PATTERNS = (
     re.compile(r"看似[^。！？\n]{0,90}(?:其实|实际|实则)"),
     # 「不是 A，是 B」11-10 作者定为硬禁令，从提醒挪到这里。
     re.compile(r"(?:并)?不是[^。！？\n]{1,40}，(?:更|才)?是[^，。！？\n]"),
+    re.compile(r"没(?:有|用)?[^。！？\n]{1,40}，而是"),
 )
 
 SEMANTIC_PIVOT_PATTERNS = (
