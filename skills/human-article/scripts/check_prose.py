@@ -88,8 +88,6 @@ ROAD_SIGNS = (
 ROAD_STRIP_CHARS = "。！？!? \n"
 
 FORBIDDEN_PUNCTUATION = {
-    "：": "中文冒号",
-    ":": "英文冒号",
     "—": "破折号",
     "–": "连接号式破折号",
 }
@@ -102,13 +100,15 @@ PIVOT_PATTERNS = (
     re.compile(r"[。！？!?]\s*而是"),
     re.compile(r"表面(?:上)?[^。！？\n]{0,90}(?:其实|实际|实则)"),
     re.compile(r"看似[^。！？\n]{0,90}(?:其实|实际|实则)"),
+    # 「不是 A，是 B」11-10 作者定为硬禁令，从提醒挪到这里。
+    re.compile(r"(?:并)?不是[^。！？\n]{1,40}，(?:更|才)?是[^，。！？\n]"),
 )
 
 SEMANTIC_PIVOT_PATTERNS = (
     re.compile(r"(?:总|一直|曾|都)?以为[^！？\n]{2,60}?(?:其实|才发现|才明白|才知道|后来才)"),
     re.compile(r"(?:总|都|一直)以为[^！？\n]{2,60}?[。，](?:可|但|其实)"),
     re.compile(r"回头(?:看|一看)?才(?:发现|明白|知道)"),
-    re.compile(r"(?:并)?不是[^。！？\n]{1,40}，(?:更|才)?是[^，。！？\n]"),
+    re.compile(r"不在[^。！？，\n]{1,30}，(?:而)?在[^，。！？\n]"),
     re.compile(r"从来(?:都)?(?:不是|与[^。！？，\n]{1,12}无关)"),
     re.compile(r"答案(?:是否定的|恰恰相反)|恰恰相反"),
     re.compile(r"表面(?:上)?[^！？\n]{0,60}。[^！？\n]{0,12}(?:其实|实际|实则)"),
@@ -405,27 +405,26 @@ def main() -> int:
     failures = []
     warnings = []
 
-    quote_colons = []
     for symbol, label in FORBIDDEN_PUNCTUATION.items():
         matches = list(re.finditer(re.escape(symbol), prose))
-        if symbol in ("：", ":"):
-            hard = []
-            for match in matches:
-                tail = prose[match.end() : match.end() + 2].lstrip()
-                if tail[:1] in ("「", "『", "“", "‘", '"'):
-                    quote_colons.append(match)
-                else:
-                    hard.append(match)
-            matches = hard
         if matches:
             lines = "、".join(str(line_number(text, match.start())) for match in matches[:8])
             failures.append(f"{label}共 {len(matches)} 处，出现在第 {lines} 行。")
-    if quote_colons:
+
+    # 冒号 11-10 起不再是硬禁令，只提醒；引出原话的冒号不报。
+    colon_matches = []
+    for symbol in ("：", ":"):
+        for match in re.finditer(re.escape(symbol), prose):
+            tail = prose[match.end() : match.end() + 2].lstrip()
+            if tail[:1] not in ("「", "『", "“", "‘", '"'):
+                colon_matches.append(match)
+    if colon_matches:
+        colon_matches.sort(key=lambda match: match.start())
         lines = "、".join(
-            str(line_number(text, match.start())) for match in quote_colons[:8]
+            str(line_number(text, match.start())) for match in colon_matches[:8]
         )
         warnings.append(
-            f"引出原话的冒号 {len(quote_colons)} 处，第 {lines} 行。确认引号里确实是原话，且不是提示性用法。"
+            f"冒号共 {len(colon_matches)} 处（不算引出原话的），第 {lines} 行。冒号前那半句只在喊「下面是结论」的，删掉直接说；顺着说话的停顿带出下文的照用。"
         )
 
     stop_matches = non_overlapping_terms(prose, HARD_STOPS)
