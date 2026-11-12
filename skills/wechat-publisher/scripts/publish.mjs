@@ -17,6 +17,7 @@
  *   sunset-glow  - 落日晚霞（暖橙红渐变）
  *   ink-bamboo   - 墨竹清韵（中国风水墨绿）
  *   starry-geek  - 星空极客（深色科技风）
+ *   marker       - 荧光笔（中性灰 + 黄绿荧光笔，浅色代码块）
  *
  * 内置主题 ID（wenyan-mcp 自带）:
  *   default, solarized-light, dracula, github, monokai,
@@ -89,6 +90,16 @@ const customThemes = [
       author: 'AI Designer'
     },
     cssFile: 'starry-geek.css'
+  },
+  {
+    meta: {
+      id: 'marker',
+      name: 'Marker',
+      description: '中性灰正文 + 黄绿荧光笔加粗，小一号字、宽字距、两倍行距，不铺底色',
+      appName: '荧光笔',
+      author: 'AI Designer'
+    },
+    cssFile: 'marker.css'
   }
 ];
 
@@ -168,7 +179,8 @@ function justifyText(html) {
 }
 
 // 图注排成居中灰色小字：图片下面紧贴着写的斜体（和图片在同一段），或者单独一段、以 ▲ 开头的斜体（*▲ 图注*）。
-// 其他整段斜体、正文里的斜体都是普通斜体。只给 sunset-glow 用：它的主题文件里 em 只写了 italic
+// 其他整段斜体、正文里的斜体都是普通斜体。只给 CAPTION_THEMES 里的主题用（sunset-glow、marker）：它们的主题文件里 em 只写了 italic
+const CAPTION_THEMES = new Set(['sunset-glow', 'marker']);
 const CAPTION_STYLE = 'color: #999; font-style: italic; display: block; text-align: center; font-size: 0.85em; margin: 4px 0 16px;';
 function captionEm(html) {
   return html.replace(/(<p\b[^>]*>)((?:<img\b[^>]*>|<br\s*\/?>|\s)*?)<em\b[^>]*>((?:(?!<\/?(?:p|em)\b)[\s\S])*)<\/em>\s*(<\/p>)/g,
@@ -211,11 +223,13 @@ for (const themeId of themeIds) {
     console.log(`\n━━━ ${themeName} (${themeId}) ━━━`);
 
     console.log('渲染中...');
-    const codeTheme = themeId === 'starry-geek' ? 'atom-one-dark' : 'atom-one-dark';
+    // 荧光笔配浅色代码块、不加 Mac 风格三个点；其他主题照旧
+    const codeTheme = themeId === 'marker' ? 'atom-one-light' : 'atom-one-dark';
+    const macStyle = themeId !== 'marker';
     // 最后一个参数是自动脚注：开着会给每个链接加 [n]，并在文末另起一段「引用链接」，和文章自己写的引用重复，所以关掉
-    const gzhContent = await getGzhContent(mdContent, themeId, codeTheme, true, false);
+    const gzhContent = await getGzhContent(mdContent, themeId, codeTheme, macStyle, false);
     gzhContent.content = zeroFirstMarginTop(gzhContent.content);
-    if (themeId === 'sunset-glow') gzhContent.content = captionEm(gzhContent.content);
+    if (CAPTION_THEMES.has(themeId)) gzhContent.content = captionEm(gzhContent.content);
     gzhContent.content = imageGalleries(gzhContent.content);
     gzhContent.content = wrapTables(gzhContent.content);
     if (process.env.WECHAT_JUSTIFY !== '0') gzhContent.content = justifyText(gzhContent.content);

@@ -1,0 +1,28 @@
+/* 荧光笔 - Marker
+   配色和个人博客文章页一致：中性灰正文 + 黄绿荧光笔加粗，小节标题和三级标题用深黄绿 #59620f。
+   版式：正文 15px、1px 字距、两倍行距、段距收紧；小节前一道浅灰细线；不铺底色、不用卡片。
+   行内代码和数字用等宽深黄绿、不加底；引用只留一道黄绿细线。
+   代码块配 atom-one-light，不加 Mac 风格三个点；单独一段的图注由 publish.mjs 的 captionEm 处理 */
+#wenyan { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; font-size: 15px; color: #525252; line-height: 2; letter-spacing: 1px; text-align: left; }
+#wenyan h1 { font-size: 22px; font-weight: 600; color: #0a0a0a; margin: 1.6em 0 0.6em; }
+#wenyan h2 { font-size: 20px; font-weight: 600; color: #59620f; letter-spacing: 0.5px; line-height: 1.5; margin: 2.2em 0 0.5em; padding-top: 1.4em; border-top: 1px solid #e5e5e5; }
+#wenyan h3 { font-size: 16px; font-weight: 600; color: #59620f; line-height: 1.6; margin: 1.6em 0 0.3em; }
+#wenyan h4 { font-size: 15px; font-weight: 600; color: #0a0a0a; margin: 1.4em 0 0.3em; }
+#wenyan p { margin: 0.9em 0; }
+#wenyan strong { font-weight: 400; color: #0a0a0a; padding: 0 1px; background: linear-gradient(transparent 58%, rgba(202, 221, 33, 0.55) 58%); }
+#wenyan em { font-style: italic; }
+#wenyan a { color: #59620f; text-decoration: none; }
+#wenyan blockquote { margin: 1.1em 0; padding: 2px 0 2px 14px; border-left: 2px solid #cadd21; background: transparent; color: #6b6b6b; font-size: 14px; }
+#wenyan blockquote p { margin: 6px 0; }
+#wenyan ul { padding-left: 1.4em; margin: 0.8em 0; }
+#wenyan ol { padding-left: 2.2em; margin: 0.8em 0; }
+#wenyan li { margin: 4px 0; }
+#wenyan p code, #wenyan li code { font-family: Menlo, Monaco, Consolas, monospace; font-size: 0.95em; color: #59620f; background: transparent; padding: 0 3px; }
+#wenyan pre { margin: 1.2em 0; padding: 14px 16px; border: 1px solid #e5e5e5; border-radius: 8px; font-size: 13px; line-height: 1.7; overflow-x: auto; max-height: 420px; overflow-y: auto; }
+#wenyan pre code { padding: 0; }
+#wenyan table { border-collapse: collapse; width: max-content; min-width: 100%; margin: 1.2em 0; font-size: 14px; white-space: nowrap; }
+#wenyan table th { color: #0a0a0a; font-weight: 600; text-align: left; padding: 10px 12px; border-bottom: 1px solid #0a0a0a; background: transparent; }
+#wenyan table td { color: #525252; padding: 10px 12px; border-bottom: 1px solid #e5e5e5; }
+#wenyan hr { border: 0; border-top: 1px solid #e5e5e5; margin: 1.8em 0; }
+#wenyan img { max-width: 100%; border-radius: 8px; margin: 1em auto; display: block; }
+#wenyan .footnote, #wenyan sup, #wenyan #footnotes { display: none; }
