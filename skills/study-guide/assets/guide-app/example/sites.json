@@ -1,0 +1,40 @@
+[
+ {
+  "key": "site-a",
+  "name": "示例网站 A",
+  "url": "https://example.com/a",
+  "img": "ph-a",
+  "meta": "示例 · 2026",
+  "desc": "示范：画廊卡片下面可以放一句话说明，讲清它在文中为什么值得看。"
+ },
+ {
+  "key": "site-b",
+  "name": "示例网站 B",
+  "url": "https://example.com/b",
+  "img": "ph-b",
+  "desc": "没有关键信息时只放说明也行。"
+ },
+ {
+  "key": "site-c",
+  "name": "示例网站 C",
+  "url": "https://example.com/c",
+  "img": "ph-a"
+ },
+ {
+  "key": "site-d",
+  "name": "示例网站 D",
+  "url": "https://example.com/d",
+  "img": "ph-b"
+ },
+ {
+  "key": "site-e",
+  "name": "示例网站 E",
+  "url": "https://example.com/e",
+  "img": "ph-a"
+ },
+ {
+  "key": "site-f",
+  "name": "示例网站 F（没截图）",
+  "url": "https://example.com/f"
+ }
+]
