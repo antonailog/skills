@@ -97,6 +97,7 @@ def launch(parent=None):
         fail("prompt file must exist and be nonempty")
     prompt = Path(args.prompt_file).read_bytes()
     label, sandbox, session, mode = args.label, "read-only" if args.read_only else "workspace-write", "", "fresh"
+    model, effort = args.model or "", args.effort or ""
     if parent:
         if alive(int(read(parent / "pid") or 0)) and not (parent / "exit_code").exists():
             fail("parent job is still running; wait or cancel first")
@@ -104,6 +105,8 @@ def launch(parent=None):
         if not session:
             fail("no session_id in parent log.jsonl")
         sandbox, mode, chain, rounds = meta(parent)["sandbox"], "resume", parent, 0
+        # codex resume falls back to config.toml's model unless -m is given; keep the parent's overrides.
+        model, effort = model or meta(parent).get("model", ""), effort or meta(parent).get("effort", "")
         seen = set()
         while meta(chain).get("parent"):
             if chain in seen:
@@ -130,7 +133,7 @@ def launch(parent=None):
     (job / "baseline.diffhash").write_text(digest + "\n")
     (job / "baseline.untracked").write_bytes(names)
     data = dict(id=job.name, label=label, repo=str(repo), mode=mode, parent=parent.name if parent else "",
-                sandbox=sandbox, model=args.model or "", effort=args.effort or "", codex_bin=binary,
+                sandbox=sandbox, model=model, effort=effort, codex_bin=binary,
                 codex_version=version, submitted_at=int(time.time()), git_head=head,
                 skip_git_repo_check=str(not is_git).lower())
     (job / "meta").write_text("".join(str(k) + "=" + str(v) + "\n" for k, v in data.items()))
@@ -139,10 +142,10 @@ def launch(parent=None):
         command += ["resume", session, "--json", "-o", str(job / "last_message.md"), "-c", "sandbox_mode=" + json.dumps(sandbox)]
     else:
         command += ["--json", "-s", sandbox, "-C", str(repo), "-o", str(job / "last_message.md")]
-        if args.model:
-            command += ["-m", args.model]
-    if args.effort:
-        command += ["-c", "model_reasoning_effort=" + json.dumps(args.effort)]
+    if model:
+        command += ["-m", model]
+    if effort:
+        command += ["-c", "model_reasoning_effort=" + json.dumps(effort)]
     if not is_git:
         command += ["--skip-git-repo-check"]
     quote = shlex.quote
@@ -193,9 +196,9 @@ for name in ("submit", "status", "result", "resume", "cancel", "list", "doctor")
     if name in ("submit", "resume"):
         sub.add_argument("--prompt-file", required=True)
         sub.add_argument("--effort")
+        sub.add_argument("--model")
     if name == "submit":
         sub.add_argument("--label", required=True)
-        sub.add_argument("--model")
         sub.add_argument("--read-only", action="store_true")
     if name == "status":
         sub.add_argument("--wait", action="store_true")
