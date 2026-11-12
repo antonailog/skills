@@ -221,14 +221,20 @@ for job in Path(__file__).parent.glob("*/.forge/jobs/*"):
 
         case = "resume, parent chain, fresh baseline, inherited sandbox"
         prompt.write_text("plain")
-        for parent, suffix, flags in ((changed, "-task-r1", ()), (ro, "-task-r1", ("--effort", "low"))):
+        for parent, suffix, flags, want_model, want_effort in (
+                (changed, "-task-r1", (), None, None),
+                (ro, "-task-r1", ("--effort", "low"), "model with spaces", "low"),
+                (ro, "-task-r1", ("--model", "other"), "other", "high")):
             child = run("resume", parent, "--repo", repo, "--prompt-file", prompt, *flags).strip()
             status(child, "DONE", "--wait", "--timeout", 3)
             got, metadata = received(child), (jobs / child / "meta").read_text()
+            argv = got["argv"]
             check(child.endswith(suffix) and "mode=resume" in metadata and "parent=" + parent in metadata, "resume chain metadata")
-            check(got["argv"][:3] == ["exec", "resume", "01a1254c-6c2e-7eb3-bf71-da0a48a7abf3"] and "-s" not in got["argv"] and "-C" not in got["argv"] and got["cwd"] == str(repo.resolve()), "resume command and cwd")
-            check(('sandbox_mode="read-only"' if parent == ro else 'sandbox_mode="workspace-write"') in got["argv"], "sandbox inheritance")
-            check(('model_reasoning_effort="low"' in got["argv"]) == bool(flags), "resume effort only when explicit")
+            check(argv[:3] == ["exec", "resume", "01a1254c-6c2e-7eb3-bf71-da0a48a7abf3"] and "-s" not in argv and "-C" not in argv and got["cwd"] == str(repo.resolve()), "resume command and cwd")
+            check(('sandbox_mode="read-only"' if parent == ro else 'sandbox_mode="workspace-write"') in argv, "sandbox inheritance")
+            check((argv[argv.index("-m") + 1] if "-m" in argv else None) == want_model and "model=" + (want_model or "") + "\n" in metadata, "resume model inherited or overridden")
+            efforts = [a for a in argv if a.startswith("model_reasoning_effort=")]
+            check(efforts == (['model_reasoning_effort="' + want_effort + '"'] if want_effort else []) and "effort=" + (want_effort or "") + "\n" in metadata, "resume effort inherited or overridden")
             if parent == changed:
                 check("EMPTY_DIFF" in result(child), "resume baseline was not refreshed")
                 check("NOTE: baseline was dirty, see baseline.status" in result(child), "dirty baseline note")

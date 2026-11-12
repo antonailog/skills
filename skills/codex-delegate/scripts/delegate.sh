@@ -196,9 +196,9 @@ for name in ("submit", "status", "result", "resume", "cancel", "list", "doctor")
     if name in ("submit", "resume"):
         sub.add_argument("--prompt-file", required=True)
         sub.add_argument("--effort")
+        sub.add_argument("--model")
     if name == "submit":
         sub.add_argument("--label", required=True)
-        sub.add_argument("--model")
         sub.add_argument("--read-only", action="store_true")
     if name == "status":
         sub.add_argument("--wait", action="store_true")
