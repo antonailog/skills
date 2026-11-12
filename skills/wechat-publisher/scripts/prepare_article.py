@@ -17,6 +17,7 @@ import sys
 import os
 import re
 import json
+from urllib.parse import unquote
 
 
 def extract_title(content):
@@ -41,12 +42,46 @@ def replace_image_urls(content, url_mapping):
     return content
 
 
-def add_image_width(content, width=340):
-    """为所有图片添加 {width=N} 属性"""
+def is_portrait(path):
+    """本地图片是竖图（高大于宽）时返回 True；读不出尺寸（或没装 Pillow）就当不是竖图。
+    手机竖拍的照片像素是横着存的，方向记在 EXIF Orientation（5-8 要转 90 度），按转正后的宽高算"""
+    try:
+        from PIL import Image
+        with Image.open(path) as im:
+            w, h = im.size
+            if im.getexif().get(0x0112) in (5, 6, 7, 8):
+                w, h = h, w
+        return h > w
+    except Exception:
+        return False
+
+
+def find_portrait_urls(content, md_dir, url_mapping):
+    """找出正文里的竖图：返回它们的原地址，以及替换后的 OSS 地址"""
+    found = set()
+    for url in re.findall(r'!\[[^\]]*\]\(([^)\s]+)', content):
+        if re.match(r'https?://', url):
+            continue
+        path = unquote(url)  # Markdown 里的路径可能是转义过的（空格写成 %20、中文写成 %E7…）
+        local = path if os.path.isabs(path) else os.path.join(md_dir, path)
+        if os.path.isfile(local) and is_portrait(local):
+            found.add(url)
+            if url in url_mapping:
+                found.add(url_mapping[url])
+    return found
+
+
+def add_image_width(content, width=340, skip=()):
+    """为图片添加 {width=N} 属性；skip 里的地址（竖图）不加，按正文宽度显示"""
     # 匹配 ![alt](url) 格式，确保后面没有已有的 {width=...}
-    pattern = r'(!\[[^\]]*\]\([^)]+\))(?!\s*\{width=)'
-    replacement = rf'\1{{width={width}}}'
-    return re.sub(pattern, replacement, content)
+    pattern = r'(!\[[^\]]*\]\(([^)\s]+)[^)]*\))(?!\s*\{width=)'
+
+    def repl(m):
+        if m.group(2) in skip:
+            return m.group(1)
+        return f'{m.group(1)}{{width={width}}}'
+
+    return re.sub(pattern, repl, content)
 
 
 def generate_frontmatter(title, cover):
@@ -87,6 +122,9 @@ def main():
     with open(mapping_path, 'r', encoding='utf-8') as f:
         url_mapping = json.load(f)
 
+    # 0. 替换地址之前，先按本地文件找出竖图
+    portrait = find_portrait_urls(content, os.path.dirname(os.path.abspath(md_path)), url_mapping)
+
     # 1. 替换图片 URL
     print('🔗 替换图片 URL...')
     content = replace_image_urls(content, url_mapping)
@@ -94,8 +132,10 @@ def main():
     print(f'  替换了 {len(url_mapping)} 个 URL')
 
     # 2. 添加 width 属性
-    print('📐 添加图片 width 属性...')
-    content = add_image_width(content)
+    print('📐 添加图片 width 属性（竖图不加）...')
+    content = add_image_width(content, skip=portrait)
+    if portrait:
+        print(f'  竖图 {len([u for u in portrait if not re.match(r"https?://", u)])} 张，不限宽度')
 
     # 3. 提取标题和封面
     title = extract_title(content)

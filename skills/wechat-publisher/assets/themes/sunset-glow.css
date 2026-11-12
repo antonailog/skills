@@ -42,20 +42,18 @@
   line-height: 1.85;
 }
 
+/* 正文第一个元素不留段前距：wenyan 不套用带冒号的选择器，这条在 publish.mjs 渲染后处理 */
+
 /* 强调 */
 #wenyan strong {
   color: #1a1a1a;
   font-weight: bold;
 }
 
-/* 斜体 - 图片注释，居中，正文色 */
+/* 斜体 - 正文里就是普通斜体。单独成一段的斜体（图片下面的 *▲ 图注*）排成居中灰色小字：
+   wenyan 认不出「段落里只有它」，这一步在 publish.mjs 渲染后处理（captionEm） */
 #wenyan em {
-  color: #999;
   font-style: italic;
-  display: block;
-  text-align: center;
-  font-size: 0.85em;
-  margin: 4px 0 16px;
 }
 
 /* 链接 - 不加下划线角标 */
@@ -75,10 +73,20 @@
   font-size: 0.9em;
 }
 
+/* 引用块里的段落 - 段前段后都是 8px */
+#wenyan blockquote p {
+  margin: 8px 0;
+}
+
 /* 列表 */
 #wenyan ul, #wenyan ol {
   padding-left: 24px;
   margin: 14px 0;
+}
+
+/* 有序列表留宽一点：24px 放不下「1.」，手机上序号左边会被切掉 */
+#wenyan ol {
+  padding-left: 2.2em;
 }
 
 #wenyan li {

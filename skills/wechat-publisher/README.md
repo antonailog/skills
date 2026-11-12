@@ -18,7 +18,7 @@ Markdown 推成公众号草稿
 
 - **每一步的产出落成文件，交给下一步**：`process_images.py` 压缩图片、传到图床，写出原地址到线上地址的映射表；`prepare_article.py` 按映射表换地址，补上标题和封面字段，生成发布版；`publish.mjs` 读发布版渲染并推送。
 - **只推到草稿箱，发表由用户来点**：`publish.mjs` 每个选中的主题渲染一次、推一篇草稿，最后汇总每篇的结果；正式发表前，用户在公众号后台预览确认。图床和公众号的凭据都从环境变量读，仓库里不放密钥。
-- **排版样式写在主题样式表里**：默认主题落日晚霞在 `assets/themes/sunset-glow.css`：正文左对齐，标题全黑、靠字号分层级，代码块限高。`publish.mjs` 运行时把三个自定义主题注册进排版引擎，和内置主题一起供选择。
+- **排版样式写在主题样式表里**：默认主题落日晚霞在 `assets/themes/sunset-glow.css`：标题全黑、靠字号分层级，代码块限高。`publish.mjs` 渲染后再处理一遍：正文两端对齐（带网址的段落左对齐），连着写的几张图排成横滑图集，表格套横向滚动，图片下面的斜体排成图注。`publish.mjs` 运行时把三个自定义主题注册进排版引擎，和内置主题一起供选择。
 - **推广文案写得像跟朋友说话**：推完写朋友圈和群聊两版，讲清做了什么、参考了什么、解决了什么，朋友圈版按三种读者列出用得上的场景，两版都存进文章目录的推广文案文件（`SKILL.md`）。
 - **发布时间和投放节奏分开定**：文章可以提前发，投放按文章类型挑时段，技术长文放周一到周四早上，工具短文放工作日午休；渠道分几波，早上群聊、中午朋友圈、下午社区（`SKILL.md`）。
 
@@ -41,8 +41,8 @@ wechat-publisher/
 
 ## 其他
 
-- 前提：Python 3 和 oss2；Node.js 和全局安装的 `@wenyan-md/mcp`（`publish.mjs` 按 Homebrew 的全局模块目录加载它，装在别处要改脚本里的路径）；macOS 自带的 `sips` 压图；环境变量 `WECHAT_APP_ID`、`WECHAT_APP_SECRET`、`OSS_ACCESS_KEY_ID`、`OSS_ACCESS_KEY_SECRET`、`OSS_BUCKET`，`OSS_ENDPOINT` 可选
-- 注意：`prepare_article.py` 会给所有图片加 `{width=340}`，横向插画要手动去掉才能铺满，竖图和 UI 截图保留
+- 前提：Python 3 和 oss2；Node.js 和全局安装的 `@wenyan-md/mcp`（`publish.mjs` 按 Homebrew 的全局模块目录加载它，装在别处要改脚本里的路径）；macOS 自带的 `sips` 压图；Pillow（判断竖图）；环境变量 `WECHAT_APP_ID`、`WECHAT_APP_SECRET`、`OSS_ACCESS_KEY_ID`、`OSS_ACCESS_KEY_SECRET`、`OSS_BUCKET`，`OSS_ENDPOINT` 可选
+- 注意：`prepare_article.py` 按图片尺寸加宽度：横图加 `{width=340}`，竖图不加；网络图片和读不出尺寸的按横图处理
 - 注意：首次发布可能报 IP 白名单错误（40164），要在公众号后台把当前 IP 加进白名单
 - 注意：没在正文里引用的图片（例如 16:9 封面）要单独上传 OSS
 

@@ -32,6 +32,22 @@ if (!process.env.WECHAT_APP_ID || !process.env.WECHAT_APP_SECRET) {
   throw new Error('请先设置环境变量 WECHAT_APP_ID 和 WECHAT_APP_SECRET');
 }
 
+// ── 摘要（可选）：环境变量 WECHAT_DIGEST 写进草稿的摘要栏 ─────────
+// wenyan 的 publishToDraft 不收摘要：在它发「新建草稿」请求时补上。要在导入 wenyan 之前包好 fetch（它载入时就取走了 fetch）。
+// 不设就不动，微信默认截取正文前 54 字；摘要上限 120 字由调用方检查
+if (process.env.WECHAT_DIGEST) {
+  const digest = process.env.WECHAT_DIGEST;
+  const rawFetch = globalThis.fetch;
+  globalThis.fetch = (url, init) => {
+    if (String(url).includes('/cgi-bin/draft/add') && init && typeof init.body === 'string') {
+      const body = JSON.parse(init.body);
+      for (const a of body.articles || []) a.digest = digest;
+      init = { ...init, body: JSON.stringify(body) };
+    }
+    return rawFetch(url, init);
+  };
+}
+
 // ── wenyan-mcp 核心库路径 ──────────────────────────────
 const corePath = '/opt/homebrew/lib/node_modules/@wenyan-md/mcp/node_modules/@wenyan-md/core/dist';
 const { registerTheme, getAllGzhThemes } = await import(`${corePath}/core.js`);
@@ -108,6 +124,82 @@ const mdContent = readFileSync(mdPath, 'utf-8');
 console.log(`\n📄 文件: ${mdPath}`);
 console.log(`🎨 主题: ${themeIds.join(', ')}`);
 
+// 正文第一个元素去掉段前距。wenyan 不套用带冒号的选择器（:first-child 写进主题不生效），只能渲染后改行内样式
+function zeroFirstMarginTop(html) {
+  const open = html.match(/<section[^>]*\bid="wenyan"[^>]*>/);
+  if (!open) return html;
+  const start = open.index + open[0].length;
+  const tag = html.slice(start).match(/^\s*<([a-zA-Z][a-zA-Z0-9]*)\b[^>]*>/);
+  if (!tag) return html;
+  const oldTag = tag[0];
+  const newTag = /\sstyle="/.test(oldTag)
+    ? oldTag.replace(/\sstyle="([^"]*)"/, (_, s) => ` style="${s.replace(/;?\s*$/, '')}; margin-top: 0px;"`)
+    : oldTag.replace(/>$/, ' style="margin-top: 0px;">');
+  return html.slice(0, start) + html.slice(start).replace(oldTag, newTag);
+}
+
+// 正文两端对齐（默认开，环境变量 WECHAT_JUSTIFY=0 关掉）。中文正文原则上两端对齐（W3C《中文排版需求》6.2）。
+// 段落和列表项改成两端对齐；带不能断行的长串（网址、路径、长代码）的保持左对齐：两端对齐会把长串前面那一行的字距拉得很开。
+// 主题自带的 left 也改成两端对齐；居中、右对齐这些主题特意写的不动。标题、代码块、表格单元格不碰。
+// wenyan 不套用带冒号的选择器，也写不出「含链接的段落」，所以渲染后改行内样式
+function justifyText(html) {
+  // 只看显示出来的文字：链接文字是中文标题时照样两端对齐
+  const hasLongToken = (inner) => {
+    const text = inner.replace(/<[^>]+>/g, '');
+    return /https?:\/\/|www\./i.test(text) || /[\x21-\x7E]{20,}/.test(text);
+  };
+  const keep = (openTag) => /text-align:\s*(?!left\b)[a-z]/.test(openTag);
+  const setAlign = (openTag, align) => {
+    if (/text-align:/.test(openTag)) return openTag.replace(/text-align:\s*[a-z-]+/, `text-align: ${align}`);
+    return /\sstyle="/.test(openTag)
+      ? openTag.replace(/\sstyle="([^"]*)"/, (_, s) => ` style="${s.replace(/;?\s*$/, '')}; text-align: ${align};"`)
+      : openTag.replace(/>$/, ` style="text-align: ${align};">`);
+  };
+  return html
+    .replace(/(<p\b[^>]*>)([\s\S]*?)(<\/p>)/g, (all, open, inner, close) => {
+      if (keep(open) || /^\s*<img\b[^>]*>\s*$/.test(inner)) return all;
+      return setAlign(open, hasLongToken(inner) ? 'left' : 'justify') + inner + close;
+    })
+    // 每个列表项只看自己的文字（到下一个 li 或子列表为止），嵌套的子项也各自处理
+    .replace(/(<li\b[^>]*>)((?:(?!<\/?li\b|<[uo]l\b)[\s\S])*)/g, (all, open, inner) => {
+      if (keep(open)) return all;
+      return setAlign(open, hasLongToken(inner) ? 'left' : 'justify') + inner;
+    });
+}
+
+// 图注排成居中灰色小字：图片下面紧贴着写的斜体（和图片在同一段），或者单独一段、以 ▲ 开头的斜体（*▲ 图注*）。
+// 其他整段斜体、正文里的斜体都是普通斜体。只给 sunset-glow 用：它的主题文件里 em 只写了 italic
+const CAPTION_STYLE = 'color: #999; font-style: italic; display: block; text-align: center; font-size: 0.85em; margin: 4px 0 16px;';
+function captionEm(html) {
+  return html.replace(/(<p\b[^>]*>)((?:<img\b[^>]*>|<br\s*\/?>|\s)*?)<em\b[^>]*>((?:(?!<\/?(?:p|em)\b)[\s\S])*)<\/em>\s*(<\/p>)/g,
+    (all, open, pre, inner, close) => {
+      const afterImage = /<img\b/.test(pre);
+      if (!afterImage && !inner.replace(/<[^>]+>/g, '').trim().startsWith('▲')) return all;
+      return `${open}${pre}<em style="${CAPTION_STYLE}">${inner}</em>${close}`;
+    });
+}
+
+// 几张图连着写（中间不空行，wenyan 会放进同一个段落）→ 横滑图集：每张占 80% 宽、露出下一张的边，手指左右滑。
+// 后面紧贴着的一行斜体当图集的图注，放在图集下面。单独一段的一张图不动。2026-11-11 推草稿手机实测可用
+function imageGalleries(html) {
+  return html.replace(/(<p\b[^>]*>)\s*((?:<img\b[^>]*>\s*(?:<br\s*\/?>\s*)?){2,})(<em\b[^>]*>(?:(?!<\/?(?:p|em)\b)[\s\S])*<\/em>)?\s*<\/p>/g,
+    (all, open, imgsHtml, caption) => {
+      const imgs = imgsHtml.match(/<img\b[^>]*>/g);
+      const items = imgs.map((img, i) => {
+        const tag = img.replace(/\sstyle="[^"]*"/, '').replace(/\s*\/?>$/, ' style="display: block; width: 100%; height: auto; border-radius: 8px;">');
+        return `<section style="display: inline-block; width: 80%; ${i < imgs.length - 1 ? 'margin-right: 3%; ' : ''}vertical-align: top; white-space: normal;">${tag}</section>`;
+      }).join('');
+      const gallery = `<section style="overflow-x: auto; overflow-y: hidden; white-space: nowrap; font-size: 0; line-height: 0; -webkit-overflow-scrolling: touch; margin: ${caption ? '22px 0 0' : '22px 0'};">${items}</section>`;
+      return caption ? `${gallery}\n<p style="margin: 0 0 22px;">${caption}</p>` : gallery;
+    });
+}
+
+// 表格一律套横向滚动容器：列多的表格左右滑，不被挤窄也不被截断（主题里表格不折行、按内容撑宽）。2026-11-11 手机实测可用
+function wrapTables(html) {
+  return html.replace(/<table\b[\s\S]*?<\/table>/g, (t) =>
+    `<section style="overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch;">${t}</section>`);
+}
+
 // ── 逐个主题渲染并发布 ─────────────────────────────────
 const results = [];
 
@@ -120,17 +212,23 @@ for (const themeId of themeIds) {
 
     console.log('渲染中...');
     const codeTheme = themeId === 'starry-geek' ? 'atom-one-dark' : 'atom-one-dark';
-    const gzhContent = await getGzhContent(mdContent, themeId, codeTheme, true, true);
+    // 最后一个参数是自动脚注：开着会给每个链接加 [n]，并在文末另起一段「引用链接」，和文章自己写的引用重复，所以关掉
+    const gzhContent = await getGzhContent(mdContent, themeId, codeTheme, true, false);
+    gzhContent.content = zeroFirstMarginTop(gzhContent.content);
+    if (themeId === 'sunset-glow') gzhContent.content = captionEm(gzhContent.content);
+    gzhContent.content = imageGalleries(gzhContent.content);
+    gzhContent.content = wrapTables(gzhContent.content);
+    if (process.env.WECHAT_JUSTIFY !== '0') gzhContent.content = justifyText(gzhContent.content);
     const title = gzhContent.title ?? '未命名文章';
 
     console.log(`标题: ${title}`);
     console.log('发布到草稿箱...');
 
+    // publishToDraft 只收 4 个参数，凭据放第 4 个
     const response = await publishToDraft(
       title,
       gzhContent.content,
       gzhContent.cover ?? '',
-      {},
       { appId: process.env.WECHAT_APP_ID, appSecret: process.env.WECHAT_APP_SECRET }
     );
 
