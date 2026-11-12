@@ -18,6 +18,7 @@
  *   ink-bamboo   - 墨竹清韵（中国风水墨绿）
  *   starry-geek  - 星空极客（深色科技风）
  *   marker       - 荧光笔（中性灰 + 黄绿荧光笔，浅色代码块）
+ *   marker-lite  - 细荧光（默认模板：细淡荧光加粗，15px，浅色代码块）
  *
  * 内置主题 ID（wenyan-mcp 自带）:
  *   default, solarized-light, dracula, github, monokai,
@@ -100,6 +101,16 @@ const customThemes = [
       author: 'AI Designer'
     },
     cssFile: 'marker.css'
+  },
+  {
+    meta: {
+      id: 'marker-lite',
+      name: 'Marker Lite',
+      description: '默认模板：浅灰正文 + 细淡黄绿荧光加粗，15px、行距 1.85，白底',
+      appName: '细荧光',
+      author: 'AI Designer'
+    },
+    cssFile: 'marker-lite.css'
   }
 ];
 
@@ -179,29 +190,129 @@ function justifyText(html) {
 }
 
 // 图注排成居中灰色小字：图片下面紧贴着写的斜体（和图片在同一段），或者单独一段、以 ▲ 开头的斜体（*▲ 图注*）。
-// 其他整段斜体、正文里的斜体都是普通斜体。只给 CAPTION_THEMES 里的主题用（sunset-glow、marker）：它们的主题文件里 em 只写了 italic
-const CAPTION_THEMES = new Set(['sunset-glow', 'marker']);
+// 其他整段斜体、正文里的斜体都是普通斜体。只给 CAPTION_THEMES 里的主题用（sunset-glow、marker、marker-lite）：它们的主题文件里 em 只写了 italic
+// 图注一行放不下时分成两行、在合适的位置换：在中间附近找断点（优先标点后面，其次中文字之间、中英文交界、空格），
+// 把图注切成前后两段、各自 inline-block。一行放得下时两段挨着排成一行；放不下时后一段整体换到下一行，
+// 不会剩一个字单独一行，也不管手机多宽。只处理纯文字图注（带链接等标签的不动）。2026-11-11 用户要求
+function balanceCaption(text) {
+  if (text.includes('<')) return text;
+  const units = text.match(/&[#a-zA-Z0-9]+;|[\s\S]/g) || [];
+  const space = (u) => u === ' ' || u === '\t';
+  const cjk = (u) => /[⺀-鿿豈-﫿＀-￯　-〿]/.test(u);
+  const weight = units.map(u => cjk(u) ? 1 : space(u) ? 0.3 : 0.55);
+  const total = weight.reduce((a, b) => a + b, 0);
+  if (total <= 14) return text;
+  const punct = /^[，、：；。！？,;:）)」』”’—]$/;
+  // 行首不能出现的（后半段不能以它开头）、行尾不能出现的（前半段不能以它结尾）；不换行空格前后都不断
+  const noStart = /^[，、：；。！？,;:）)」』”’—》〉】\]…!?.%·]$|^&nbsp;$|^\u00a0$/;
+  const noEnd = /^[「『“‘（(《〈【\[]$|^&nbsp;$|^\u00a0$/;
+  const pick = (ok, lo, hi) => {
+    let best = -1, bestDiff = Infinity, left = 0;
+    for (let k = 0; k < units.length - 1; k++) {
+      left += weight[k];
+      if (left < 4 || left < total * lo || left > total * hi || !ok(units[k], units[k + 1])) continue;
+      if (noStart.test(units[k + 1]) || noEnd.test(units[k])) continue;
+      const d = Math.abs(left - total / 2);
+      if (d < bestDiff) { bestDiff = d; best = k; }
+    }
+    return best;
+  };
+  let k = pick((a) => punct.test(a) || space(a), 0.25, 0.75);
+  if (k < 0) k = pick((a, b) => (cjk(a) && cjk(b)) || (cjk(a) !== cjk(b) && !space(a) && !space(b)), 0.3, 0.7);
+  if (k < 0) return text;
+  // 断点在空格上时，空格放在两段之间：排在同一行时照常显示，换行时落在行尾
+  // 只把半角空格挪到两段之间；全角空格是正文的一部分，原样留着
+  const L = units.slice(0, k + 1).join(''), R = units.slice(k + 1).join('');
+  const gap = /[ \t]$/.test(L) || /^[ \t]/.test(R) ? ' ' : '';
+  return `<span style="display: inline-block;">${L.replace(/[ \t]+$/, '')}</span>${gap}<span style="display: inline-block;">${R.replace(/^[ \t]+/, '')}</span>`;
+}
+
+const CAPTION_THEMES = new Set(['sunset-glow', 'marker', 'marker-lite']);
 const CAPTION_STYLE = 'color: #999; font-style: italic; display: block; text-align: center; font-size: 0.85em; margin: 4px 0 16px;';
 function captionEm(html) {
   return html.replace(/(<p\b[^>]*>)((?:<img\b[^>]*>|<br\s*\/?>|\s)*?)<em\b[^>]*>((?:(?!<\/?(?:p|em)\b)[\s\S])*)<\/em>\s*(<\/p>)/g,
     (all, open, pre, inner, close) => {
       const afterImage = /<img\b/.test(pre);
       if (!afterImage && !inner.replace(/<[^>]+>/g, '').trim().startsWith('▲')) return all;
-      return `${open}${pre}<em style="${CAPTION_STYLE}">${inner}</em>${close}`;
+      return `${open}${pre}<em style="${CAPTION_STYLE}">${balanceCaption(inner)}</em>${close}`;
     });
 }
 
-// 几张图连着写（中间不空行，wenyan 会放进同一个段落）→ 横滑图集：每张占 80% 宽、露出下一张的边，手指左右滑。
-// 后面紧贴着的一行斜体当图集的图注，放在图集下面。单独一段的一张图不动。2026-11-11 推草稿手机实测可用
+// 读本机图片的宽高（PNG、JPEG、GIF、WebP 只看文件头），读不出返回 null。用来定自动滑动图集的框比例
+function imageSize(src) {
+  try {
+    let p = String(src || '');
+    if (/^https?:/i.test(p)) return null;
+    p = decodeURIComponent(p.replace(/^file:\/\//, ''));
+    const b = readFileSync(p);
+    if (b[0] === 0x89 && b.toString('ascii', 1, 4) === 'PNG') return [b.readUInt32BE(16), b.readUInt32BE(20)];
+    if (b.toString('ascii', 0, 3) === 'GIF') return [b.readUInt16LE(6), b.readUInt16LE(8)];
+    if (b.toString('ascii', 0, 4) === 'RIFF' && b.toString('ascii', 8, 12) === 'WEBP') {
+      const kind = b.toString('ascii', 12, 16);
+      if (kind === 'VP8X') return [1 + b.readUIntLE(24, 3), 1 + b.readUIntLE(27, 3)];
+      if (kind === 'VP8 ') return [b.readUInt16LE(26) & 0x3fff, b.readUInt16LE(28) & 0x3fff];
+      if (kind === 'VP8L') { const v = b.readUInt32LE(21); return [(v & 0x3fff) + 1, ((v >> 14) & 0x3fff) + 1]; }
+    }
+    if (b[0] === 0xff && b[1] === 0xd8) {
+      // 手机竖拍的照片像素横着存、方向记在 EXIF Orientation：5-8 要转 90 度，宽高对调
+      let i = 2, rotate = false;
+      while (i + 9 < b.length) {
+        if (b[i] !== 0xff) { i++; continue; }
+        const m = b[i + 1];
+        if (m === 0xe1 && b.toString('ascii', i + 4, i + 8) === 'Exif') {
+          const t = i + 10, le = b.toString('ascii', t, t + 2) === 'II';
+          const u16 = (o) => le ? b.readUInt16LE(o) : b.readUInt16BE(o);
+          const u32 = (o) => le ? b.readUInt32LE(o) : b.readUInt32BE(o);
+          const ifd = t + u32(t + 4), count = u16(ifd);
+          for (let e = 0; e < count; e++) {
+            const at = ifd + 2 + e * 12;
+            if (u16(at) === 0x0112) { rotate = u16(at + 8) >= 5 && u16(at + 8) <= 8; break; }
+          }
+        }
+        if (m >= 0xc0 && m <= 0xcf && m !== 0xc4 && m !== 0xc8 && m !== 0xcc) {
+          const w = b.readUInt16BE(i + 7), h = b.readUInt16BE(i + 5);
+          return rotate ? [h, w] : [w, h];
+        }
+        i += 2 + b.readUInt16BE(i + 2);
+      }
+    }
+  } catch {}
+  return null;
+}
+
+// 几张图连着写（中间不空行，wenyan 会放进同一个段落）→ 自动滑动图集：同一个位置每张停 2.6 秒、0.5 秒滑到下一张，循环；
+// 用 SVG 自带的动画（不用脚本，公众号会删脚本），图片嵌在 foreignObject 里，文颜照常传图。
+// 末尾接一张第一张的复制，循环回到开头时看不出跳。框的比例取这组图高宽比的中间值（读不出尺寸的图按 4:3 算，
+// 比如网络图片；结果限制在 2.5:1 到 2:3 之间），比例不同的图等比缩放放进框里（不裁切）。
+// 后面紧贴着的一行斜体当图集的图注，放在图集下面。单独一段的一张图不动。
+// 2026-11-11 推草稿手机实测过 SVG 位移动画和 foreignObject 里的图都能显示；用户定多张图要自动滑动，不要圆点
+const CAROUSEL_HOLD = 2.6;
+const CAROUSEL_MOVE = 0.5;
 function imageGalleries(html) {
   return html.replace(/(<p\b[^>]*>)\s*((?:<img\b[^>]*>\s*(?:<br\s*\/?>\s*)?){2,})(<em\b[^>]*>(?:(?!<\/?(?:p|em)\b)[\s\S])*<\/em>)?\s*<\/p>/g,
     (all, open, imgsHtml, caption) => {
       const imgs = imgsHtml.match(/<img\b[^>]*>/g);
-      const items = imgs.map((img, i) => {
-        const tag = img.replace(/\sstyle="[^"]*"/, '').replace(/\s*\/?>$/, ' style="display: block; width: 100%; height: auto; border-radius: 8px;">');
-        return `<section style="display: inline-block; width: 80%; ${i < imgs.length - 1 ? 'margin-right: 3%; ' : ''}vertical-align: top; white-space: normal;">${tag}</section>`;
-      }).join('');
-      const gallery = `<section style="overflow-x: auto; overflow-y: hidden; white-space: nowrap; font-size: 0; line-height: 0; -webkit-overflow-scrolling: touch; margin: ${caption ? '22px 0 0' : '22px 0'};">${items}</section>`;
+      const n = imgs.length;
+      const ratios = imgs.map(img => {
+        const size = imageSize((img.match(/\ssrc="([^"]+)"/) || [])[1]);
+        return size && size[0] > 0 && size[1] > 0 ? size[1] / size[0] : 0.75;
+      }).sort((a, b) => a - b);
+      const mid = ratios.length / 2;
+      const median = ratios.length % 2 ? ratios[Math.floor(mid)] : (ratios[mid - 1] + ratios[mid]) / 2;
+      const ratio = Math.min(1.5, Math.max(0.4, median));
+      const W = 1000, H = Math.round(W * ratio), T = CAROUSEL_HOLD + CAROUSEL_MOVE, D = n * T;
+      const f = (x) => Number(x.toFixed(4));
+      const values = [], keyTimes = [];
+      for (let i = 0; i < n; i++) { values.push(`${-i * W} 0`, `${-i * W} 0`); keyTimes.push(f(i * T / D), f((i * T + CAROUSEL_HOLD) / D)); }
+      values.push(`${-n * W} 0`); keyTimes.push(1);
+      const frames = [...imgs, imgs[0]].map(img => img
+        .replace(/\sstyle="[^"]*"/, '').replace(/\s(?:width|height)="[^"]*"/g, '')
+        .replace(/\s*\/?>$/, ` style="display: inline-block; width: ${W}px; height: ${H}px; object-fit: contain; vertical-align: top;">`)).join('');
+      const svg = `<svg viewBox="0 0 ${W} ${H}" width="100%" style="display: block; width: 100%;" xmlns="http://www.w3.org/2000/svg">`
+        + `<g><animateTransform attributeName="transform" type="translate" values="${values.join(';')}" keyTimes="${keyTimes.join(';')}" dur="${f(D)}s" repeatCount="indefinite"/>`
+        + `<foreignObject x="0" y="0" width="${W * (n + 1)}" height="${H}"><section style="width: ${W * (n + 1)}px; height: ${H}px; white-space: nowrap; font-size: 0; line-height: 0; background: #f4f4f4;">${frames}</section></foreignObject></g>`
+        + '</svg>';
+      const gallery = `<section style="margin: ${caption ? '22px 0 0' : '22px 0'}; line-height: 0; overflow: hidden; border-radius: 8px;">${svg}</section>`;
       return caption ? `${gallery}\n<p style="margin: 0 0 22px;">${caption}</p>` : gallery;
     });
 }
@@ -223,9 +334,10 @@ for (const themeId of themeIds) {
     console.log(`\n━━━ ${themeName} (${themeId}) ━━━`);
 
     console.log('渲染中...');
-    // 荧光笔配浅色代码块、不加 Mac 风格三个点；其他主题照旧
-    const codeTheme = themeId === 'marker' ? 'atom-one-light' : 'atom-one-dark';
-    const macStyle = themeId !== 'marker';
+    // 荧光笔、细荧光配浅色代码块、不加 Mac 风格三个点；其他主题照旧
+    const lightCode = themeId === 'marker' || themeId === 'marker-lite';
+    const codeTheme = lightCode ? 'atom-one-light' : 'atom-one-dark';
+    const macStyle = !lightCode;
     // 最后一个参数是自动脚注：开着会给每个链接加 [n]，并在文末另起一段「引用链接」，和文章自己写的引用重复，所以关掉
     const gzhContent = await getGzhContent(mdContent, themeId, codeTheme, macStyle, false);
     gzhContent.content = zeroFirstMarginTop(gzhContent.content);
