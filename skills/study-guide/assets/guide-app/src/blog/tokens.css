@@ -1,0 +1,185 @@
+/* ============================================================
+   超级个体阿东 / BuilderDong · 设计 token
+   从首页首屏定稿 4-页面/首页/首页-v3/v3-4b-1.html 提取（2026-10-18），说明见同目录 DESIGN.md
+
+   用法
+     <link rel="stylesheet" href="<相对路径>/设计规范/tokens.css">
+     明暗：<html data-theme="light"> 默认浅色；改成 "dark" 切深色。任意容器上写 data-theme 也能单独换主题
+   约定
+     · 颜色、阴影、圆角、字体、版心这几组的变量名和数值与 v3-4b-1 的 :root 完全相同，首页换成引用本文件不会变样
+     · 字号 --fs-*、间距 --sp-*、动效 --dur-* / --ease-* 是按 v3-4b-1 实际用到的值新整理的刻度，名字里的数字就是像素
+     · 断点不能写成 CSS 变量，见 DESIGN.md「布局」
+   ============================================================ */
+
+:root,
+[data-theme="light"] {
+  /* ---------- 颜色：纯中性灰 + 黄绿强调（色相 66 / 饱和度 74） ---------- */
+  --bg: #fafafa;                   /* 页面底 */
+  --surface: #ffffff;              /* 卡片、弹出层 */
+  --surface-2: #f4f4f4;            /* 悬停底、图片占位、面板第二栏 */
+  --fg: #0a0a0a;                   /* 主文字、强分隔线、悬停描边 */
+  --fg-2: #262626;                 /* 次一级文字：徽章、图注、指标说明 */
+  --muted: #6b6b6b;                /* 说明文字、日期、未选中导航 */
+  --line: #e5e5e5;                 /* 卡片描边、分隔线 */
+  --line-strong: #cfcfcf;          /* 按钮和徽章描边、时间线竖线、首屏分隔线 */
+  --accent: #cadd21;               /* 亮色：只用于色块、荧光笔高亮、选中底、星星填充，不当文字色 */
+  --accent-ink: #59620f;           /* 同色相压暗：强调色文字、细线、方向标签、焦点框，对 --bg 6.3:1 */
+  --accent-soft: hsl(66 74% 93%);  /* 强调色浅底（#f8fae0）：导航当前项、数字块底 */
+  --accent-line: rgba(89, 98, 15, .42);   /* 强调色描边：进行中徽章 */
+  --on-accent: #0a0a0a;            /* 强调色底上的文字 */
+  --grid-line: rgba(10, 10, 10, .07);     /* 占位图的斜线纹 */
+  --shade: #000000;                /* 堆叠卡往后退时压暗用的颜色 */
+  --dim-k: .4;                     /* 压暗系数：浅色主题减弱到 0.4 */
+  --topbar-bg: rgba(250, 250, 250, .78);  /* 顶栏半透明底（配 blur 14px） */
+  --tip-bg: #0a0a0a;               /* Tooltip 反色底 */
+  --tip-fg: #fafafa;
+  --avatar-bg: #ffffff;            /* 头像圆底 */
+  --dot-base: #d4d4d4;             /* 背景点阵：静止 */
+  --dot-active: #a9bb12;           /* 背景点阵：被鼠标推动时 */
+  --spark: #a9bb12;                /* 点击火花 */
+
+  /* 状态标签（近况：进行中 / 关注中 / 维护中）。蓝、绿只用在这里（10-18 用户定），浅底 + 同色系深字，对比度 ≥ 5.7:1 */
+  --st-doing-bg: hsl(66 74% 93%);  --st-doing-ink: #59620f;   /* 进行中：黄绿 */
+  --st-watch-bg: #e8f0fd;          --st-watch-ink: #1f4fb5;   /* 关注中：蓝 */
+  --st-keep-bg: #e4f5ea;           --st-keep-ink: #1d6b3d;    /* 维护中：绿 */
+
+  /* ---------- 阴影 ---------- */
+  --card-shadow: 0 14px 34px -14px rgba(0, 0, 0, .28), 0 3px 8px -3px rgba(0, 0, 0, .10);   /* 浮起的卡：名片、终端、弹出层、卡堆最上面一张 */
+  --card-shadow-sm: 0 1px 2px rgba(0, 0, 0, .05), 0 8px 24px -16px rgba(0, 0, 0, .18);     /* 平放的卡：Skill 卡、卡堆后面几张 */
+  --stack-shadow: 0 -16px 40px -24px rgba(0, 0, 0, .28);                                   /* 堆叠卡的上沿投影 */
+
+  color-scheme: light;
+}
+
+:root[data-theme="dark"],
+[data-theme="dark"] {
+  --bg: #0a0a0a;
+  --surface: #141414;
+  --surface-2: #1b1b1b;
+  --fg: #f5f5f5;
+  --fg-2: #e5e5e5;
+  --muted: #a3a3a3;
+  --line: #262626;
+  --line-strong: #3a3a3a;
+  --accent: #cadd21;
+  --accent-ink: #cadd21;           /* 深色底上亮色本身就够对比，文字也用它 */
+  --accent-soft: hsl(66 74% 9%);   /* #252806 */
+  --accent-line: rgba(202, 221, 33, .5);
+  --on-accent: #0a0a0a;
+  --grid-line: rgba(245, 245, 245, .07);
+  --shade: #000000;
+  --dim-k: 1;
+  --topbar-bg: rgba(10, 10, 10, .72);
+  --tip-bg: #f5f5f5;
+  --tip-fg: #0a0a0a;
+  --avatar-bg: #ffffff;
+  --dot-base: #2c2c2c;
+  --dot-active: #cadd21;
+  --spark: #cadd21;
+  --st-doing-bg: hsl(66 74% 9%);   --st-doing-ink: #cadd21;
+  --st-watch-bg: #11223f;          --st-watch-ink: #8ab4f8;
+  --st-keep-bg: #0f2a1a;           --st-keep-ink: #74d39a;
+
+  --card-shadow: 0 14px 34px -12px rgba(0, 0, 0, .7), 0 3px 8px -2px rgba(0, 0, 0, .4);
+  --card-shadow-sm: 0 1px 2px rgba(0, 0, 0, .4), 0 10px 28px -16px rgba(0, 0, 0, .7);
+  --stack-shadow: 0 -16px 48px -20px rgba(0, 0, 0, .85);
+
+  color-scheme: dark;
+}
+
+/* 下面这些不分明暗 */
+:root {
+  /* ---------- 字体 ---------- */
+  --font-title: "Site Name", "ZCOOL QingKe HuangYou", "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;   /* 中文标题：姓名、板块标题、站名、页脚大字。只有 400。
+     10-21：「Site Name」是首页标题字的 ZCOOL 小子集（首页引的 首页-v3/assets/fonts/name.css，字体内嵌，99-其他/脚本/生成姓名字体.py 生成），
+     强刷不再先露后备字体、逐字换；没引 name.css 的页面浏览器找不到它，自动用 ZCOOL */
+  --font-zh: "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;                              /* 中文大字：宣言、项目卡标题，用 300 细体 */
+  --font-latin: "Bricolage Grotesque", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;                        /* 英文名和数字：项目名、指标、Skill 卡名，用 600 */
+  --font-body: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;   /* 正文：系统字体 */
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;                                      /* 标签、徽章、日期、计数、终端 */
+
+  /* ---------- 字号（名字里的数字 = 像素） ----------
+     10-24 字号收敛（方案 A）：普通文字只用下面 8 档，写 var(--fs-N)，不手写像素；
+     不并的（展示字、图形里的字、相对字号）在声明后加一句注释「字号例外：原因」。99-其他/脚本/字号检查.py 发布前查 */
+  --fs-12: 12px;   /* 等宽小字：方向标签、徽章、日期、年份、计数、eyebrow、Tooltip */
+  --fs-13: 13px;   /* 次要说明：键值的键、图注、侧栏列表、窄屏导航 */
+  --fs-14: 14px;   /* 界面字：导航、按钮、页签、卡片说明 */
+  --fs-15: 15px;   /* 卡片和列表正文；页面 body 基准 */
+  --fs-17: 17px;   /* 阅读正文：首屏介绍、工具区一句话（文章正文是 17，写在文章页自己的 --fs 里） */
+  --fs-20: 20px;   /* 小标题：文章列表标题、精选卡卡头、Skill 页小节、文章三级标题 */
+  --fs-24: 24px;   /* 卡片标题：项目名、Skill 卡名、顶栏站名、文章二级标题 */
+  --fs-32: 32px;   /* 页内大标题：文章标题、Skill 页分节标题 */
+  /* 已退役（10-24），只给旧版本页面和存档用，新代码别用，字号检查会拦 */
+  --fs-16: 16px;
+  --fs-18: 18px;
+  --fs-26: 26px;
+  --fs-28: 28px;
+  /* 随屏宽变化的展示字 */
+  --fs-h2: clamp(36px, 5.4vw, calc(16px * 3.7));       /* 板块标题，36—59px */
+  --fs-h4: clamp(26px, 2.5vw, 36px);                   /* 项目卡大标题（Noto Sans SC 300） */
+  --fs-stat: clamp(64px, 8.6vw, 132px);                /* 作品区描边大数字 */
+  --fs-slogan: clamp(44px, 7.6vw, 128px);              /* 页脚大字（10-23 起首页没有页脚大字了，留给旧版本） */
+  /* 首屏姓名、宣言、自我介绍的字号按栏宽反算，写在首屏自己的样式里，见 DESIGN.md「首屏」 */
+
+  --lh-body: 1.7;      /* 正文 */
+  --lh-text: 1.65;     /* 卡片正文、说明段（1.65—1.75） */
+  --lh-ui: 1.4;        /* 导航、标签、按钮 */
+  --lh-title: 1.15;    /* 卡片标题（1.15—1.3） */
+  --lh-display: 1.05;  /* 板块标题、大字（1—1.08） */
+
+  /* ---------- 间距（4px 基准，名字里的数字 = 像素） ---------- */
+  --u: 4px;
+  --sp-2: 2px;     /* 以下 2—14 用在组件内部：图标与文字、标签内边距、行间 */
+  --sp-4: 4px;
+  --sp-6: 6px;
+  --sp-8: 8px;
+  --sp-10: 10px;
+  --sp-12: 12px;
+  --sp-14: 14px;
+  --sp-16: 16px;   /* 以下用在卡片内边距和区块之间 */
+  --sp-18: 18px;
+  --sp-20: 20px;
+  --sp-24: 24px;
+  --sp-28: 28px;
+  --sp-32: 32px;
+  --sp-40: 40px;
+  --sp-48: 48px;   /* 板块标题下方 */
+  --sp-64: 64px;
+  --sp-88: 88px;   /* 手机板块上下留白 */
+  --sp-128: 128px; /* 桌面板块上下留白 */
+
+  /* ---------- 圆角 ---------- */
+  --r: 32px;        /* 大卡片：项目卡、Skill 卡、名片、近况面板 */
+  --r-in: 20px;     /* 大卡片里的图片、终端窗口（= 32 − 卡内留白 12） */
+  --r-sm: 12px;     /* 首屏精选卡、文章封面、弹出层、二维码 */
+  --r-xs: 8px;      /* Tooltip */
+  --r-pill: 999px;  /* 按钮、徽章、图标按钮、导航项、圆点 */
+
+  /* ---------- 线 ---------- */
+  --bw: 1px;        /* 所有描边和分隔线 */
+
+  /* ---------- 版心与栏 ---------- */
+  --gx: clamp(16px, 3.4vw, 48px);   /* 页面左右留白 */
+  --wrap: 1280px;                   /* 板块版心 */
+  --hero-max: 1344px;               /* 首屏 12 栏的最大宽度 */
+  --col-gap: 24px;                  /* 首屏 12 栏栏距（≤860px 改 10px） */
+  --top-h: 64px;                    /* 顶栏高度（≤760px 改 56px） */
+
+  /* ---------- 动效 ---------- */
+  --dur-fast: .16s;   /* Tooltip、弹出层出现 */
+  --dur: .2s;         /* 悬停：描边、底色、文字色、小箭头位移 */
+  --dur-slow: .3s;    /* 明暗切换、阴影变化 */
+  --dur-media: .6s;   /* 悬停时图片放大 */
+  --dur-reveal: .7s;  /* 滚动显现、卡片正文浮现 */
+  --ease: ease;
+  --ease-out: cubic-bezier(.2, .7, .2, 1);      /* 显现、图片放大 */
+  --ease-enter: cubic-bezier(.2, .8, .2, 1);    /* 换到最前的卡片正文、计数跳动 */
+  --ease-spring: cubic-bezier(.34, 1.56, .64, 1);   /* 带一点回弹：卡堆指示圆点拉长 */
+}
+
+@media (max-width: 860px) {
+  :root { --col-gap: 10px; }
+}
+@media (max-width: 760px) {
+  :root { --top-h: 56px; }
+}

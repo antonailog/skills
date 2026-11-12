@@ -1,0 +1,213 @@
+/* 站内文章页的样式（99-其他/脚本/生成文章页.py 写出，不要手改）。颜色、字体读 ../设计规范/tokens.css
+   10-23 定稿（三轮样张：第 2 轮选第 4 版「目录栏坞」、第 3 轮字体选「黑体统一」，样张快照在 设计规范/样例库/文章页-2026-10-23/）：
+   · 版心：左栏（返回文章列表按钮 + 目录 + 回到顶部按钮，紧贴顶栏下方钉住）| 正文 680px · 17px（一行约 39 字）| 右边留空，正文落在页面正中
+   · 字体：文章区（左栏、正文、头部、结尾）全用霞鹜文楷屏幕阅读版（本站自托管）；日期和章编号用 JetBrains Mono；顶栏全站共用不动
+   · 目录：章 + 节全部列出，当前一节用滑动高亮块（和首页工具区同一套）；点目录跳过去，高亮锁在点的那一节
+   · 强调色进结构：章编号、引用块底色、链接下划线、加粗句绿色马克笔（不加粗）
+   · 图片一律不超过正文宽，浅灰衬板；竖长截图连着的并排；点图看大图（PhotoSwipe） */
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; --side: 240px; --gap: clamp(32px, 4vw, 64px); --measure: 680px; --fs: 17px; /* 字号例外：文章正文阅读字号，10-23 调整台定 */ --post-top: 40px; --h1-lh: 42px; --row: 40px; --pin: 16px;
+  --font-read: "LXGW WenKai Screen", "Kaiti SC", "STKaiti", "KaiTi", serif; }   /* 10-23 用户在调整台定：霞鹜文楷 17px、行高 1.85、字间距 .02em、颜色 70%、段距 1.2em、宽 680（一行约 39 字） */
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: var(--fs-15); line-height: var(--lh-body); -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+img { max-width: 100%; display: block; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 3px; border-radius: 6px; }
+::selection { background: var(--accent); color: var(--on-accent); }
+svg.ln { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+
+.topbar { position: sticky; top: 0; z-index: 30; height: var(--top-h); display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 16px; padding: 0 var(--gx); background: var(--topbar-bg); -webkit-backdrop-filter: saturate(140%) blur(14px); backdrop-filter: saturate(140%) blur(14px); border-bottom: var(--bw) solid var(--line); }
+.brand { justify-self: start; font-family: var(--font-title); font-size: var(--fs-24); line-height: 1; text-decoration: none; white-space: nowrap; }
+.nav { display: flex; gap: 4px; min-width: 0; overflow-x: auto; scrollbar-width: none; }
+.nav::-webkit-scrollbar { display: none; }
+.tb-act { justify-self: end; display: flex; gap: 2px; }
+.nav a { flex: none; white-space: nowrap; padding: 7px 14px; border-radius: var(--r-pill); font-size: var(--fs-14); line-height: 1.4; color: var(--muted); text-decoration: none; transition: color var(--dur) var(--ease), background-color var(--dur) var(--ease); }
+.nav a:hover { color: var(--fg); background: var(--surface-2); }
+.nav a.on { color: var(--accent-ink); background: var(--accent-soft); }
+.icon-btn { width: 40px; height: 40px; display: grid; place-items: center; border: 0; border-radius: var(--r-pill); background: none; color: var(--fg); cursor: pointer; }
+.icon-btn:hover { background: var(--surface-2); }
+.icon-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+.icon-btn .i-moon { display: none; }
+[data-theme="dark"] .icon-btn .i-sun { display: none; }
+[data-theme="dark"] .icon-btn .i-moon { display: block; }
+
+/* ---- 版心：左栏 | 正文 | 右边留空 ---- */
+.pg { font-family: var(--font-read); display: grid; grid-template-columns: var(--side) minmax(0, var(--measure)) minmax(0, var(--side)); column-gap: var(--gap); justify-content: center; padding: 0 var(--gx); }
+.side { grid-column: 1; min-width: 0; }
+.side-in { position: sticky; top: calc(var(--top-h) + var(--pin)); display: flex; flex-direction: column; gap: 20px; max-height: calc(100vh - var(--top-h) - 2 * var(--pin)); padding: calc(var(--post-top) + (var(--h1-lh) - var(--row)) / 2 - var(--pin)) 0 8px; }   /* 左栏第一行（返回）和标题第一行同一条中线；钉住后离顶栏也是这个距离 */
+.post { grid-column: 2; min-width: 0; padding: var(--post-top) 0 88px; }
+.side-r { grid-column: 3; }
+
+/* ---- 左栏是一整条导航，里面每一行是同一种部件（10-23）：圆角矩形（按钮 r-sm，目录行 r-xs，10-26 全站目录统一）、同一高度、同一左右边缘（比栏宽出 12px）、
+   同一图标列（22px）和文字起点、同一字体。图标放进浅灰小方块 = 可以点的操作（返回、回到顶部，不画外框，用户在调整台选的 B）；
+   黄绿填色 + 左边竖线 = 你现在在这里（目录当前项，10-26 起，原来是灰色填色）；淡影子 = 鼠标悬停。全圆胶囊只留给顶栏导航；标题下的首发平台是圆形图标按钮。 ---- */
+.btn { display: flex; align-items: center; gap: 10px; height: var(--row); margin: 0 -12px; padding: 0 12px; border: var(--bw) solid transparent; border-radius: var(--r-sm); background: transparent; color: var(--muted); font-size: var(--fs-15); text-decoration: none; cursor: pointer; transition: background-color .2s ease, color .2s ease; }
+.btn:hover { background: color-mix(in srgb, var(--surface-2) 70%, transparent); color: var(--fg); }
+.btn > svg.ln { box-sizing: border-box; width: 22px; height: 22px; padding: 4px; border-radius: 6px; background: var(--surface-2); color: var(--fg-2); transition: translate .2s ease, background-color .2s ease; }
+.btn .ic { border-radius: 6px; background: var(--surface-2); transition: background-color .2s ease; }
+.btn:hover > svg.ln, .btn:hover .ic { background: var(--line); color: var(--fg); }
+.back:hover > svg.ln { translate: -2px 0; }
+.back-m { display: none; margin: 0 0 24px; width: max-content; }
+.totop { flex: none; margin-top: auto; opacity: 0; visibility: hidden; transition: opacity .2s ease, visibility .2s, background-color .2s ease, border-color .2s ease, color .2s ease; }
+.totop.show { opacity: 1; visibility: visible; }
+/* 阅读进度环：环和箭头在同一个方框里一起居中 */
+.ic { position: relative; display: grid; place-items: center; width: 22px; height: 22px; flex: none; }
+.ic svg.ln { width: 13px; height: 13px; }
+.ring { position: absolute; inset: 0; width: 100%; height: 100%; rotate: -90deg; }
+.ring circle { fill: none; stroke-width: 2.5; }
+.ring .tk { stroke: var(--line); }
+.ring .pr { stroke: var(--accent-ink); stroke-linecap: round; stroke-dasharray: 106.8; stroke-dashoffset: 106.8; transition: stroke-dashoffset .15s linear; }
+.fab { display: none; }
+
+/* ---- 目录：章 + 节全部列出；当前一节用滑动高亮块，鼠标移上去有淡影子跟着 ---- */
+.toc { position: relative; min-height: 0; overflow-y: auto; scrollbar-width: none; margin: 0 -12px; padding: 0 12px; }
+.toc::-webkit-scrollbar { display: none; }
+.toc-h { margin: 0 0 10px; padding-bottom: 6px; border-bottom: var(--bw) solid var(--line); font-family: var(--font-mono); font-size: var(--fs-12); font-weight: 500; line-height: 1.4; letter-spacing: .04em; color: var(--muted); }   /* 10-26 全站目录统一：栏标题同 Skill 页「本页」「作者」 */
+.toc ol { position: relative; list-style: none; margin: 0 -12px; padding: 0; display: grid; gap: 2px; }
+.toc a { position: relative; z-index: 1; display: flex; gap: 10px; min-height: var(--row); align-items: center; padding: 8px 12px; border-radius: var(--r-xs); font-size: var(--fs-15); line-height: 1.5; color: var(--muted); text-decoration: none; transition: color .2s ease; }
+.toc li.u a { padding-left: 44px; font-size: var(--fs-14); min-height: 36px; padding-block: 6px; }
+.toc li.u a::before { content: ""; position: absolute; left: 23px; top: -1px; bottom: -1px; width: var(--bw); background: var(--line); }   /* 二级挂在编号列中间一条竖线下（10-26 全站目录统一）；当前那一行不画 */
+.toc li.u a.on::before { opacity: 0; }
+.toc li.u:last-child a::before { bottom: 0; }   /* 往下多伸 1px 会让目录多出 1px 可滚动，第一下滚轮被吃掉（10-26 审查） */
+.toc a:hover { color: var(--fg); }
+.toc a.on { color: var(--accent-ink); font-weight: 500; }
+.tn { flex: none; align-self: flex-start; width: 22px; padding-top: .18em; font-family: var(--font-mono); font-size: var(--fs-12); font-weight: 400; color: var(--accent-ink);   /* 10-26：编号都用深黄绿（同正文小节编号） */ }
+.toc-ind, .toc-ghost { position: absolute; left: 0; right: 0; top: 0; height: 0; border-radius: var(--r-xs); pointer-events: none; z-index: 0; opacity: 0; transition: transform .38s cubic-bezier(.3, .8, .25, 1), height .38s cubic-bezier(.3, .8, .25, 1), opacity .2s; }
+.toc-ind { background: var(--accent-soft); box-shadow: inset 2px 0 0 var(--accent-ink); border-radius: 0 var(--r-xs) var(--r-xs) 0; }   /* 当前位置：黄绿底 + 左边 2px 黄绿竖线（10-26 全站目录统一，按设计规范「文档类页面 · 当前项」；原来是灰底） */
+.toc-ind.show { opacity: 1; }
+.toc-ghost { background: color-mix(in srgb, var(--surface-2) 70%, transparent); }
+.toc-ghost.show { opacity: 1; }
+
+/* ---- 头部：标题（自然换行）→ 日期 · 时长 · 来源 → 导语 → 封面 ---- */
+.post-head { display: grid; gap: 14px; }
+.post-head h1 { margin: 0; font-size: var(--fs-32); font-weight: 600; line-height: var(--h1-lh); letter-spacing: .005em; }
+.meta { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: var(--fs-13); color: var(--muted); }
+.meta time { font-family: var(--font-mono); font-size: var(--fs-12); }
+.meta .dot { color: var(--line-strong); }
+/* 首发平台：只放图标（同首页顶栏 GitHub 图标的 ghost 图标按钮，小号 28px）；负边距让图标本身和文字保持正常间距、不撑高这一行 */
+.meta a.src { display: inline-grid; place-items: center; width: 28px; height: 28px; margin: -6px -4px; border-radius: 50%; color: var(--muted); transition: color .2s ease, background-color .2s ease; }
+.meta a.src:hover { color: var(--fg); background: var(--surface-2); }
+.meta a.src:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 1px; }
+.meta svg { width: 16px; height: 16px; fill: currentColor; }
+.lede { margin: 6px 0 0; font-size: var(--fs); line-height: 1.75; letter-spacing: .02em; color: var(--muted); }
+.cover { margin: 32px 0 40px; padding: 12px; background: var(--surface-2); border-radius: 16px; }
+.cover img { width: 100%; height: auto; aspect-ratio: 2.35; object-fit: cover; border-radius: 8px; }
+
+/* 窄屏目录（折叠在封面下） */
+.toc-m { display: none; margin: -12px 0 36px; border-top: var(--bw) solid var(--fg); border-bottom: var(--bw) solid var(--line); }
+.toc-m summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding: 12px 0; font-size: var(--fs-15); }
+.toc-m summary::-webkit-details-marker { display: none; }
+.toc-m summary::after { content: "展开"; font-size: var(--fs-13); color: var(--muted); }
+.toc-m[open] summary::after { content: "收起"; }
+.toc-m ol { list-style: none; margin: 0; padding: 0 0 12px; display: grid; gap: 2px; }
+.toc-m a { display: flex; gap: 10px; padding: 6px 0; font-size: var(--fs-15); color: var(--muted); text-decoration: none; }
+.toc-m li.u { position: relative; }
+.toc-m li.u a { padding-left: 32px; font-size: var(--fs-14); }
+.toc-m li.u::before { content: ""; position: absolute; left: 11px; top: -1px; bottom: -1px; width: var(--bw); background: var(--line); }
+.toc-m a.on { color: var(--accent-ink); font-weight: 500; }
+.toc-m .tn { width: 22px; }
+
+/* ---- 正文 ---- */
+.prose { font-size: var(--fs); line-height: 1.85; letter-spacing: .02em; color: color-mix(in srgb, var(--fg) 70%, var(--bg)); overflow-wrap: break-word; }   /* 颜色 70%：不再纯黑压人；标题、加粗句保持纯黑，层级更清楚 */
+.prose h2, .prose h3, .prose strong, .prose b, .prose p.ph { color: var(--fg); }
+.prose > :first-child { margin-top: 0; }
+.prose p { margin: 0 0 1.2em; }
+.prose h2, .prose h3 { position: relative; line-height: 1.45; font-weight: 600; scroll-margin-top: calc(var(--top-h) + 24px); }
+.prose h2.sec { font-size: var(--fs-24); margin: 2.6em 0 .8em; padding-top: 16px; border-top: var(--bw) solid var(--fg); }
+.prose h3.sub { font-size: var(--fs-20); margin: 1.8em 0 .6em; }
+.prose .hn { display: block; margin-bottom: 4px; font-family: var(--font-mono); font-size: var(--fs-12); font-weight: 500; letter-spacing: .08em; color: var(--accent-ink); }
+.prose .hash { margin-left: 8px; color: var(--line-strong); text-decoration: none; background: none; font-weight: 400; opacity: 0; transition: opacity .15s ease; }
+.prose h2:hover .hash, .prose h3:hover .hash, .prose .hash:focus-visible { opacity: 1; }
+.prose strong, .prose b { font-weight: 400; color: var(--fg); padding: 0 .06em; background: linear-gradient(transparent 58%, color-mix(in srgb, var(--accent) 55%, transparent) 58%); -webkit-box-decoration-break: clone; box-decoration-break: clone; }   /* 10-23 用户定：加粗用绿色马克笔、不加粗（霞鹜文楷只有一种字重，也免得浏览器硬加粗） */
+[data-theme="dark"] .prose strong, [data-theme="dark"] .prose b { background: linear-gradient(transparent 60%, rgba(202, 221, 33, .38) 60%); }
+.prose p.ph { margin: 1.7em 0 .55em; line-height: 1.6; }   /* 整段只有一句加粗的「伪小标题」（公众号写法），按最小一级标题排 */
+.prose a { color: var(--accent-ink); text-decoration: none; overflow-wrap: anywhere; background-image: linear-gradient(currentColor, currentColor); background-repeat: no-repeat; background-position: 50% 100%; background-size: 0 1px; transition: color .16s ease, background-size .18s ease; }
+.prose a:hover, .prose a:focus-visible { color: color-mix(in srgb, var(--accent-ink) 78%, var(--fg)); background-size: 100% 1px; }   /* 链接照 info2act 弹窗正文：默认不画线，悬停时 1px 下划线从中间向两边展开、颜色往正文色靠一点（深色下就是变亮） */
+.prose a:focus-visible { outline: 2px solid color-mix(in srgb, var(--accent-ink) 32%, transparent); outline-offset: 2px; border-radius: 2px; }
+.prose ul, .prose ol { margin: 0 0 1.2em; padding-left: 1.4em; }
+.prose li + li { margin-top: .35em; }
+.prose blockquote { margin: 0 0 1.2em; padding: 12px 16px; border-left: 4px solid var(--accent); border-radius: 0 10px 10px 0; background: var(--accent-soft); color: var(--fg-2); }
+.prose blockquote > :last-child { margin-bottom: 0; }
+.prose hr { border: 0; border-top: var(--bw) solid var(--line); margin: 2em 0; }
+.prose code { font-family: var(--font-mono); font-size: .84em; /* 字号例外：行内代码跟着正文缩放 */ background: var(--surface-2); padding: 1px 5px; border-radius: 4px; }
+.prose pre { position: relative; margin: 0 0 1.2em; padding: 16px 18px; background: var(--surface-2); border: var(--bw) solid var(--line); border-radius: var(--r-sm); overflow-x: auto; font-size: var(--fs-13); line-height: 1.65; }
+.prose pre code { background: none; padding: 0; font-size: inherit; }
+.copy { position: absolute; top: 8px; right: 8px; padding: 3px 9px; border: var(--bw) solid var(--line-strong); border-radius: var(--r-pill); background: var(--bg); font-size: var(--fs-12); color: var(--muted); cursor: pointer; opacity: 0; transition: opacity .15s ease; }
+.prose pre:hover .copy, .copy:focus-visible { opacity: 1; }
+.prose table { width: 100%; border-collapse: collapse; margin: 0 0 1.2em; font-size: var(--fs-15); display: block; overflow-x: auto; }
+.prose th, .prose td { border: var(--bw) solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+.prose th { background: var(--surface-2); font-weight: 500; }
+
+/* ---- 图片：一律不超过正文宽、浅灰衬板；竖长截图限高，连着的并排 ---- */
+.fig { margin: 2em 0; display: grid; gap: 10px; justify-items: center; }
+.fig a.zoom { display: block; max-width: 100%; padding: 12px; background: var(--surface-2); border-radius: 16px; cursor: zoom-in; }
+.fig img { width: auto; max-width: 100%; height: auto; border-radius: 8px; }
+.fig.mid img, .fig.wide img { max-height: min(78vh, 760px); }
+.fig.tall img { max-height: min(70vh, 640px); }
+/* 10-23：上面的 width: auto 会盖掉 <img> 的宽高属性，没加载的懒加载图高度是 0，加载后突然撑开约 700px——
+   点目录跳过去后，上方的图陆续加载，把小标题挤出屏幕（文章页验收.py 查出来的）。现在按生成时写进去的原图宽 --w 和宽高比 --ar
+   先算好显示宽度（不超过原图宽，竖图再按限高折算），高度由宽高比给出，图没到也先占位 */
+.fig img[style] { width: var(--w); aspect-ratio: var(--ar); }
+.fig.mid img[style], .fig.wide img[style] { width: min(var(--w), calc(min(78vh, 760px) * var(--ar))); }
+.fig.tall img[style] { width: min(var(--w), calc(min(70vh, 640px) * var(--ar))); }
+.fig figcaption { font-size: var(--fs-13); line-height: 1.6; color: var(--muted); text-align: center; }
+.gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin: 2em 0; align-items: start; }
+.gallery.n3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.gallery .fig { margin: 0; }
+.gallery .fig img, .gallery .fig img[style] { max-height: none; width: 100%; }
+.gallery .fig a.zoom { width: 100%; }   /* 并排的图：外框铺满这一格（原来靠图撑开，图没加载时外框是 0 宽） */
+[data-theme="dark"] .fig img, [data-theme="dark"] .cover img { filter: brightness(.92); }
+
+/* ---- 结尾：分隔线、作者卡（公众号原始资料）、上一篇下一篇（永远两格） ---- */
+.end { margin-top: 56px; padding-top: 28px; border-top: var(--bw) solid var(--fg); display: grid; gap: 28px; }
+.author { display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; gap: 18px; align-items: center; padding: 20px; border: var(--bw) solid var(--line); border-radius: var(--r-sm); background: var(--surface); }
+.author .av { width: 64px; height: 64px; border-radius: 50%; border: var(--bw) solid var(--line); background: var(--surface-2); }
+.who { display: grid; gap: 2px; min-width: 0; }
+.who b { font-size: var(--fs-15); font-weight: 600; }
+.who span { font-size: var(--fs-14); line-height: 1.7; color: var(--muted); }
+.qr { margin: 0; display: grid; gap: 4px; justify-items: center; }
+.qr img { width: 76px; height: 76px; border-radius: 6px; border: var(--bw) solid var(--line); background: #fff; padding: 3px; }
+.qr figcaption { font-size: var(--fs-12); color: var(--muted); }
+.pn { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.pn a { display: grid; gap: 4px; padding: 14px 18px; border: var(--bw) solid var(--line); border-radius: var(--r-sm); background: var(--surface); text-decoration: none; transition: border-color var(--dur) var(--ease); }
+.pn a:hover { border-color: var(--fg); }
+.pn a.next { text-align: right; grid-column: 2; }
+.pn a.none span { color: var(--muted); }   /* 没有上一篇 / 下一篇时：占位格子，点了回文章列表 */
+.pn small { font-size: var(--fs-12); color: var(--muted); font-family: var(--font-mono); }
+.pn span { font-size: var(--fs-15); line-height: 1.5; }
+.foot { padding: 28px var(--gx) 40px; font-family: var(--font-mono); font-size: var(--fs-12); color: var(--muted); border-top: var(--bw) solid var(--line); }
+.foot a { text-decoration: none; }
+.toast { position: fixed; left: 50%; bottom: 32px; translate: -50% 12px; padding: 8px 16px; border-radius: var(--r-pill); background: var(--tip-bg); color: var(--tip-fg); font-size: var(--fs-13); opacity: 0; pointer-events: none; transition: opacity .2s ease, translate .2s ease; z-index: 45; }
+.toast.show { opacity: 1; translate: -50% 0; }
+
+/* ---- 窄屏（< 1100px）：单栏；返回按钮在标题上方，目录折叠在封面下，右下角回到顶部 ---- */
+@media (max-width: 1099px) {
+  .pg { grid-template-columns: minmax(0, 1fr); max-width: calc(var(--measure) + 2 * var(--gx)); margin: 0 auto; }
+  .side, .side-r { display: none; }
+  .post { grid-column: 1; padding-top: 28px; }
+  .toc-m { display: block; }
+  .back-m { display: inline-flex; margin-left: 0; }
+  .fab { position: fixed; right: max(20px, env(safe-area-inset-right)); bottom: max(20px, env(safe-area-inset-bottom)); z-index: 25; display: grid; width: 48px; height: 48px; place-items: center; border: var(--bw) solid var(--line-strong); border-radius: var(--r-sm); background: var(--bg); color: var(--fg); box-shadow: var(--card-shadow-sm); cursor: pointer; opacity: 0; visibility: hidden; transition: opacity .2s ease, visibility .2s; }
+  .fab.show { opacity: 1; visibility: visible; }
+}
+@media (max-width: 760px) {
+  .topbar { grid-template-columns: auto minmax(0, 1fr) auto; gap: 8px; }
+  .brand { font-size: var(--fs-20); }
+  .nav { justify-content: flex-start; -webkit-mask: linear-gradient(90deg, #000 82%, transparent); mask: linear-gradient(90deg, #000 82%, transparent); padding-right: 20px; }
+  .icon-btn { width: 36px; height: 36px; }
+  .nav a { padding: 6px 8px; font-size: var(--fs-13); }
+  .post-head h1 { font-size: var(--fs-24); }
+  .prose h2.sec { font-size: var(--fs-20); }   /* 10-24 字号收敛：手机上标题 24，小节标题降一档，层级不撞 */
+  .prose h3.sub { font-size: var(--fs-17); }
+  html { --fs: 16.5px; /* 字号例外：手机上的文章正文阅读字号 */ }
+  .gallery.n3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fig a.zoom, .cover { padding: 8px; border-radius: 12px; }
+  .author { grid-template-columns: 52px minmax(0, 1fr); }
+  .author .av { width: 52px; height: 52px; }
+  .qr { display: none; }
+  .pn { grid-template-columns: minmax(0, 1fr); }
+  .pn a.next { grid-column: auto; }
+}
+@media (max-width: 480px) { .nav a:first-child { display: none; } }   /* 10-26 从 380 提到 480：手机上站名就是回首页，省掉「关于」，「其他」才不会被挤出屏幕 */
+@media (max-width: 480px) { .nav { gap: 2px; padding-right: 8px; -webkit-mask: linear-gradient(90deg, #000 92%, transparent); mask: linear-gradient(90deg, #000 92%, transparent); } .nav a { padding: 6px 5px; } }   /* 10-27：顶栏 5 个 tab 后，≤480 再收紧一档（内边距 8→5、间距 4→2、渐隐留白 20→8，字号不动），390 宽省掉「关于」后其余四个放得下 */
+@media (prefers-reduced-motion: reduce) { .toc-ind, .toc-ghost, .fab, .toast, .totop, .ring .pr { transition: none; } }

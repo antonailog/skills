@@ -1,0 +1,39 @@
+{
+  "_说明": {
+    "用法": "这里是站点默认值。学习指南目录里放一份同名文件，写哪几项就覆盖哪几项（_ 开头的键不读）。",
+    "lang": "<html lang>",
+    "siteName": "顶栏左边的站名",
+    "siteHref": "点站名去哪",
+    "titleSuffix": "浏览器标签页标题 = 文章标题冒号前那段 + 这串",
+    "favicon": "网站图标地址，空字符串 = 不放",
+    "stylesheets": "额外加载的样式表（站名字体、等宽字体），空数组 = 不加载",
+    "nav": "顶栏导航：label 文字、href 地址、current 为 true 的那项高亮（当前所在栏目）",
+    "github": "顶栏右边 GitHub 图标的链接，空字符串 = 不显示",
+    "back": "左栏（窄屏在标题上方）的返回按钮：label 文字、href 地址",
+    "footer": "页脚一行链接：label 文字、href 地址",
+    "themeKey": "深浅色选择存在浏览器 localStorage 里的键名，和站内其他页面一致才能互相记住",
+    "date": "标题下显示的日期（YYYY-MM-DD），空 = 构建当天",
+    "description": "<meta description>，空 = 取导语前 120 字",
+    "blogCssDir": "博客样式目录（放 tokens.css、post.css，也可以在下一层子目录里），空 = 用模板自带的 src/blog/ 快照；相对路径相对本文件所在文件夹；环境变量 BLOG_CSS_DIR 优先"
+  },
+  "lang": "zh-CN",
+  "siteName": "阿東的AI手记",
+  "siteHref": "/",
+  "titleSuffix": " · 阿東的AI手记",
+  "favicon": "/posts/favicon.png",
+  "stylesheets": ["https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=ZCOOL+QingKe+HuangYou&display=swap"],
+  "nav": [
+    { "label": "关于", "href": "/" },
+    { "label": "文章", "href": "/posts/" },
+    { "label": "项目", "href": "/projects/" },
+    { "label": "Skill", "href": "/skills/" },
+    { "label": "其他", "href": "/more/", "current": true }
+  ],
+  "github": "https://github.com/antonailog",
+  "back": { "label": "返回其他", "href": "/more/" },
+  "footer": { "label": "antonailog.com", "href": "/" },
+  "themeKey": "v2-theme",
+  "date": "",
+  "description": "",
+  "blogCssDir": ""
+}

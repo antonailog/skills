@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="__LANG__" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>__TITLE__</title>
+<meta name="description" content="__DESC__">
+<meta property="og:type" content="article">
+<meta property="og:title" content="__OG_TITLE__">
+<meta property="og:description" content="__DESC__">
+<!-- 学习指南页：版式照博客文章页（顶栏、左栏返回 + 目录、正文），样式来自博客的 tokens.css 和 post.css。
+     __xx__ 由 vite.config.ts 按 site.config.json 换掉；顶栏、页脚写成静态 HTML（发布脚本要在里面找 .tb-act 插按钮）。 -->
+__HEAD__
+<script>try { var t = localStorage.getItem('__THEME_KEY__'); if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t); } catch (e) {}</script>
+</head>
+<body>
+__TOPBAR__
+<div id="root"></div>
+__FOOTER__
+<script>
+(function () {
+  /* 顶栏 tab 放不下时横滑：当前项滚进视野，两端渐隐 */
+  (function (n) {
+    if (!n) return;
+    var on = n.querySelector('a.on, a[aria-current="page"]');
+    var place = function () {
+      if (!on || !on.offsetParent) return;
+      n.scrollLeft = 0;
+      if (n.scrollWidth <= n.clientWidth) return;
+      var nb = n.getBoundingClientRect(), ab = on.getBoundingClientRect(), p = Math.min(20, n.clientWidth / 4, (n.clientWidth - on.offsetWidth) / 2);
+      if (p < 0) n.scrollLeft += (ab.left + ab.right - nb.left - nb.right) / 2;
+      else if (ab.right > nb.right - p) n.scrollLeft += ab.right - nb.right + p;
+      else if (ab.left < nb.left + p) n.scrollLeft -= nb.left + p - ab.left;
+    };
+    var fade = function () {
+      var l = n.scrollLeft > 1, r = n.scrollLeft < n.scrollWidth - n.clientWidth - 1;
+      n.style.webkitMaskImage = n.style.maskImage = l || r ? 'linear-gradient(90deg,' + (l ? 'transparent,#000 min(20px,25%)' : '#000,#000') + ',' + (r ? '#000 calc(100% - min(20px,25%)),transparent' : '#000') + ')' : 'none';
+    };
+    place();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { place(); fade(); });
+    n.addEventListener('scroll', fade, {passive: true});
+    if (window.ResizeObserver) new ResizeObserver(fade).observe(n); else window.addEventListener('resize', fade);
+    fade();
+  })(document.querySelector('.topbar .nav'));
+  var R = document.documentElement, btn = document.getElementById('theme');
+  if (btn) btn.addEventListener('click', function () {
+    var n = R.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    R.setAttribute('data-theme', n);
+    try { localStorage.setItem('__THEME_KEY__', n); } catch (e) {}
+  });
+})();
+</script>
+<script type="module" src="/src/main.tsx"></script>
+</body>
+</html>

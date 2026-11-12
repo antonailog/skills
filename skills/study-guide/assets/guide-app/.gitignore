@@ -1,0 +1,7 @@
+node_modules/
+dist/
+# build_guide.py 生成的页面数据和博客样式
+src/gen/
+# 构建产物（在主题文件夹里）
+site/
+example/index.html
