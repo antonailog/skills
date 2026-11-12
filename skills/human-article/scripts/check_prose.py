@@ -88,27 +88,41 @@ ROAD_SIGNS = (
 ROAD_STRIP_CHARS = "。！？!? \n"
 
 FORBIDDEN_PUNCTUATION = {
-    "：": "中文冒号",
-    ":": "英文冒号",
     "—": "破折号",
     "–": "连接号式破折号",
 }
 
+# 「不是」的否定用法。前面是「是、要、若、可、还」（是不是、要不是、若不是、可不是、还不是）、
+# 后面跟「很、太、那么、特别」（不是很懂、不是太会、不是那么好用）的不算翻案的开头。
+NEG = r"(?<![是要若可还])(?:并不是|不是|并非)(?![很太]|那么|特别)"
+# 前半句以「吗、吧、呢」收尾的是反问（这不是上周那个插件吗，是……），不算。
+NEG_A = NEG + r"[^。！？\n]{1,40}(?<![吗吧呢])"
+SEP = r"[，,；;]"
+# 后半句的「是」：「是否」和「是……的话」（是的话、是 Windows 的话）是另一个意思。
+IS_B = r"(?:更|才)?是(?!否)(?![^，。！？\n]{0,20}的话)[^，。！？\n]"
+
 PIVOT_PATTERNS = (
-    re.compile(r"(?:并)?不是[^。！？\n]{0,90}而是"),
-    re.compile(r"并非[^。！？\n]{0,90}而是"),
+    re.compile(NEG + r"[^。！？\n]{0,90}而是(?!否)"),
+    re.compile(NEG_A + SEP + r"\s*而是(?!否)"),   # 逗号后面换行再接「而是」
     re.compile(r"不在于[^。！？\n]{0,90}而在于"),
     re.compile(r"与其说[^。！？\n]{0,90}(?:不如|毋宁|倒不如)"),
-    re.compile(r"[。！？!?]\s*而是"),
+    re.compile(r"[。！？!?]\s*而是(?!否)"),
     re.compile(r"表面(?:上)?[^。！？\n]{0,90}(?:其实|实际|实则)"),
     re.compile(r"看似[^。！？\n]{0,90}(?:其实|实际|实则)"),
+    # 「不是 A，是 B」11-10 作者定为硬禁令，从提醒挪到这里；分号、英文逗号隔开的，拆成两句、两段的一样算。
+    re.compile(NEG_A + SEP + r"\s*" + IS_B),
+    re.compile(NEG_A + r"。\s*(?!是的|是时候|是不是)" + IS_B),
+    # 「不是 A，B 才是」
+    re.compile(NEG_A + SEP + r"[^，。！？\n]{1,20}才是"),
+    # 「没 A，而是 B」，逗号可有可无
+    re.compile(r"没(?:有|用)?[^。！？\n]{1,40}?[，,]?\s*而是(?!否)"),
 )
 
 SEMANTIC_PIVOT_PATTERNS = (
     re.compile(r"(?:总|一直|曾|都)?以为[^！？\n]{2,60}?(?:其实|才发现|才明白|才知道|后来才)"),
     re.compile(r"(?:总|都|一直)以为[^！？\n]{2,60}?[。，](?:可|但|其实)"),
     re.compile(r"回头(?:看|一看)?才(?:发现|明白|知道)"),
-    re.compile(r"(?:并)?不是[^。！？\n]{1,40}，(?:更|才)?是[^，。！？\n]"),
+    re.compile(r"不在[^。！？，\n]{1,30}，(?:而)?在[^，。！？\n]"),
     re.compile(r"从来(?:都)?(?:不是|与[^。！？，\n]{1,12}无关)"),
     re.compile(r"答案(?:是否定的|恰恰相反)|恰恰相反"),
     re.compile(r"表面(?:上)?[^！？\n]{0,60}。[^！？\n]{0,12}(?:其实|实际|实则)"),
@@ -405,27 +419,30 @@ def main() -> int:
     failures = []
     warnings = []
 
-    quote_colons = []
     for symbol, label in FORBIDDEN_PUNCTUATION.items():
         matches = list(re.finditer(re.escape(symbol), prose))
-        if symbol in ("：", ":"):
-            hard = []
-            for match in matches:
-                tail = prose[match.end() : match.end() + 2].lstrip()
-                if tail[:1] in ("「", "『", "“", "‘", '"'):
-                    quote_colons.append(match)
-                else:
-                    hard.append(match)
-            matches = hard
         if matches:
             lines = "、".join(str(line_number(text, match.start())) for match in matches[:8])
             failures.append(f"{label}共 {len(matches)} 处，出现在第 {lines} 行。")
-    if quote_colons:
+
+    # 冒号 11-10 起不再是硬禁令，只提醒；引出原话的冒号不报。
+    colon_matches = []
+    for symbol in ("：", ":"):
+        for match in re.finditer(re.escape(symbol), prose):
+            before = prose[match.start() - 1 : match.start()]
+            if before.isdigit() and prose[match.end() : match.end() + 1].isdigit():
+                continue   # 时间、比分：10:30
+            # 原话前面可能先加粗或空一行：**「……」**
+            tail = prose[match.end() : match.end() + 8].lstrip(" \t\n*")
+            if tail[:1] not in ("「", "『", "“", "‘", '"'):
+                colon_matches.append(match)
+    if colon_matches:
+        colon_matches.sort(key=lambda match: match.start())
         lines = "、".join(
-            str(line_number(text, match.start())) for match in quote_colons[:8]
+            str(line_number(text, match.start())) for match in colon_matches[:8]
         )
         warnings.append(
-            f"引出原话的冒号 {len(quote_colons)} 处，第 {lines} 行。确认引号里确实是原话，且不是提示性用法。"
+            f"冒号共 {len(colon_matches)} 处（不算引出原话的），第 {lines} 行。冒号前那半句只在喊「下面是结论」的，删掉直接说；顺着说话的停顿带出下文的照用。"
         )
 
     stop_matches = non_overlapping_terms(prose, HARD_STOPS)
@@ -470,7 +487,12 @@ def main() -> int:
             f"“{excerpt(match.group().lstrip(ROAD_STRIP_CHARS))}”"
         )
 
-    pivots = all_matches(prose, PIVOT_PATTERNS)
+    # 一句话命中几条规则只算一处
+    pivots = []
+    for match in all_matches(prose, PIVOT_PATTERNS):
+        if any(match.start() < kept.end() and match.end() > kept.start() for kept in pivots):
+            continue
+        pivots.append(match)
     for match in pivots:
         failures.append(
             f"禁用翻案句，第 {line_number(text, match.start())} 行，"
