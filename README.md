@@ -6,7 +6,7 @@
 
 知识整理、写作发布、写 Skill 和 prompt，以及写代码和做设计时用的 Skill，由 [@antonailog](https://github.com/antonailog) 构建与维护。开发流程的整套 Skill 在 [forge-skills](https://github.com/antonailog/forge-skills)。
 
-![Skills](https://img.shields.io/badge/skills-16-blue)
+![Skills](https://img.shields.io/badge/skills-19-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Platform](https://img.shields.io/badge/Claude%20Code-compatible-8A2BE2)
 
@@ -115,6 +115,12 @@ cd skills
 # 查看安装状态（含坏链检测）/ 卸载
 ./install.sh --status
 ./install.sh --uninstall
+```
+
+也可以用 [skills](https://skills.sh) 命令行安装（`-g` 装到用户目录，`--skill <名字>` 只装指定的）：
+
+```bash
+npx skills add antonailog/skills
 ```
 
 Codex 用户加 `--target codex`（装到 `~/.agents/skills`），`--target both` 两边都装。

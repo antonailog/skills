@@ -6,7 +6,7 @@
 
 Practical, production-tested skills for content workflows, product analysis, and knowledge management — built and maintained by [@antonailog](https://github.com/antonailog).
 
-![Skills](https://img.shields.io/badge/skills-16-blue)
+![Skills](https://img.shields.io/badge/skills-19-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Platform](https://img.shields.io/badge/Claude%20Code-compatible-8A2BE2)
 
@@ -88,6 +88,12 @@ cd skills
 # Check status (detects broken links) / uninstall
 ./install.sh --status
 ./install.sh --uninstall
+```
+
+Or install with the [skills](https://skills.sh) CLI (`-g` for user-level, `--skill <name>` to pick specific skills):
+
+```bash
+npx skills add antonailog/skills
 ```
 
 Codex users: add `--target codex` (installs into `~/.agents/skills`), or `--target both`.
