@@ -439,14 +439,18 @@ class ChainBuilder:
             group, kind = item['group'], item.get('kind')
             queued = item.get('attachment_type') == 'queued_command'
             op = 'user' if queued else 'reminder' if group == 'reminders' else 'return' if kind == 'handback' else 'user' if group == 'upstream' and not self.node['agent_id'] and kind != 'dispatch' else None
-            if not op:
-                continue
             ref = item.get('display_ref')
+            # Sub-agents also load skills; their injected SKILL.md sits in upstream or reminders, so look before skipping.
+            maybe_skill = not queued and kind != 'dispatch' and op in ('user', 'reminder', None) and group in ('upstream', 'reminders')
+            if not op and not (maybe_skill and ref):
+                continue
             text = content_text(self.doc.resolve(ref)) if ref else ''
             if op == 'user' and not queued and re.match(r'\s*<(?:system-reminder|agent-message|task-notification)[>\s]', text):
                 op = 'reminder'
             number = item['first_request'] or self.node['range']['start']
-            skill = re.match(r'Base directory for this skill: (\S+)\n', text) if op == 'user' else None
+            skill = re.search(r'(?m)^Base directory for this skill: (\S+)\n', text) if maybe_skill else None
+            if not op and not skill:
+                continue
             if skill:
                 # The Skill tool injects SKILL.md as a meta user message; it is a read of that file.
                 path = path_of(os.path.join(skill[1], 'SKILL.md'), self.node['cwd'])

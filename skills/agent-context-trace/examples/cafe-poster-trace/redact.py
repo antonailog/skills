@@ -3,11 +3,13 @@
 用法：
   python3 -I redact.py data.json public.json \
       --keep-file-prefix <只保留这个前缀下的文件引用> \
-      --replace <原文>=<替换成> ...
+      --replace <原文>=<替换成> ... \
+      [--html public.html]          # 顺带打包成离线页面（用 scripts/html_page.py）
 
 做三件事：
-1. 初始上下文里这几类内容整段换成「【已省略：<名字>，约 N 字符】」：系统提示词，
-   以及注入内容里的全局 CLAUDE.md、记忆、账号、skill 列表、MCP 说明、延后加载的工具。
+1. 这几类内容整段换成「【已省略：<名字>，约 N 字符】」：系统提示词，
+   以及注入内容里的全局 CLAUDE.md、记忆、账号、skill 列表、MCP 说明、延后加载的工具；
+   开工时带着的和运行中途新注入的都算。
    同一段文字在每一轮请求里都会重复出现，所以按原文在整份数据里替换。
 2. 家目录、临时目录这类本机路径换成通用写法（--replace 可以再加）。
 3. 只保留 --keep-file-prefix 下的文件引用；其余文件连同嵌入的全文一起删掉。
@@ -55,6 +57,20 @@ def secrets(data):
                 for text in texts_in(value):
                     if len(text) >= 40:
                         found.setdefault(text, label if key != 'system' else '系统提示词')
+    # 运行中途注入的同类内容（后面几轮新带上的 MCP 说明、记忆、目录里的 CLAUDE.md 等）不在初始上下文里，按条目再扫一遍
+    for item in data['items'].values():
+        label = item.get('label') or ''
+        if not any(word in label for word in REDACT_LABELS):
+            continue
+        for ref in [item.get('display_ref')] + list(item.get('fragments') or []):
+            if not (isinstance(ref, dict) and ref.get('source_id') in data['sources']):
+                continue
+            value = resolve(data['sources'], ref)
+            if isinstance(value, str) and 'start' in ref:
+                value = value[ref['start']:ref['end']]
+            for text in texts_in(value):
+                if len(text) >= 40:
+                    found.setdefault(text, label)
     return found
 
 
@@ -173,10 +189,16 @@ def main():
     ap.add_argument('src'); ap.add_argument('dst')
     ap.add_argument('--keep-file-prefix', action='append', default=[])
     ap.add_argument('--replace', action='append', default=[])
+    ap.add_argument('--html', help='同时写出离线页面')
     a = ap.parse_args()
     extra = dict(x.split('=', 1) for x in a.replace)
     data, found = redact(json.load(open(a.src, encoding='utf-8')), a.keep_file_prefix, extra)
     json.dump(data, open(a.dst, 'w', encoding='utf-8'), ensure_ascii=False)
+    if a.html:
+        import sys
+        sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'scripts'))
+        from html_page import render_html
+        Path(a.html).write_text(render_html(data), encoding='utf-8')
     labels = {}
     for text, label in found.items():
         labels[label] = labels.get(label, 0) + len(text)

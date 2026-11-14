@@ -8,6 +8,7 @@ from chain import (CATEGORIES, ChainBuilder, command_name, compositions, display
                    event_counts, group_events, initial_context, operation, segment_events)
 from file_index import MAX_TEXT_BYTES, ReferenceResolver, build_files, line_ranges
 from model import Document, GROUPS
+from provenance import comparison, visible_text
 from shell import activities, analyze, command_parts, split_output
 
 
@@ -135,6 +136,32 @@ class OperationTests(unittest.TestCase):
             self.assertEqual(row['file_access'], 'read')
             self.assertEqual(row['comparison_status'], 'same')
             self.assertEqual(results['different']['comparison_status'], 'different')
+
+    def test_sub_agent_skill_injection_is_also_a_read(self):
+        with tempfile.TemporaryDirectory() as root:
+            skill = Path(root, 'demo-skill')
+            skill.mkdir()
+            (skill / 'SKILL.md').write_text('---\nname: demo\ndescription: x\n---\n\n# demo\n\nstep one\n', encoding='utf-8')
+            for group, prefix in (('upstream', 'Launching skill: demo\n'), ('reminders', '')):
+                doc = Document({}, {})
+                node = dict(id='n', agent_id='a1', cwd=root, range={'start': 1, 'end': 1},
+                            request_ids=['n/request/1'], groups={g: [] for g in GROUPS})
+                item = doc.item(node, group, 's', '用户消息', kind='message')
+                item.update(first_request=1, display_ref=doc.ref(prefix + 'Base directory for this skill: %s\n\n# demo\n\nstep one\n' % skill))
+                doc.data.update(events={}, segments={}, requests={'n/request/1': {'id': 'n/request/1', 'number': 1, 'timestamp': '2026-01-01T00:00:00Z'}})
+                ChainBuilder(doc, node).build()
+                rows = [doc.data['events'][i] for i in node['event_ids']]
+                self.assertEqual([(r['operation'], r['method'], r['display_name']) for r in rows], [('read', 'Skill', 'SKILL.md')], group)
+                self.assertEqual(rows[0]['comparison_status'], 'same', group)
+
+    def test_shared_partial_output_is_not_called_different(self):
+        with tempfile.TemporaryDirectory() as root:
+            a = Path(root, 'a.md'); a.write_text('# A\n\n## one\n\n## two\n', encoding='utf-8')
+            self.assertEqual(comparison(a, '1:# A\n3:## one\n5:## two\nShell cwd was reset to /tmp/x\n')['status'], 'different')
+            text, _ = visible_text('1:# A\n3:## one\n5:## two\nShell cwd was reset to /tmp/x\n')
+            self.assertEqual(comparison(a, text)['status'], 'same')
+            self.assertEqual(comparison(a, '1:# A\n1:# B\n', shared=True)['status'], 'unavailable')
+            self.assertEqual(comparison(a, '1:# A\n3:## one\n', shared=True)['status'], 'same')
 
 
 class OutputSplitTests(unittest.TestCase):

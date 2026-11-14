@@ -8,7 +8,7 @@
 
 > 我家楼下的社区咖啡店秋天要上新品桂花拿铁，想做一张竖版海报贴在店门口。标题写「秋天的第一杯桂花拿铁」，下面一行小字「11月15日起 每天限量 50 杯」。帮我把生图的描述写好，我拿去出图。
 
-模型是 claude-opus-5-5，跑了 6 轮、37 秒。它自己调起 image-prompt，最后交出一段生图 prompt（全文见 [output/回复.md](output/回复.md)），没有写文件。
+模型是 claude-opus-5-5，跑了 4 轮、37 秒。它自己调起 image-prompt，最后交出一段生图 prompt（全文见 [output/回复.md](output/回复.md)），没有写文件。
 
 想知道的是：这次运行到底加载了什么？SKILL.md 读到了没有、是不是现在这一版？两份参考文件读全了没有？
 
@@ -25,7 +25,18 @@ python3 -I ~/.claude/skills/agent-context-trace/scripts/trace.py build \
 
 `--focus` 指向 image-prompt 的目录：页面里会多一张表，列出这个目录下每个文件在这次运行里出没出现过。
 
-平时出的页面只留在本机，因为里面有系统提示词、你的 CLAUDE.md、记忆和 skill 列表的原文。这个例子要公开，所以先用 `trace.py data` 导出数据，过一遍 [redact.py](redact.py) 再打包成页面：系统提示词、全局 CLAUDE.md、账号、skill 列表、MCP 说明、延后加载的工具，这几段原文换成「【已省略：…，约 N 字符】」，长度照旧显示；本机路径换成 `~`、`/tmp/scratchpad`；CLAUDE.md 里提到的几份私人文件从页面里删掉。这次是空目录，没有记忆注入。
+平时出的页面只留在本机，因为里面有系统提示词、你的 CLAUDE.md、记忆和 skill 列表的原文。这个例子要公开，所以先用 `trace.py data` 导出数据，过一遍 [redact.py](redact.py) 再打包成页面：系统提示词、全局 CLAUDE.md、账号、skill 列表、MCP 说明、延后加载的工具，不管是开工时带着的还是运行中途新注入的，原文都换成「【已省略：…，约 N 字符】」，长度照旧显示；本机路径换成 `~`、`/tmp/scratchpad`；CLAUDE.md 里提到的几份私人文件从页面里删掉。这次是空目录，没有记忆注入。
+
+```bash
+python3 -I ~/.claude/skills/agent-context-trace/scripts/trace.py data \
+  --node <会话 jsonl> --focus ~/.claude/skills/image-prompt -o raw.json
+python3 -I redact.py raw.json public.json \
+  --keep-file-prefix '~/.claude/skills/image-prompt' \
+  --replace '<image-prompt 软链指向的真实目录>=~/.claude/skills/image-prompt' \
+  --html output/trace.html
+```
+
+`--keep-file-prefix` 写替换之后的路径；`--replace` 把 skill 软链背后的真实位置换回通用写法，免得露出本机的目录结构。
 
 ## 交出了什么
 

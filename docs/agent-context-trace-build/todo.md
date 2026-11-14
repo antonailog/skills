@@ -1,6 +1,6 @@
 # agent-context-trace · todo
 
-设计见 [project.md](project.md)。讨论项逐条过，定下来的挪进 project.md 第 13 节「已定」。
+设计见 [project.md](project.md)。讨论项逐条过，定下来的挪进 project.md 第 12 节「已定」。
 
 ## 讨论
 
@@ -29,7 +29,7 @@
 - 左栏可拖宽（已有），右侧栏可拖宽
 - 有子项的行点一下就展开（已改，eb265c3）
 - 状态不写红字（样子待 D7）
-- Markdown 渲染后显示（11-03 新增，规则见 project 第 10 节）。用现成的 markdown-it（MIT 许可，内联进页面），关掉它对原始 HTML 的支持，免得文件里的 HTML 弄乱页面。渲染出来的行内代码和链接里如果是本机路径，同样做成可点的文件引用
+- Markdown 渲染后显示（11-03 新增，规则见 project 第 9 节）。用现成的 markdown-it（MIT 许可，内联进页面），关掉它对原始 HTML 的支持，免得文件里的 HTML 弄乱页面。渲染出来的行内代码和链接里如果是本机路径，同样做成可点的文件引用
 
 ## 开发任务
 

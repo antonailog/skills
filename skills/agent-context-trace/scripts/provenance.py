@@ -151,6 +151,8 @@ def visible_text(text, method=""):
         text = text[match.end():]
         text = re.sub(r"\n?(?:\.\.\.\s*)?</persisted-output>\s*$", "", text)
     text = re.sub(r"\n*<system-reminder>.*?</system-reminder>\s*", "", text, flags=re.S)
+    # Claude Code appends this after a command that changed directory; it is not file content.
+    text = re.sub(r"\n*Shell cwd was reset to [^\n]*\s*$", "", text)
     if method == "Read":
         text = strip_read_numbers(text)
     return text, truncation
@@ -183,6 +185,13 @@ def comparison(path, text=None, full=False, image_hashes=None, shared=False, rea
     elif full and shared:
         same = now.rstrip("\n") in text
         basis = "多文件共同输出包含当前全文"
+    elif shared:
+        # One unsplit output of several files: a line missing here may belong to
+        # another file, so only a full match is evidence; anything else is unknown.
+        lines = [re.sub(r"^\d+[:-]", "", l) for l in text.splitlines() if l.strip()]
+        if lines and all(l in now for l in lines):
+            return {"status": "same", "label": "和现在一致", "basis": "多文件共同输出，每一行都在当前文件里", "diff": None}
+        return {"status": "unavailable", "label": "没法比", "basis": "多个文件共用一段输出，没法分出哪几行属于这个文件", "diff": None}
     else:
         # grep/sed/head can expose partial lines. Every visible nonempty line
         # must occur in the current file, in order; no similarity threshold.
