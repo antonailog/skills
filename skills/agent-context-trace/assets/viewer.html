@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-{{SCRIPT_HASH}}'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; font-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="color-scheme" content="light dark">
+<title>agent-context-trace</title>
+<style>{{STYLE}}</style>
+</head>
+<body>
+<div id="app">
+  <header id="page-header">
+    <h1><button id="scope" type="button" class="scope-button"></button><small id="scope-time"></small></h1>
+    <div id="node-overview" class="overview"></div>
+  </header>
+  <div id="workbench">
+    <aside id="sidebar" aria-label="调用链路">
+      <div id="sidebar-head"><span id="help" aria-label="术语说明">?</span><dl id="glossary"></dl></div>
+      <div id="tree-host"><div id="tree-scroll" tabindex="0"><div id="tree" role="tree" aria-label="调用链路"></div></div></div>
+    </aside>
+    <div id="splitter" class="splitter" role="separator" tabindex="0" aria-label="调整调用链路宽度" aria-orientation="vertical"></div>
+    <main id="editor" aria-label="选中项内容">
+      <div id="editor-body" tabindex="0">
+        <div class="pane-content">
+          <header id="editor-header"></header>
+          <div id="editor-content"></div>
+        </div>
+      </div>
+    </main>
+    <div id="side-splitter" class="splitter" role="separator" tabindex="0" aria-label="调整文件侧栏宽度" aria-orientation="vertical" hidden></div>
+    <aside id="side-pane" aria-label="文件侧栏" hidden>
+      <button id="side-close" type="button" aria-label="关闭文件侧栏">×</button>
+      <div id="side-body" tabindex="0"><div id="side-content" class="pane-content"></div></div>
+    </aside>
+  </div>
+</div>
+<div id="context-menu" role="menu" aria-label="文件操作" hidden></div>
+<script type="application/json" id="trace-data">{{DATA}}</script>
+<script>{{SCRIPT}}</script>
+</body>
+</html>
