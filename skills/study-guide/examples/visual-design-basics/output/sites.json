@@ -1,0 +1,160 @@
+[
+ {
+  "key": "nng-f",
+  "name": "F 型扫描的原文",
+  "url": "https://www.nngroup.com/articles/f-shaped-pattern-reading-web-content/",
+  "img": "nng-f",
+  "meta": "Nielsen Norman Group · 2017",
+  "desc": "F 型只在三个条件同时成立时出现，文中列出了另外五种扫描模式"
+ },
+ {
+  "key": "ueyes",
+  "name": "UEyes 眼动数据集",
+  "url": "https://userinterfaces.aalto.fi/ueyeschi23",
+  "img": "ueyes",
+  "meta": "CHI 2023 · 62 名参与者 · 1,980 张界面截图",
+  "desc": "网页、桌面、手机界面和海报四类画面的注视热区并排对比"
+ },
+ {
+  "key": "carbon-grid",
+  "name": "IBM Carbon 2x Grid",
+  "url": "https://carbondesignsystem.com/elements/2x-grid/overview/",
+  "img": "carbon-grid",
+  "meta": "8px 基本单元 · 4 / 8 / 16 列",
+  "desc": "一套成熟设计系统怎样规定列、沟槽和对齐线"
+ },
+ {
+  "key": "mobbin",
+  "name": "Mobbin",
+  "url": "https://mobbin.com/",
+  "img": "mobbin",
+  "meta": "已上线产品的界面库",
+  "desc": "按流程和模式找真实界面"
+ },
+ {
+  "key": "awwwards",
+  "name": "Awwwards",
+  "url": "https://www.awwwards.com/",
+  "img": "awwwards",
+  "meta": "网站设计评选",
+  "desc": "落地页、品牌站、叙事网站的视觉方向"
+ },
+ {
+  "key": "dandad",
+  "name": "D&AD Awards",
+  "url": "https://www.dandad.org/awards/d-ad-awards",
+  "img": "dandad",
+  "meta": "创意与设计年度奖项",
+  "desc": "校准行业顶级的创意和执行"
+ },
+ {
+  "key": "behance",
+  "name": "Behance",
+  "url": "https://www.behance.net/galleries/graphic-design",
+  "meta": "完整项目案例",
+  "desc": "看完整的视觉系统和设计过程"
+ },
+ {
+  "key": "pentagram",
+  "name": "Pentagram",
+  "url": "https://www.pentagram.com/work",
+  "img": "pentagram",
+  "meta": "设计公司项目库",
+  "desc": "一个概念怎样贯穿品牌的所有触点"
+ },
+ {
+  "key": "brandnew",
+  "name": "Brand New",
+  "url": "https://www.underconsideration.com/brandnew/",
+  "img": "brandnew",
+  "meta": "品牌改版评论",
+  "desc": "带前后对比，适合训练比较"
+ },
+ {
+  "key": "typewolf",
+  "name": "Typewolf",
+  "url": "https://www.typewolf.com/",
+  "img": "typewolf",
+  "meta": "真实网站的字体用法",
+  "desc": "看字体在页面里的实际效果"
+ },
+ {
+  "key": "uisdc",
+  "name": "优设网",
+  "url": "https://www.uisdc.com/",
+  "img": "uisdc",
+  "meta": "中文设计媒体",
+  "desc": "中文语境的界面、视觉、品牌案例"
+ },
+ {
+  "key": "pentagram-peach",
+  "name": "Peach Coffee Roasters",
+  "url": "https://www.pentagram.com/work/peach-coffee-roasters/story",
+  "img": "pentagram-peach",
+  "meta": "Pentagram · DJ Stout",
+  "desc": "限制桃色用量，让「咖啡」压过「桃子」"
+ },
+ {
+  "key": "pentagram-92ny",
+  "name": "92NY",
+  "url": "https://www.pentagram.com/work/92ny/story",
+  "img": "pentagram-92ny",
+  "meta": "Pentagram · Michael Bierut",
+  "desc": "展示衬线负责气质，无衬线负责信息"
+ },
+ {
+  "key": "pentagram-bens",
+  "name": "Ben's Best Blnz",
+  "url": "https://www.pentagram.com/work/ben-s-best-blnz/story",
+  "img": "pentagram-bens",
+  "meta": "Pentagram · Eddie Opara",
+  "desc": "有意避开行业惯用的绿色和叶子"
+ },
+ {
+  "key": "pentagram-bottega",
+  "name": "Bottega",
+  "url": "https://www.pentagram.com/work/bottega/story",
+  "img": "pentagram-bottega",
+  "meta": "Pentagram · Andrea Trabucco-Campos",
+  "desc": "光、影、反射贯穿字体、图形和空间"
+ },
+ {
+  "key": "artic-lissitzky",
+  "name": "For the Voice（1923）",
+  "url": "https://www.artic.edu/artworks/199109/for-voice-dlia-golosa",
+  "img": "artic-lissitzky",
+  "meta": "El Lissitzky · 芝加哥艺术博物馆",
+  "desc": "构成主义：红黑、粗字、文字当图形"
+ },
+ {
+  "key": "harvard-bayer",
+  "name": "包豪斯展览海报设计稿（1923）",
+  "url": "https://www.harvardartmuseums.org/collections/object/225349",
+  "img": "harvard-bayer",
+  "meta": "Herbert Bayer · 哈佛艺术博物馆",
+  "desc": "包豪斯：基本几何和功能化的版式"
+ },
+ {
+  "key": "vam-cassandre",
+  "name": "Normandie（1935）",
+  "url": "https://collections.vam.ac.uk/item/O1405126/normandie-poster-cassandre",
+  "img": "vam-cassandre",
+  "meta": "A. M. Cassandre · V&A",
+  "desc": "装饰艺术：纪念碑式的对称构图"
+ },
+ {
+  "key": "vam-mb",
+  "name": "六月音乐节海报",
+  "url": "https://collections.vam.ac.uk/item/O110164/june-festival-classical-music-concert-poster-josef-muller-brockmann",
+  "meta": "Josef Müller-Brockmann · V&A",
+  "desc": "瑞士国际主义：网格、无衬线和抽象几何"
+ },
+ {
+  "key": "greiman",
+  "name": "Does It Make Sense?（1986）",
+  "url": "https://aprilgreiman.com/books/alt-dq-does-it-make-sense",
+  "img": "greiman",
+  "meta": "April Greiman · Design Quarterly #133",
+  "desc": "新浪潮：在 Macintosh 上拼贴图像和文字"
+ }
+]
