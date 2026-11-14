@@ -4,22 +4,28 @@
 
 ## 构建
 
-第一次：把 `assets/guide-app/` 整个拷进学习指南目录，叫 `app/`（以后改页面只改这份副本，不改 skill 里的模板）。
+第一次：把 `assets/guide-app/` 拷进学习指南目录，叫 `app/`（以后改页面只改这份副本，不改 skill 里的模板）。模板目录里可能有本机装过的 `node_modules` 和构建产物 `dist`，不拷，副本里重新装：
 
 ```bash
-cd <学习指南目录>/app && npm install
+rsync -a --exclude /node_modules --exclude /dist <skill>/assets/guide-app/ <学习指南目录>/app/
+cd <学习指南目录>/app && npm ci
 npm run build:blog    # 多文件版，输出到 ../site/（发布用）
 npm run build         # 单文件版，输出到 ../index.html（本机双击看）
 ```
+
+顶栏的站名、导航、返回链接、页脚读 `app/site.config.json`。模板里是中性的默认值；个人站点的配置放本机 `~/.config/study-guide/site.config.json`（不进 skill 仓库），只管这一篇的放学习指南目录里的同名文件；后两份写哪几项就覆盖哪几项。
 
 构建会先把 guide.md、sources.json 转成页面数据；引用了 sources.json 里没有的 id、组件写法错了，都会报出行号，按提示改 guide.md。命令和参数以 `app/package.json` 的 scripts 为准。
 
 ## 自检
 
 ```bash
-cd <学习指南目录>/site && python3 -m http.server 4410 --bind 127.0.0.1     # 放后台
-python3 -I <skill>/scripts/page_check.py http://127.0.0.1:4410/ --shots <学习指南目录>/自检截图
+PORT=$(python3 -c 'import socket; s=socket.socket(); s.bind(("127.0.0.1", 0)); print(s.getsockname()[1])')   # 找一个空闲端口
+cd <学习指南目录>/site && python3 -m http.server $PORT --bind 127.0.0.1     # 放后台
+python3 -I <skill>/scripts/page_check.py http://127.0.0.1:$PORT/ --guide <学习指南目录> --shots <学习指南目录>/自检截图
 ```
+
+不用固定端口：本机可能有别的预览占着，新服务起不来时，检查到的是另一篇。`--guide` 会先核对页面标题和 guide.md 第一行，不一致直接报错。
 
 截图别放进 `img/`：构建会把 img/ 整个拷进 site/，跟着发布上线。
 
@@ -37,7 +43,7 @@ python3 -I <skill>/scripts/page_check.py http://127.0.0.1:4410/ --shots <学习�
 
 - 只传这一篇的目录，不整站发布（别的页面可能有别的会话没上线的改动）
 - 传之前和线上逐个文件比对，差异只有这一篇才传；传之后再比一次，应该没有差异
-- 上线后在线上地址再跑一次 `page_check.py`
+- 上线后在线上地址再跑一次 `page_check.py`（同样带 `--guide`）
 - 记一笔：`0-说明.md` 写这次发布了什么、线上地址；配置里要求的记录照写
 
 ## 维护
@@ -47,7 +53,7 @@ python3 -I <skill>/scripts/page_check.py http://127.0.0.1:4410/ --shots <学习�
 1. 跑 `inventory.py`，新材料登记进 `0-说明.md` 的材料表
 2. 读新材料，并进 `提纲.md` 的论点池：和已有的重复就合并，冲突就回原始来源裁决，新东西想清楚该融进哪一部分；看叙事主线要不要因此调整
 3. 列出要改的部分，给用户看一眼（一两行，不用停太久）
-4. 改 guide.md；有内部引用标记就重跑 `extract_cites.py` → 子 agent 找链接 → `merge_sources.py`；新提到的外部对象登记后跑 `collect_refs.py`；再跑一次 `check_links.py`，旧链接失效了照 SKILL.md 第 3 步的做法换
+4. 改 guide.md；有内部引用标记就重跑 `extract_cites.py` → 子 agent 找链接 → `merge_sources.py`；新提到的外部对象登记后跑 `collect_refs.py`；再跑一次 `check_links.py`，旧链接失效了照 evidence.md「检查链接」的做法换
 5. 重新构建、自检，第二次停，用户说「发布」再发
 6. `0-说明.md` 记版本：日期、加了哪些材料、改了哪些部分
 

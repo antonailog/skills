@@ -6,7 +6,7 @@
 
 知识整理、写作发布、写 Skill 和 prompt，以及写代码和做设计时用的 Skill，由 [@antonailog](https://github.com/antonailog) 构建与维护。开发流程的整套 Skill 在 [forge-skills](https://github.com/antonailog/forge-skills)。
 
-![Skills](https://img.shields.io/badge/skills-19-blue)
+![Skills](https://img.shields.io/badge/skills-20-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Platform](https://img.shields.io/badge/Claude%20Code-compatible-8A2BE2)
 
@@ -48,6 +48,7 @@
 
 <table>
 <tr><td width="50%" valign="top"><a href="skills/deep-survey/"><img src="skills/deep-survey/examples/which-ai-assistant/shots/card.jpg" alt="deep-survey：读完就能做决定的调研报告"></a><br><a href="skills/deep-survey/"><b>deep-survey</b></a> · 读完就能做决定的调研报告<br><sub>自己做调研，常常东搜一篇西看一篇，结论凭印象，数字说不清出处，写出来外行也看不懂。这个 Skill 先列一张确认单（写给谁、要做什么决定、查哪些对象、查多深），再派研究员分头查官网、条款、榜单这些一手资料并保存网页原件，交给一位没参与查资料的主笔按读者的问题写成报告，最后由独立审读员检查结论和依据对不对得上；报告里每个关键数字都能点回原文。最后给出一份外行读得懂、句句有出处、读完能做决定的调研报告。</sub><br><sub><a href="skills/deep-survey/examples/which-ai-assistant/">看这个例子 →</a></sub></td><td width="50%" valign="top"><a href="skills/book-to-mindmap/"><img src="skills/book-to-mindmap/examples/sunzi-art-of-war/shots/card.jpg" alt="book-to-mindmap：把一本书压成一张导图"></a><br><a href="skills/book-to-mindmap/"><b>book-to-mindmap</b></a> · 把一本书压成一张导图<br><sub>自己做导图常常照着目录拆，每个节点只放一个关键词，看完只记得讲了哪些话题，记不住结论。这个 Skill 让每个节点都写成一句能判断对错的话，解释放进备注；先搭好骨架请你确认，再一支一支往下填；最后让一个只看导图、没读过原书的 AI 来答题，答不上的地方回头补。最后给出一张不读原书也能看懂全书观点的导图。</sub><br><sub><a href="skills/book-to-mindmap/examples/sunzi-art-of-war/">看这个例子 →</a></sub></td></tr>
+<tr><td width="50%" valign="top"><a href="skills/research-with-gpt/"><img src="skills/research-with-gpt/examples/visual-design-basics/shots/card.jpg" alt="research-with-gpt：拆好 Deep Research 的题，替你跑完收回"></a><br><a href="skills/research-with-gpt/"><b>research-with-gpt</b></a> · 拆好 Deep Research 的题，替你跑完收回<br><sub>拿 ChatGPT Deep Research 调研一个陌生领域，一句话丢进去常常跑回泛泛而谈的报告，分几次问又各讲各的、互相重复，一次要跑几十分钟，方向错了整轮白跑。这个 Skill 先查你已有的调研，用双向钢人问清你真正想搞懂什么，拆成不超过 6 条互不重叠的方向，每条写成目标、背景、诉求三段的 prompt，并给研究模型留出自己补维度的空间；接着在 ChatGPT 官网同一个项目里把几项研究全部启动，定时检查、完成一项下载一项，回来写摘要和对照。最后给出一组覆盖真问题的报告原件，和一份讲清共识与矛盾的对照。</sub><br><sub><a href="skills/research-with-gpt/examples/visual-design-basics/">看这个例子 →</a></sub></td><td width="50%" valign="top"><a href="skills/study-guide/"><img src="skills/study-guide/examples/visual-design-basics/shots/card.jpg" alt="study-guide：把没读过的材料写成一篇能学的指南"></a><br><a href="skills/study-guide/"><b>study-guide</b></a> · 把没读过的材料写成一篇能学的指南<br><sub>想入门一个陌生领域，手上攒了几份报告、论文和视频却一份没读，挨个读又重复又打架，让 AI 总结常常是几份缩写拼在一起，数字没出处，提到的网站和作品也看不到样子。这个 Skill 先读完全部材料，拆成论点池，重复的合并、冲突的回原文裁决，自己搭一条新手能跟着走的主线，写一章样章给你确认；再找回报告丢掉的引用链接、回原网页核对关键论断，把文中提到的例子截图收齐，按读者要做的事配上图表，构建成知识页并在四个宽度自检，你说「发布」才上线。最后给出一篇图文并茂、每个事实都能点开核对的学习指南。</sub><br><sub><a href="skills/study-guide/examples/visual-design-basics/">看这个例子 →</a></sub></td></tr>
 <tr><td width="50%" valign="top"><a href="skills/podcast-summary/"><img src="skills/podcast-summary/examples/dwarkesh-karpathy/shots/card.jpg" alt="podcast-summary：把一期播客整理成图文笔记"></a><br><a href="skills/podcast-summary/"><b>podcast-summary</b></a> · 把一期播客整理成图文笔记<br><sub>听完一期长播客，过两天就只记得一两句，想复习又得重听。这个 Skill 读完整份文字稿，按听众会问的问题把内容重新分章，每章写成一句判断，画一张骨架图看全貌、一张总结图带走整期，再出一组带答案的问答；出完题让一个只看笔记、没听过节目的 AI 来答，答不上的地方回头补进正文。最后给出一份能学习、能复习、以后翻出来也能回顾的图文笔记。</sub><br><sub><a href="skills/podcast-summary/examples/dwarkesh-karpathy/">看这个例子 →</a></sub></td><td width="50%" valign="top"><a href="skills/paper-card/"><img src="skills/paper-card/examples/attention-is-all-you-need/shots/card.jpg" alt="paper-card：把论文读成一张学习卡片"></a><br><a href="skills/paper-card/"><b>paper-card</b></a> · 把论文读成一张学习卡片<br><sub>论文难读，多半卡在术语太多、数字不知道算高还是算低，读完也没留下能复习的东西。这个 Skill 按一套固定的卡片模板来读：先画一张结构图看全貌，再讲清它要解决什么问题、怎么做的、发现了什么；每个数字都说明跟谁比、算不算好，每个术语都换成白话。最后给出一张外行也看得懂、以后翻出来就能复习的学习卡片。</sub><br><sub><a href="skills/paper-card/examples/attention-is-all-you-need/">看这个例子 →</a></sub></td></tr>
 <tr><td width="50%" valign="top"><a href="skills/knowledge-canvas/"><img src="skills/knowledge-canvas/examples/nanogpt/shots/card.jpg" alt="knowledge-canvas：把代码仓库画成知识画布"></a><br><a href="skills/knowledge-canvas/"><b>knowledge-canvas</b></a> · 把代码仓库画成知识画布<br><sub>想弄懂一个陌生的代码仓库或一门课，常见做法是从头一路读下去，读到一半就分不清哪个模块管什么、数据从哪流到哪。这个 Skill 先把材料拆成模块和它们之间的关系，出一份结构稿请你确认，再生成一张能缩放、能拖动的画布：每个节点点开有中文说明和逐字截取的原文出处，旁边配一份同步的文档和有依据的常见疑问。最后给出一张一屏看全貌、点开看细节的知识画布。</sub><br><sub><a href="skills/knowledge-canvas/examples/nanogpt/">看这个例子 →</a></sub></td><td width="50%" valign="top"><a href="skills/lark-export/"><img src="skills/lark-export/examples/manus-context-engineering/shots/card.jpg" alt="lark-export：把飞书文档镜像成本地 Markdown"></a><br><a href="skills/lark-export/"><b>lark-export</b></a> · 把飞书文档镜像成本地 Markdown<br><sub>飞书里的文档想存到本地、放进代码仓库或交给 AI 读，手动复制会丢格式，图片还留在飞书上，原文一改本地就过时。这个 Skill 把一整棵知识库或单篇文档镜像成本地 Markdown：标题层级、表格、提示块都转过来，图片和附件下载到旁边的文件夹、路径改成本地的；以后再跑同一条命令就能同步到最新。最后给出一份离线能看、能搜索、AI 能直接读的本地副本。</sub><br><sub><a href="skills/lark-export/examples/manus-context-engineering/">看这个例子 →</a></sub></td></tr>
 </table>
@@ -64,11 +65,12 @@
 
 ### Skill 与 Prompt
 
-做 Skill、写 prompt、写生图 prompt、收 prompt：给 AI 写说明书的几件事。
+做 Skill、写 prompt、写生图 prompt、收 prompt，再看清一次运行到底读了什么：给 AI 写说明书的几件事。
 
 <table>
 <tr><td width="50%" valign="top"><a href="skills/skill-build/"><img src="skills/skill-build/examples/meeting-minutes/shots/card.jpg" alt="skill-build：把重复的活做成测过的 Skill"></a><br><a href="skills/skill-build/"><b>skill-build</b></a> · 把重复的活做成测过的 Skill<br><sub>想把天天重复的活交给 AI，自己写的 skill 常常该用的时候不触发、不该用的时候乱触发，规则越堆越长，也说不清到底比不用强在哪。这个 Skill 先判断这件事值不值得做成 skill，再问清边界（哪些请求长得像但不归它管、出错了怎么办），出一份设计文档过完备性检查，然后才写 SKILL.md；写完自己造测试题，用和不用各跑几遍对比，需要时请不知情的评委盲评，按差在哪去改。最后给出一个触发准确、说得清比不用强在哪的 Skill。</sub><br><sub><a href="skills/skill-build/examples/meeting-minutes/">看这个例子 →</a></sub></td><td width="50%" valign="top"><a href="skills/prompt-craft/"><img src="skills/prompt-craft/examples/review-classifier/shots/card.jpg" alt="prompt-craft：写能上线的 prompt"></a><br><a href="skills/prompt-craft/"><b>prompt-craft</b></a> · 写能上线的 prompt<br><sub>手搓的 prompt 常写成「你是一位资深专家」「请输出高质量、准确的结果」，这些要求模型没法照着执行；结构也东一句西一句，空输入、长文被截断、内容里夹带指令这些情况都没考虑。这个 Skill 维护了一套固定的 prompt 结构和一份审查清单：先问清需求（结果给谁用、哪种错误更伤），再按九个模块（背景、角色、步骤、判断标准、样例、兜底、输入边界、输出格式等）写，写完换成审查者的眼光，拿边界输入、注入和模型的常见坏毛病逐项挑错。最后给出一份能稳定执行、考虑周全、细节足够的 prompt。</sub><br><sub><a href="skills/prompt-craft/examples/review-classifier/">看这个例子 →</a></sub></td></tr>
 <tr><td width="50%" valign="top"><a href="skills/prompt-vault/"><img src="skills/prompt-vault/examples/anthropic-prompt-library/shots/card.jpg" alt="prompt-vault：把看到的好 prompt 收进库"></a><br><a href="skills/prompt-vault/"><b>prompt-vault</b></a> · 把看到的好 prompt 收进库<br><sub>在网上看到好用的 prompt，常常随手存进收藏夹或备忘录，过几天就找不到，找到了也忘了当初是在什么场景下用的、效果怎么样。这个 Skill 维护一个统一格式的 prompt 库：从网页或文章里把 prompt 原文完整摘出来，连同效果案例图和出处写成一张卡片，按用途归类，自动重建目录索引，再推到 GitHub 上。最后给出一个随时能查、拿来就能用的 prompt 库。</sub><br><sub><a href="skills/prompt-vault/examples/anthropic-prompt-library/">看这个例子 →</a></sub></td><td width="50%" valign="top"><a href="skills/image-prompt/"><img src="skills/image-prompt/examples/autumn-cafe-poster/shots/card.jpg" alt="image-prompt：把出图需求写成生图 prompt"></a><br><a href="skills/image-prompt/"><b>image-prompt</b></a> · 把出图需求写成生图 prompt<br><sub>让 AI 出一张图，常写成「高级感海报，8K」这样一句：画面里的字常常写错，版式全靠模型猜，改件衣服脸也跟着变；各家生图模型的参数又不一样，记错一个就白跑一次。这个 Skill 从一句出图需求或一张参考图出发：先读懂用途、画面和要上图的字，拿不准长相的梗角色先找图请你确认，再按选定的模型写一段只描述看得见东西的 prompt，参数按官方文档单独列好，改图写清改什么、留什么。最后给出一段能直接粘进生图工具的 prompt，附上出图后该查的几处。</sub><br><sub><a href="skills/image-prompt/examples/autumn-cafe-poster/">看这个例子 →</a></sub></td></tr>
+<tr><td width="50%" valign="top"><a href="skills/agent-context-trace/"><img src="skills/agent-context-trace/examples/cafe-poster-trace/shots/card.jpg" alt="agent-context-trace：看清一次运行读了什么、先后做了什么"></a><br><a href="skills/agent-context-trace/"><b>agent-context-trace</b></a> · 看清一次运行读了什么、先后做了什么<br><sub>调 skill 或 prompt 时结果不对，原因多半出在模型当时手里有什么、按什么顺序做的，可这些都埋在几万行会话记录里：改过的 SKILL.md 读到没有、参考文件读全了没有、派给子 agent 的 prompt 原文是什么，光看对话都看不出来。这个 Skill 先圈出影响某个产出的那段链路，从本机会话记录还原每个 Agent 开工时带着的上下文、读过的文件、执行的命令和写出的文件，按「几次操作之后写入了什么」排好，标出每次读取是全文还是一部分、和现在的文件一不一致，点开文件名就能看全文。最后给出一个只留在本机的离线页面，只摆事实，不替你下结论。</sub><br><sub><a href="skills/agent-context-trace/examples/cafe-poster-trace/">看这个例子 →</a></sub></td><td width="50%"></td></tr>
 </table>
 
 ### 每个 Skill 怎么运转
@@ -83,7 +85,8 @@
 <tr><td width="50%" valign="top"><a href="skills/prompt-craft/"><img src="docs/diagrams/prompt-craft.jpg" alt="prompt-craft 结构图"></a><br><a href="skills/prompt-craft/"><b>prompt-craft</b></a> · 生产级 prompt 与对抗审查</td><td width="50%" valign="top"><a href="skills/skill-build/"><img src="docs/diagrams/skill-build.jpg" alt="skill-build 结构图"></a><br><a href="skills/skill-build/"><b>skill-build</b></a> · 造 Skill：设计、评测、迭代</td></tr>
 <tr><td width="50%" valign="top"><a href="skills/wechat-publisher/"><img src="docs/diagrams/wechat-publisher.jpg" alt="wechat-publisher 结构图"></a><br><a href="skills/wechat-publisher/"><b>wechat-publisher</b></a> · Markdown 推成公众号草稿</td><td width="50%" valign="top"><a href="skills/xhs-note/"><img src="docs/diagrams/xhs-note.jpg" alt="xhs-note 结构图"></a><br><a href="skills/xhs-note/"><b>xhs-note</b></a> · 写小红书笔记，含封面</td></tr>
 <tr><td width="50%" valign="top"><a href="skills/ai-events-push/"><img src="docs/diagrams/ai-events-push.jpg" alt="ai-events-push 结构图"></a><br><a href="skills/ai-events-push/"><b>ai-events-push</b></a> · AI 活动推荐的群推送和小红书多图</td><td width="50%" valign="top"><a href="skills/human-article/"><img src="docs/diagrams/human-article.jpg" alt="human-article 结构图"></a><br><a href="skills/human-article/"><b>human-article</b></a> · 以作者身份写公众号宣传和知识介绍</td></tr>
-<tr><td width="50%" valign="top"><a href="skills/image-prompt/"><img src="docs/diagrams/image-prompt.jpg" alt="image-prompt 结构图"></a><br><a href="skills/image-prompt/"><b>image-prompt</b></a> · 把出图需求写成生图 prompt</td><td width="50%"></td></tr>
+<tr><td width="50%" valign="top"><a href="skills/image-prompt/"><img src="docs/diagrams/image-prompt.jpg" alt="image-prompt 结构图"></a><br><a href="skills/image-prompt/"><b>image-prompt</b></a> · 把出图需求写成生图 prompt</td><td width="50%" valign="top"><a href="skills/research-with-gpt/"><img src="docs/diagrams/research-with-gpt.jpg" alt="research-with-gpt 结构图"></a><br><a href="skills/research-with-gpt/"><b>research-with-gpt</b></a> · 拆好 Deep Research 的题，在官网跑完收回</td></tr>
+<tr><td width="50%" valign="top"><a href="skills/study-guide/"><img src="docs/diagrams/study-guide.jpg" alt="study-guide 结构图"></a><br><a href="skills/study-guide/"><b>study-guide</b></a> · 没读过的材料写成一篇能学的指南</td><td width="50%" valign="top"><a href="skills/agent-context-trace/"><img src="docs/diagrams/agent-context-trace.jpg" alt="agent-context-trace 结构图"></a><br><a href="skills/agent-context-trace/"><b>agent-context-trace</b></a> · 看清一次运行读了什么、先后做了什么</td></tr>
 </table>
 
 ## 已归档
@@ -138,6 +141,7 @@ Codex 用户加 `--target codex`（装到 `~/.agents/skills`），`--target both
 | deep-survey | `ZHIHU_ACCESS_SECRET`（可选，知乎数据开放平台）；`INFO2ACTION_REPO`（可选，作者自用的信息流） | 环境变量，或写进 `~/.config/deep-survey/secrets.env`；都没有时自动退回网页搜索 |
 | ai-events-push | `AI_EVENTS_DIR`（可选，作者自己的活动网站项目目录，加新活动、修网站信息时用） | 环境变量；没设就用 `~/claudecode_workspace/工具/活动监测`；小红书出图会读其中的活动库找活动行原图，没有这个目录就用网站存的图 |
 | human-article | `HUMAN_ARTICLE_OUT_DIR`、`HUMAN_ARTICLE_PROFILE_DIR`、`HUMAN_ARTICLE_FEEDBACK_DIR`（可选，文章目录、写作档案、反馈账本）；`GEMINI_API_KEY`、`GEMINI_PROXY`（只在第八步交给 Gemini 改稿时用） | 环境变量；目录没设就用 `~/claudecode_workspace/` 下作者自己的位置；Gemini key 也可以写进 `~/.config/gemini/api_key` |
+| study-guide | 发布方式（可选）：写在本机 `~/.config/study-guide/publish.md` | 本机配置文件，不进仓库；没有就只构建本地预览 |
 
 `config/config.yaml`、`.env` 等本地密钥文件已被 git 忽略。
 
@@ -148,6 +152,7 @@ skills/
 ├── skills/
 │   ├── <skill>/examples/  # 每个 Skill 一个真实跑过的例子：README + input/ + output/ + shots/
 │   ├── _shared/     # 共享代码：figkit（图稿渲染成飞书画板 SVG 并校验），不是 skill，不随 install.sh 安装
+│   ├── agent-context-trace/
 │   ├── ai-events-push/
 │   ├── avatar-look/
 │   ├── book-to-mindmap/
@@ -164,6 +169,7 @@ skills/
 │   ├── prompt-vault/
 │   ├── research-with-gpt/
 │   ├── skill-build/
+│   ├── study-guide/
 │   ├── wechat-publisher/
 │   └── xhs-note/
 ├── archive/         # 已归档、暂不维护的 skill（不随 install.sh 安装）

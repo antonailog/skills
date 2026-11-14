@@ -1,0 +1,201 @@
+[
+ {
+  "key": "lissitzky",
+  "name": "El Lissitzky《For the Voice》",
+  "url": "https://www.artic.edu/artworks/199109",
+  "meta": "1923 · 构成主义 · 芝加哥艺术博物馆藏",
+  "desc": "红黑两色、粗无衬线字和几何块，页边的索引标签帮读者翻到每首诗",
+  "img": "lissitzky",
+  "shot": {
+   "element": "img:a1f38447"
+  }
+ },
+ {
+  "key": "bayer",
+  "name": "Herbert Bayer 包豪斯展览海报设计稿（MoMA）",
+  "url": "https://www.moma.org/collection/works/189319",
+  "meta": "1923 · 包豪斯 · MoMA 藏品",
+  "desc": "基本几何形和无衬线字，装饰减到最少"
+ },
+ {
+  "key": "cassandre",
+  "name": "A. M. Cassandre《Normandie》",
+  "url": "https://collections.vam.ac.uk/item/O1405126/normandie-poster-cassandre",
+  "meta": "1935 · 装饰艺术 · V&A 藏",
+  "desc": "中轴对称、仰视的巨轮，机器时代的纪念碑感",
+  "img": "cassandre",
+  "shot": {
+   "element": "img:2017KC2259"
+  }
+ },
+ {
+  "key": "brockmann",
+  "name": "Müller-Brockmann 音乐会海报",
+  "url": "https://www.emuseum.ch/objects/167586/2-fruhjahrskonzert-der-tonhallegesellschaft",
+  "meta": "1953 · 瑞士国际主义 · 苏黎世设计博物馆藏",
+  "desc": "抽象几何加严格的文字栏，信息靠左对齐的网格组织",
+  "img": "brockmann",
+  "shot": {
+   "element": "img:215913",
+   "wait": 4000
+  }
+ },
+ {
+  "key": "greiman",
+  "name": "April Greiman《Does It Make Sense?》（MoMA）",
+  "url": "https://www.moma.org/collection/works/172729",
+  "meta": "1986 · 新浪潮 · MoMA 藏品",
+  "desc": "用早期 Macintosh 软件完成的折页海报，图文重叠、像素可见"
+ },
+ {
+  "key": "m3e",
+  "name": "Material 3 Expressive",
+  "url": "https://m3.material.io/blog/building-with-m3-expressive",
+  "img": "m3e",
+  "meta": "Google · 2025",
+  "desc": "在统一组件体系上加形状、强调字体、鲜艳颜色和弹性动画"
+ },
+ {
+  "key": "liquidglass",
+  "name": "Apple Liquid Glass（HIG Materials）",
+  "url": "https://developer.apple.com/design/human-interface-guidelines/materials",
+  "img": "liquidglass",
+  "meta": "Apple · 2025",
+  "desc": "玻璃材质只放在导航和控件这一层，内容层保持稳定"
+ },
+ {
+  "key": "acrylic",
+  "name": "Microsoft Fluent Acrylic",
+  "url": "https://learn.microsoft.com/en-us/windows/apps/design/style/acrylic",
+  "img": "acrylic",
+  "meta": "Microsoft",
+  "desc": "半透明材质主要用于菜单、弹出层这类短暂出现的界面"
+ },
+ {
+  "key": "peach",
+  "name": "Pentagram · Peach Coffee Roasters",
+  "url": "https://www.pentagram.com/work/peach-coffee-roasters",
+  "img": "peach",
+  "meta": "品牌识别与包装",
+  "desc": "品牌名叫「桃」，卖的是咖啡：限制桃色的用量，改成桃皮橙、深靛蓝和森林绿三色并用"
+ },
+ {
+  "key": "92ny",
+  "name": "Pentagram · 92NY",
+  "url": "https://www.pentagram.com/work/92ny",
+  "img": "92ny",
+  "meta": "品牌识别",
+  "desc": "定制高对比衬线字负责品牌声量，无衬线字负责日常信息"
+ },
+ {
+  "key": "bottega",
+  "name": "Pentagram · Bottega",
+  "url": "https://www.pentagram.com/work/bottega",
+  "img": "bottega",
+  "meta": "品牌识别",
+  "desc": "光、阴影、反射和透视作为整个品牌共同的视觉语法"
+ },
+ {
+  "key": "mobbin",
+  "name": "Mobbin",
+  "url": "https://mobbin.com/",
+  "img": "mobbin",
+  "meta": "已上线产品的界面库",
+  "desc": "按流程和模式找真实产品的登录、支付、表单、空状态"
+ },
+ {
+  "key": "awwwards",
+  "name": "Awwwards",
+  "url": "https://www.awwwards.com/",
+  "img": "awwwards",
+  "meta": "网站设计奖项",
+  "desc": "落地页、品牌站、叙事网站和动效的上限"
+ },
+ {
+  "key": "dandad",
+  "name": "D&AD Awards",
+  "url": "https://www.dandad.org/awards/d-ad-awards",
+  "img": "dandad",
+  "meta": "1962 年起的设计与广告奖项",
+  "desc": "海报、品牌系统、数字体验，适合校准顶级作品"
+ },
+ {
+  "key": "behance",
+  "name": "Behance 平面设计精选",
+  "url": "https://www.behance.net/galleries/graphic-design",
+  "meta": "作品集平台",
+  "desc": "完整的项目案例，带过程图和视觉系统"
+ },
+ {
+  "key": "dribbble",
+  "name": "Dribbble",
+  "url": "https://dribbble.com/",
+  "img": "dribbble",
+  "meta": "作品片段平台",
+  "desc": "快速找某种视觉处理，不宜用来判断真实可用性"
+ },
+ {
+  "key": "pentagram",
+  "name": "Pentagram Work",
+  "url": "https://www.pentagram.com/work",
+  "img": "pentagram",
+  "meta": "设计公司项目库",
+  "desc": "看同一个概念怎样贯穿品牌的各个触点"
+ },
+ {
+  "key": "brandnew",
+  "name": "Brand New",
+  "url": "https://www.underconsideration.com/brandnew/",
+  "img": "brandnew",
+  "meta": "品牌改版评论",
+  "desc": "多数案例带改版前后对照，适合练比较"
+ },
+ {
+  "key": "typewolf",
+  "name": "Typewolf",
+  "url": "https://www.typewolf.com/",
+  "img": "typewolf",
+  "meta": "真实网站的字体案例",
+  "desc": "看字体放在真实页面里的效果"
+ },
+ {
+  "key": "uisdc",
+  "name": "优设网 UI 设计栏目",
+  "url": "https://www.uisdc.com/category/uiicon",
+  "img": "uisdc",
+  "meta": "中文设计媒体",
+  "desc": "国内互联网的界面、视觉和运营设计案例"
+ },
+ {
+  "key": "adobecolor",
+  "name": "Adobe Color",
+  "url": "https://color.adobe.com/",
+  "img": "adobecolor",
+  "meta": "配色工具 · 免费",
+  "desc": "色轮配色、从图片取色、色觉缺陷模拟"
+ },
+ {
+  "key": "coolors",
+  "name": "Coolors",
+  "url": "https://coolors.co/",
+  "img": "coolors",
+  "meta": "配色工具 · 基础免费",
+  "desc": "锁定一个主色，快速试别的辅助色"
+ },
+ {
+  "key": "webaim",
+  "name": "WebAIM Contrast Checker",
+  "url": "https://webaim.org/resources/contrastchecker/",
+  "img": "webaim",
+  "meta": "对比度检查 · 免费",
+  "desc": "输入前景色和背景色，直接给出 AA、AAA 结果"
+ },
+ {
+  "key": "oklch",
+  "name": "OKLCH Color Picker",
+  "url": "https://oklch.com/",
+  "img": "oklch",
+  "meta": "OKLCH 取色 · 免费",
+  "desc": "按明度和色度调色，适合给 CSS token 做色阶"
+ }
+]

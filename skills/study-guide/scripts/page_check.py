@@ -4,13 +4,16 @@
 --shots <目录>：每个宽度截首屏；1440 宽时再截组件：
   单独成段的图逐张截（截图、信息图都是这种，文件名带图片名），第一张再点开截放大后的样子；
   表格、表格卡片、画廊、中轴两栏、流程图、自定义演示、视频卡（mp4、YouTube 封面按钮、点了去原站的封面卡）各截第一个。
-用法：python3 -I page_check.py <页面地址，如 http://127.0.0.1:4410/> [--shots 目录]
+--guide <学习指南目录>：先核对页面标题（h1）和 guide.md 第一行一致，不一致直接报错退出。
+  本机端口可能被别的预览占着，检查到的是另一篇时，结果照样会显示「通过」。
+用法：python3 -I page_check.py <页面地址，如 http://127.0.0.1:<端口>/> [--guide 学习指南目录] [--shots 目录]
 """
 import asyncio
 import re
 import sys
+from pathlib import Path
 
-# 不上页面的说明文字（用户 11-11 删过的那类）；正文真的需要这些词时，人工看一眼排除
+# 写给核对者看、读者用不上的说明文字，不该出现在页面上；正文真的需要这些词时，人工看一眼排除
 BANNED = ['不在原文里', '补充 ·', '核对状态', '截图日期', '截不到画面', '已核对', '未核对', 'AI 补充', '导出时丢了', '可能过时']
 # 视频：mp4 是 <video>；YouTube 没点之前是一个封面按钮（点了才换成 iframe）；不能嵌的是点了去原站的封面卡
 VIDEO = 'video, iframe, button[aria-label^="播放："], a[aria-label^="打开："]'
@@ -70,6 +73,14 @@ async def main() -> None:
     if i >= 0 and i + 1 >= len(sys.argv):
         sys.exit('--shots 后面要给截图目录')
     shots = sys.argv[i + 1] if i >= 0 else None
+    j = sys.argv.index('--guide') if '--guide' in sys.argv else -1
+    if j >= 0 and j + 1 >= len(sys.argv):
+        sys.exit('--guide 后面要给学习指南目录')
+    expect = None
+    if j >= 0:
+        gp = Path(sys.argv[j + 1]).expanduser() / 'guide.md'
+        first = next((t for t in gp.read_text(encoding='utf-8').split('\n') if t.strip()), '')
+        expect = re.sub(r'\s+', ' ', first.removeprefix('# ')).strip()
     problems = 0
     async with async_playwright() as p:
         b = await p.chromium.launch()
@@ -80,6 +91,10 @@ async def main() -> None:
             pg.on('response', lambda r: bad.append(f'{r.status} {r.url}') if r.status >= 400 else None)
             await pg.goto(url, wait_until='networkidle')
             await pg.wait_for_timeout(800)
+            if expect is not None and w == 1440:
+                h1 = re.sub(r'\s+', ' ', await pg.evaluate('document.querySelector("h1")?.innerText || ""')).strip()
+                if h1 != expect:
+                    sys.exit(f'打开的不是这一篇：页面标题「{h1}」，guide.md 是「{expect}」。端口可能被别的预览占着，换一个空闲端口重起')
             if shots:
                 await pg.screenshot(path=f'{shots}/{w}-top.png')   # 先截首屏：滚过以后左侧目录会停在别处
             await pg.evaluate('async()=>{for(let y=0;y<document.body.scrollHeight;y+=800){scrollTo({top:y,behavior:"instant"});await new Promise(r=>setTimeout(r,40))}scrollTo({top:0,behavior:"instant"})}')
