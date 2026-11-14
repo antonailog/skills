@@ -47,7 +47,7 @@ python3 -I <skill>/scripts/page_check.py http://127.0.0.1:4410/ --shots <学习�
 1. 跑 `inventory.py`，新材料登记进 `0-说明.md` 的材料表
 2. 读新材料，并进 `提纲.md` 的论点池：和已有的重复就合并，冲突就回原始来源裁决，新东西想清楚该融进哪一部分；看叙事主线要不要因此调整
 3. 列出要改的部分，给用户看一眼（一两行，不用停太久）
-4. 改 guide.md；有内部引用标记就重跑 `extract_cites.py` → 子 agent 找链接 → `merge_sources.py`；新提到的外部对象登记后跑 `collect_refs.py`；再跑一次 `check_links.py`，旧链接失效了照 SKILL.md 第 3 步的做法换
+4. 改 guide.md；有内部引用标记就重跑 `extract_cites.py` → 子 agent 找链接 → `merge_sources.py`；新提到的外部对象登记后跑 `collect_refs.py`；再跑一次 `check_links.py`，旧链接失效了照 evidence.md「检查链接」的做法换
 5. 重新构建、自检，第二次停，用户说「发布」再发
 6. `0-说明.md` 记版本：日期、加了哪些材料、改了哪些部分
 
