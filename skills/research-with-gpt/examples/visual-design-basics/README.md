@@ -29,4 +29,4 @@
 
 ## 后来怎么用的
 
-报告回来后，作者选了「做成学习指南」：交给 [study-guide](../../../study-guide/examples/visual-design-basics/)，把 6 份报告重新梳理成一篇《视觉设计入门》，已发布在 https://antonailog.com/more/visual-design-basics/ 。
+报告回来后，作者选了「做成学习指南」：交给 [study-guide](../../../study-guide/examples/visual-design-basics/)，把 6 份报告重新梳理成一篇《视觉设计基础》，已发布在 https://antonailog.com/more/visual-design-basics/ 。

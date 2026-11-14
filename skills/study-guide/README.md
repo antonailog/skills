@@ -45,7 +45,7 @@ study-guide/
 │       ├── src/                页面组件和样式
 │       └── example/            模板自带的小示例
 └── examples/
-    └── visual-design-basics/   例子：6 份报告写成《视觉设计入门》
+    └── visual-design-basics/   例子：6 份报告写成《视觉设计基础》
 ```
 
 ## 其他
