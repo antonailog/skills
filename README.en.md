@@ -6,7 +6,7 @@
 
 Practical, production-tested skills for content workflows, product analysis, and knowledge management — built and maintained by [@antonailog](https://github.com/antonailog).
 
-![Skills](https://img.shields.io/badge/skills-19-blue)
+![Skills](https://img.shields.io/badge/skills-20-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Platform](https://img.shields.io/badge/Claude%20Code-compatible-8A2BE2)
 
@@ -45,6 +45,7 @@ This repository is where I keep my own reusable skills under version control, so
 | **[ai-events-push](./skills/ai-events-push/)** | Turn a handful of picked AI events into a weekly WeChat group push: one long poster grouped by city, each event drawn as the same ticket used on the author's events site (16:9 cover, date and time, venue, organizer, a three-line intro, price stub), plus a ready-to-paste message with one standard intro and two links (details, sign-up) per event. Event data comes from the live site; facts are checked against the organizer's poster and sign-up page; the poster script self-checks orphans, overflow and the QR code, and every link is opened before delivery. Tied to the author's events site, so outside that setup only the poster-and-text part is reusable. | `做个推送`, `本周活动推荐出一版`, `这几个活动发群里` |
 | **[research-with-gpt](./skills/research-with-gpt/)** | Research an unfamiliar field with ChatGPT Deep Research: check what has already been researched → a two-way steelman to pin down the real question, asking only one question → split into at most six non-overlapping directions → write each as a Goal / Background / Asks prompt that leaves room for the research model to add missing dimensions → open chatgpt.com, start every run in one project, poll on a fixed interval and download each report as it finishes → per-report summaries and a cross-report comparison. | `用 deep research 调研`, `给我几个 deep research 的 prompt` |
 | **[study-guide](./skills/study-guide/)** | Turn a pile of unread material (Deep Research reports, PDFs, web pages, transcripts) into one learnable guide: read everything, break it into a claim pool, merge duplicates and settle conflicts against the original sources, rebuild a storyline for newcomers, stop for an outline and a sample chapter → recover lost citation links, verify key claims, collect screenshots of every cited site or work → pick components by what the reader needs to do → build a static knowledge page, self-check at four widths, publish only on request. | `整理成一篇能学的文章`, `梳理成入门指南`, `做成知识页` |
+| **[agent-context-trace](./skills/agent-context-trace/)** | See what a Claude Code run actually loaded and in what order: pick the stretch of agent chain behind an output (main agent and sub-agents), rebuild each agent's context (system prompt, tool definitions, injected CLAUDE.md, memory and skill list, task prompt), the files and images it read, the commands it ran and the files it wrote from local session logs, and pack it into one offline page grouped as "N operations → write X". Each read is marked full or partial and whether it matches the file on disk now. Facts only, no verdicts; pages stay on your machine. | `看看它加载了啥`, `看下这次运行的 trace`, `references 哪些没读` |
 
 ### How each skill works
 
@@ -59,7 +60,7 @@ These diagrams cover selected skills: stages, gates, loops and outputs. Click a 
 <tr><td width="50%" valign="top"><a href="skills/wechat-publisher/"><img src="docs/diagrams/wechat-publisher.jpg" alt="wechat-publisher 结构图"></a><br><a href="skills/wechat-publisher/"><b>wechat-publisher</b></a></td><td width="50%" valign="top"><a href="skills/xhs-note/"><img src="docs/diagrams/xhs-note.jpg" alt="xhs-note 结构图"></a><br><a href="skills/xhs-note/"><b>xhs-note</b></a></td></tr>
 <tr><td width="50%" valign="top"><a href="skills/ai-events-push/"><img src="docs/diagrams/ai-events-push.jpg" alt="ai-events-push 结构图"></a><br><a href="skills/ai-events-push/"><b>ai-events-push</b></a></td><td width="50%" valign="top"><a href="skills/human-article/"><img src="docs/diagrams/human-article.jpg" alt="human-article 结构图"></a><br><a href="skills/human-article/"><b>human-article</b></a></td></tr>
 <tr><td width="50%" valign="top"><a href="skills/image-prompt/"><img src="docs/diagrams/image-prompt.jpg" alt="image-prompt 结构图"></a><br><a href="skills/image-prompt/"><b>image-prompt</b></a></td><td width="50%" valign="top"><a href="skills/research-with-gpt/"><img src="docs/diagrams/research-with-gpt.jpg" alt="research-with-gpt 结构图"></a><br><a href="skills/research-with-gpt/"><b>research-with-gpt</b></a></td></tr>
-<tr><td width="50%" valign="top"><a href="skills/study-guide/"><img src="docs/diagrams/study-guide.jpg" alt="study-guide 结构图"></a><br><a href="skills/study-guide/"><b>study-guide</b></a></td><td width="50%"></td></tr>
+<tr><td width="50%" valign="top"><a href="skills/study-guide/"><img src="docs/diagrams/study-guide.jpg" alt="study-guide 结构图"></a><br><a href="skills/study-guide/"><b>study-guide</b></a></td><td width="50%" valign="top"><a href="skills/agent-context-trace/"><img src="docs/diagrams/agent-context-trace.jpg" alt="agent-context-trace 结构图"></a><br><a href="skills/agent-context-trace/"><b>agent-context-trace</b></a></td></tr>
 </table>
 
 ## Archived
@@ -124,6 +125,7 @@ Some skills call third-party APIs and need credentials. **No secrets are committ
 skills/
 ├── skills/
 │   ├── _shared/     # shared code: figkit (renders figure drafts to Feishu-board SVG and checks them); not a skill, not installed
+│   ├── agent-context-trace/
 │   ├── ai-events-push/
 │   ├── avatar-look/
 │   ├── book-to-mindmap/
