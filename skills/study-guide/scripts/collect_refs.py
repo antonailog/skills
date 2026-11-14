@@ -4,9 +4,13 @@
   页面一打开（domcontentloaded）先看状态码、标题和正文：返回 4xx/5xx、是人机验证页（Cloudflare 的「Just a moment…」
   「Performing security verification」这类）或登录墙，就直接判被拦，不往下等；加载完是空白页也算被拦。
   被拦时改用封面图，两样都没有就只留链接（页面上显示成一行链接）。截图为什么没用上、封面图为什么没拿到（HTTP 403 等），写在输出表的备注里。
-截哪一屏由 sites.json 那条的可选字段 shot 控制：{"wait": 毫秒, "scroll": "CSS 选择器" 或 像素}。
+截哪一屏由 sites.json 那条的可选字段 shot 控制：{"wait": 毫秒, "scroll": "CSS 选择器" 或 像素, "element": "…", "hide_overlays": true}。
   wait：页面加载完再等多久（默认 1500；有加载动画的页面给 4000–8000，截到的才不是动画）；
-  scroll：截图前把这个元素滚到屏幕顶上，或者往下滚这么多像素。
+  scroll：截图前把这个元素滚到屏幕顶上，或者往下滚这么多像素；
+  element：只截页面里的这一个元素，写 CSS 选择器，或者「img:」加图片地址里的一段（"img:heatmap"），
+    要看的图在页面中部（热力图、网格示意、作品大图）时用；会先滚过去、等懒加载的图加载完再截；
+  hide_overlays：截图前隐藏浮在页面上、带 cookie / privacy / consent / 隐私 字样的弹窗和横条（默认开；不点「同意」）。
+    误藏了要看的吸顶内容时写 false。
   字体、作品、模板这类对象，读者要看的是它本身的样子：登记的 url 选样张页、展示页、作品详情页，比首页或代码仓库的文件列表有用；
   样张在页面下方，就用 scroll 滚过去。
 对每个视频：YouTube 地址补上 youtube 字段（能嵌）；没有封面的用页面封面图补 poster。
@@ -109,6 +113,14 @@ def download(url: str, out: Path) -> str | None:
     return None
 
 
+# 浮在页面上（fixed / sticky）、带这些字样的元素当成 Cookie、隐私弹窗隐藏掉；只隐藏，不点「同意」
+HIDE_OVERLAYS = '''() => { for (const el of document.querySelectorAll('body *')) { const s = getComputedStyle(el);
+  if ((s.position === 'fixed' || s.position === 'sticky') && /cookie|privacy|consent|gdpr|隐私/i.test(el.innerText || '')) el.style.display = 'none' } }'''
+# 元素里的图都加载完（或最多等 5 秒）
+LOADED = '''e => Promise.race([Promise.all([...(e.tagName === 'IMG' ? [e] : e.querySelectorAll('img'))].map(i => i.complete || new Promise(r => { i.onload = i.onerror = r }))),
+  new Promise(r => setTimeout(r, 5000))])'''
+
+
 async def look(pg) -> tuple[str, str]:
     try:
         return await pg.title(), await pg.evaluate('document.body ? document.body.innerText : ""')
@@ -119,7 +131,7 @@ async def look(pg) -> tuple[str, str]:
 async def shoot(b, url: str, out: Path, opt: dict) -> str | None:
     """截一屏：成功返回 None，没用上返回原因"""
     from PIL import Image
-    pg = await b.new_page(viewport={'width': 1440, 'height': 900})
+    pg = await b.new_page(viewport={'width': 1440, 'height': 900}, device_scale_factor=2)   # 2 倍：截元素时小图也清楚；整屏照样缩到 1200 宽
     try:
         r = await pg.goto(url, wait_until='domcontentloaded', timeout=30000)
         if r and r.status >= 400:
@@ -147,8 +159,24 @@ async def shoot(b, url: str, out: Path, opt: dict) -> str | None:
             return why
         if len(text.strip()) < 40:
             return '空白页'
+        hide = opt.get('hide_overlays', True)
+        if hide:
+            await pg.evaluate(HIDE_OVERLAYS)
         png = out.with_name(f'{out.stem}.shot.png')
-        await pg.screenshot(path=str(png))
+        if el_sel := opt.get('element'):
+            if el_sel.startswith('img:'):
+                el_sel = f'img[src*="{el_sel[4:]}"]'
+            el = pg.locator(el_sel).first
+            if not await el.count():
+                return f'shot.element 的 {opt["element"]} 在页面上没找到'
+            await el.scroll_into_view_if_needed()
+            await pg.wait_for_timeout(1500)
+            await el.evaluate(LOADED)   # 懒加载的图滚到了才开始下载
+            if hide:
+                await pg.evaluate(HIDE_OVERLAYS)   # 有的弹窗滚动以后才出来
+            await el.screenshot(path=str(png))
+        else:
+            await pg.screenshot(path=str(png))
         try:
             im = Image.open(png).convert('RGB')
             im.thumbnail((1200, 1200))
@@ -244,7 +272,7 @@ async def main() -> None:
     print('| 对象 | 拿到了什么 | 备注 |\n|---|---|---|')
     for r in rows:
         print(f'| {r[0]} | {r[1]} | {r[2]} |')
-    print('\n截图和封面图都要打开看一眼：Cookie 弹窗、加载动画、空白首屏、和正文说的不是一个东西，都删掉重找（换 url，或者在 shot 里加 wait、scroll）。'
+    print('\n截图和封面图都要打开看一眼：还有没藏掉的弹窗、加载动画、空白首屏、和正文说的不是一个东西，都删掉重找（换 url，或者在 shot 里加 wait、scroll、element）。'
           '\n封面图 HTTP 403 多半是图床拦脚本下载：换一个能展示它的页面（官方展示页、新闻稿配图），或者只留链接。')
 
 

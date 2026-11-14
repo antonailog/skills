@@ -1,6 +1,6 @@
 {
   "_说明": {
-    "用法": "这里是站点默认值。学习指南目录里放一份同名文件，写哪几项就覆盖哪几项（_ 开头的键不读）。",
+    "用法": "三层逐项覆盖（_ 开头的键不读）：这里是中性默认值 → 本机 ~/.config/study-guide/site.config.json（个人站点的站名、导航，不进 skill 仓库）→ 学习指南目录里的同名文件（只管这一篇）。",
     "lang": "<html lang>",
     "siteName": "顶栏左边的站名",
     "siteHref": "点站名去哪",
@@ -17,22 +17,19 @@
     "blogCssDir": "博客样式目录（放 tokens.css、post.css，也可以在下一层子目录里），空 = 用模板自带的 src/blog/ 快照；相对路径相对本文件所在文件夹；环境变量 BLOG_CSS_DIR 优先"
   },
   "lang": "zh-CN",
-  "siteName": "阿東的AI手记",
+  "siteName": "学习指南",
   "siteHref": "/",
-  "titleSuffix": " · 阿東的AI手记",
-  "favicon": "/posts/favicon.png",
-  "stylesheets": ["https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=ZCOOL+QingKe+HuangYou&display=swap"],
-  "nav": [
-    { "label": "关于", "href": "/" },
-    { "label": "文章", "href": "/posts/" },
-    { "label": "项目", "href": "/projects/" },
-    { "label": "Skill", "href": "/skills/" },
-    { "label": "其他", "href": "/more/", "current": true }
-  ],
-  "github": "https://github.com/antonailog",
-  "back": { "label": "返回其他", "href": "/more/" },
-  "footer": { "label": "antonailog.com", "href": "/" },
-  "themeKey": "v2-theme",
+  "titleSuffix": "",
+  "favicon": "",
+  "stylesheets": [],
+  "nav": [],
+  "github": "",
+  "back": {
+    "label": "返回",
+    "href": "/"
+  },
+  "footer": null,
+  "themeKey": "study-guide-theme",
   "date": "",
   "description": "",
   "blogCssDir": ""

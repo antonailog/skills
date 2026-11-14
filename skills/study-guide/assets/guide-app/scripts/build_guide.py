@@ -3,7 +3,7 @@
 学习指南目录：第一个参数或环境变量 GUIDE_DIR（相对本 app 目录）；都不给就是 app 的上一层（..）。
 构建：npm run build:blog → <主题>/site/（多文件、相对路径，img/ 一起拷）；npm run build → <主题>/index.html（单文件，双击看）。
 试示例：npm run example（= 对 example/ 跑上面两个）；只跑本脚本：python3 -I scripts/build_guide.py example
-站点信息（站名、导航、返回链接、页脚）读 app 的 site.config.json，学习指南目录里放同名文件可逐项覆盖。
+站点信息（站名、导航、返回链接、页脚）读 app 的 site.config.json，本机 ~/.config/study-guide/ 和学习指南目录里放同名文件可依次逐项覆盖。
 博客样式用 src/blog/ 的快照；环境变量 BLOG_CSS_DIR 或 site.config.json 的 blogCssDir 指向放 tokens.css、post.css 的目录时用那里的。
 写法约定见 skill 的 references/components.md；写错了（未知引用、画廊、视频、演示名，代码块没闭合）报出行号并退出。
 """
@@ -47,9 +47,9 @@ def topic_dir() -> Path:
 
 
 def load_config(topic: Path) -> dict:
-    """app 的 site.config.json 打底，学习指南目录里的同名文件逐项覆盖；_ 开头的键是说明；相对路径相对它所在的文件夹"""
+    """app 的 site.config.json 打底，本机 ~/.config/study-guide/ 和学习指南目录里的同名文件依次逐项覆盖；_ 开头的键是说明；相对路径相对它所在的文件夹"""
     cfg: dict = {}
-    for f in (APP / 'site.config.json', topic / 'site.config.json'):
+    for f in (APP / 'site.config.json', Path.home() / '.config' / 'study-guide' / 'site.config.json', topic / 'site.config.json'):
         for k, v in load_json(f, {}).items():
             if k.startswith('_'):
                 continue
