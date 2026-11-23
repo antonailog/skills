@@ -55,24 +55,33 @@ def collect(deck: Path, html: str):
     返回 (讲稿目录下的相对路径列表, 不存在的, 指到讲稿目录外面的)。脚本运行时才去加载的文件找不到。"""
     base = deck.resolve()
     files, missing, far = set(), [], []
-    todo = [(base, r, '') for r in local_refs(html)]
+    assets = local_refs(html, links=False)
+    # 主稿里 <a>/<area> 的跳转链接：指到讲稿里的文件就带上；指到文件夹、讲稿外面（「回到首页」这类）的不管
+    links = [r for r in local_refs(html) if r not in set(assets)]
+    todo = [(base, r, '', False) for r in assets] + [(base, r, '', True) for r in links]
     while todo:
-        d, r, frm = todo.pop()
+        d, r, frm, is_link = todo.pop()
         label = f'{frm} 引用的 {r}' if frm else r
         p = (d / r).resolve()
-        if r.startswith('/') or base not in p.parents:
-            far.append(label)
+        if r.startswith('/') or not (p == base or base in p.parents):
+            if not is_link:
+                far.append(label)
             continue
+        if p.is_dir():   # 不整个文件夹带上，免得把没用到的页面和草稿一起带出去；iframe 这类指文件夹的，按浏览器的习惯找里面的 index.html
+            if is_link:
+                continue
+            p = p / 'index.html'
+            if not p.exists():
+                missing.append(label + '（文件夹里没有 index.html）')
+                continue
         rel = p.relative_to(base).as_posix()
-        if rel in files:
+        if rel in files or rel == 'index.html':   # 讲稿自己（目录链接 index.html#3 这类）另外写，不能拿原稿覆盖处理过的页面
             continue
         if not p.exists():
             missing.append(label)
             continue
-        if p.is_dir():   # 指向文件夹的链接：不整个带上，免得把没用到的页面和草稿一起带出去
-            continue
         files.add(rel)
-        todo += [(p.parent, s, rel) for s in _refs_in_file(p)]
+        todo += [(p.parent, s, rel, False) for s in _refs_in_file(p)]
     return sorted(files), sorted(set(missing)), sorted(set(far))
 
 
@@ -125,6 +134,8 @@ class Node:
 
 BLOCK = {'address', 'article', 'aside', 'blockquote', 'details', 'div', 'dl', 'fieldset', 'figcaption', 'figure', 'footer', 'form',
          'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'header', 'hr', 'main', 'menu', 'nav', 'ol', 'p', 'pre', 'section', 'table', 'ul'}
+SCOPE = {'applet', 'button', 'caption', 'foreignobject', 'marquee', 'math', 'object', 'svg', 'table', 'td', 'template', 'th'}
+FORMAT = {'a', 'b', 'big', 'code', 'em', 'font', 'i', 'nobr', 's', 'small', 'strike', 'strong', 'tt', 'u'}
 VOID = {'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'source', 'track', 'wbr'}
 
 
@@ -134,6 +145,7 @@ class _Tree(HTMLParser):
     def __init__(self, html):
         super().__init__(convert_charrefs=False)
         self.html, self.root, self.comments = html, Node('#root', {}, 0, None), []
+        self.loose = []   # 没写结束标签、被外层结束标签顺带关掉的 <b>、<small> 这类：浏览器会把它在后面的文字上重开，这里的范围就不准了
         self.cur = self.root
         self.lines = [0] + [m.end() for m in re.finditer('\n', html)]
         self.feed(html)
@@ -155,23 +167,36 @@ class _Tree(HTMLParser):
         else:
             self.cur = n
 
-    def handle_starttag(self, tag, attrs):
-        # 跟浏览器一样：没关上的 <p> 遇到块级元素就算结束，没关上的 <li> 遇到下一个 <li> 就算结束
-        n = self.cur
-        if tag in BLOCK:   # 往上找还开着的 <p>（中间隔着 span 之类也算），连同里面没关的一起结束
-            while n is not self.root and n.tag != 'p':
-                n = n.parent
-        elif tag == 'li' and n.tag != 'li':
-            n = self.root
-        if n is not self.root and n.tag in ('p', 'li'):
+    def _autoclose(self, tag):
+        """跟浏览器一样：没关上的 <p> 遇到块级元素就算结束，没关上的 <li> 遇到下一个 <li> 就算结束。
+        中间隔着 <b>、<em> 这类格式元素时不结束：浏览器会在新块里把它连同 class 重开一份，算成它的子元素，宁可多删不漏删。"""
+        n = None
+        if tag in BLOCK:
+            m = self.cur
+            while m is not self.root and m.tag != 'p':
+                if m.tag in FORMAT or m.tag in SCOPE:   # 隔着 button、svg、table 这类边界时，浏览器也不去结束外面的 <p>
+                    return
+                m = m.parent
+            n = m if m is not self.root else None
+        elif tag == 'li' and self.cur.tag == 'li':
+            n = self.cur
+        if n is not None:
             s = self._off()
             while self.cur is not n.parent:
                 self.cur.end = s
                 self.cur = self.cur.parent
+
+    def handle_starttag(self, tag, attrs):
+        self._autoclose(tag)
         self._start(tag, attrs, tag in VOID)
 
     def handle_startendtag(self, tag, attrs):
-        self._start(tag, attrs, True)
+        # <div/> 这种写法浏览器当作没关上的 <div>；只有空元素和 svg、math 里面的元素才真算自闭合
+        m = self.cur
+        while m is not self.root and m.tag not in ('svg', 'math'):
+            m = m.parent
+        self._autoclose(tag)
+        self._start(tag, attrs, tag in VOID or m is not self.root)
 
     def handle_endtag(self, tag):
         s = self._off()
@@ -182,6 +207,8 @@ class _Tree(HTMLParser):
         if n is self.root:      # 多出来的结束标签，不管
             return
         while self.cur is not n:   # 中间没写结束标签的（<p>、<li>），在这里一起结束
+            if self.cur.tag in FORMAT:
+                self.loose.append(self.cur)
             self.cur.end = s
             self.cur = self.cur.parent
         n.end = e
@@ -207,6 +234,14 @@ class _Tree(HTMLParser):
 
 def tree(html: str) -> _Tree:
     return _Tree(html)
+
+
+def unsafe_loose(html: str):
+    """备注、data-web、data-web-shot 写在没关上的格式元素上（<b class="note">… 忘了 </b>）：浏览器会把后面的文字也算进去，
+    这里删不干净。返回 [(行号, 开始标签)]，网站版遇到就停。"""
+    t = tree(html)
+    return [(html.count('\n', 0, n.start) + 1, html[n.start:html.find('>', n.start) + 1]) for n in t.loose
+            if 'note' in n.cls() or 'data-web' in n.attrs or 'data-web-shot' in n.attrs]
 
 
 def online_pages(html: str):

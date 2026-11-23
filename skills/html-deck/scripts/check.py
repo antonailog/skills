@@ -43,6 +43,9 @@ def main():
     _, missing, far = deliver.collect(deck, html)
     problems += [f'在讲稿目录外面，打包时带不上：{r}（拷进讲稿目录，改成相对路径）' for r in far]
     problems += [f'文件不存在：{r}' for r in missing]
+    problems += [f'第 {ln} 行 {tag} 没写结束标签：浏览器会把后面的文字也算进去，网站版删不干净' for ln, tag in deliver.unsafe_loose(html)]
+    problems += [f'引用的是文件夹：{r}（本地打开时只显示文件列表，写成 {r.rstrip("/")}/index.html）'
+                 for r in deliver.local_refs(html, links=False) if (deck / r).is_dir()]
     if '</div><!-- /stage -->' not in html:
         problems.append('缺少 </div><!-- /stage --> 结束标记（编辑模式和交付脚本靠它）')
 
