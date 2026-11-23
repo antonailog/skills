@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>讨论</title>
+<style>
+  :root { --ink: #111; --mute: #666; --hair: #dcdcdc; --soft: #f5f5f3; --red: #e10600; --ok: #0a7a3d; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #fff; color: var(--ink); font: 16px/1.65 -apple-system, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif; }
+  main { max-width: 1160px; margin: 0 auto; padding: 30px 20px 140px; }
+  h1 { font-size: 28px; line-height: 1.25; margin: 0 0 8px; }
+  h2 { font-size: 20px; margin: 40px 0 10px; border-top: 4px solid #111; padding-top: 12px; }
+  .lead { color: #444; max-width: 860px; }
+  table.sum { width: 100%; border-collapse: collapse; font-size: 14.5px; margin-top: 10px; }
+  table.sum th { text-align: left; font-size: 12.5px; color: var(--mute); border-bottom: 1px solid #111; padding: 6px 10px 6px 0; white-space: nowrap; }
+  table.sum td { border-bottom: 1px solid var(--hair); padding: 6px 10px 6px 0; vertical-align: top; }
+  table.sum a { color: inherit; } table.sum .mine { font-weight: 700; color: var(--ok); } table.sum .none { color: #b3b3b3; }
+  .q { margin-top: 34px; padding-top: 16px; border-top: 1px solid #111; scroll-margin-top: 12px; }
+  .q h3 { font-size: 19px; margin: 0 0 6px; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+  .q h3 .no { color: var(--red); } .q h3 .pg { font-size: 12.5px; font-weight: 700; border: 1px solid #111; padding: 0 7px; white-space: nowrap; }
+  .ctx { border-left: 3px solid #111; padding: 2px 0 2px 12px; margin: 8px 0; color: #333; font-size: 14.5px; }
+  .ctx b { font-size: 12.5px; color: var(--mute); margin-right: 6px; }
+  .desc { font-size: 15px; max-width: 900px; } .desc img { max-width: 100%; border: 1px solid var(--hair); display: block; margin: 8px 0; }
+  .opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin-top: 12px; }
+  .opts.wide { grid-template-columns: 1fr; }
+  .opt { border: 1px solid #b9b9b9; padding: 12px; cursor: pointer; background: #fff; display: flex; flex-direction: column; gap: 6px; }
+  .opt:hover { border-color: #111; } .opt.on { border: 2px solid var(--red); padding: 11px; background: #fff8f7; }
+  .opt .hd { display: flex; gap: 8px; align-items: baseline; font-weight: 700; }
+  .opt .hd .v { color: var(--red); } .opt .rec { font-size: 12px; background: #111; color: #fff; padding: 0 6px; margin-left: auto; white-space: nowrap; }
+  .opt .why { font-size: 14px; color: #444; }
+  .opt .shots { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 6px; }
+  .opt .shots img { width: 100%; display: block; border: 1px solid var(--hair); }
+  textarea { width: 100%; margin-top: 10px; min-height: 44px; font: inherit; font-size: 14.5px; padding: 8px 10px; border: 1px solid #b9b9b9; resize: vertical; }
+  textarea.fill { min-height: 160px; font-family: ui-monospace, Menlo, monospace; font-size: 13.5px; }
+  #bar { position: fixed; left: 0; right: 0; bottom: 0; background: #111; color: #fff; padding: 10px 20px; display: flex; gap: 16px; align-items: center; z-index: 5; }
+  #bar button { font: inherit; font-weight: 700; padding: 6px 18px; border: 0; background: var(--red); color: #fff; cursor: pointer; }
+  #bar button.done { background: var(--ok); } #bar span { font-size: 14px; }
+  @media (max-width: 640px) { h1 { font-size: 23px; } }
+</style>
+</head>
+<body>
+<main>
+  <h1 id="title"></h1>
+  <p class="lead" id="lead"></p>
+  <h2>要你定的事</h2>
+  <table class="sum"><thead><tr><th>#</th><th>页</th><th>定什么</th><th>我的推荐</th><th>你选的</th></tr></thead><tbody id="sum"></tbody></table>
+  <div id="qs"></div>
+</main>
+<div id="bar"><button type="button" id="copy">复制我的决定</button><span id="prog"></span></div>
+<script>
+const SPEC = /*SPEC*/null;
+const L = 'ABCDEFGH', Q = SPEC.questions;
+const esc = (s) => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+document.title = SPEC.title; document.getElementById('title').textContent = SPEC.title; document.getElementById('lead').innerHTML = SPEC.lead || '';
+const KEY = SPEC.key || ('deck-discuss-' + SPEC.title);
+let st = {}; try { st = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) {}
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {} };
+document.getElementById('qs').innerHTML = Q.map((q, i) => `<section class="q" id="q${i + 1}">
+  <h3><span class="no">${i + 1}</span>${q.page ? `<span class="pg">${esc(q.page)}</span>` : ''}<span>${esc(q.title)}${q.multi ? '（可多选）' : ''}</span></h3>
+  ${q.context ? `<div class="ctx"><b>你的批注</b>${esc(q.context)}</div>` : ''}
+  ${q.desc ? `<div class="desc">${q.desc}</div>` : ''}
+  ${q.options ? `<div class="opts${q.wide ? ' wide' : ''}">${q.options.map((o, j) => `<div class="opt" data-q="${i}" data-j="${j}" role="button" tabindex="0">
+    <div class="hd"><span class="v">${L[j]}</span><span>${esc(o.label)}</span>${o.rec ? '<span class="rec">推荐</span>' : ''}</div>
+    ${o.images && o.images.length ? `<div class="shots">${o.images.map((s) => `<img src="${s}" alt="">`).join('')}</div>` : ''}${o.html || ''}${o.desc ? `<div class="why">${o.desc}</div>` : ''}</div>`).join('')}</div>` : ''}
+  ${q.fill != null ? `<textarea class="fill" data-f="${i}"></textarea>` : ''}
+  <textarea data-n="${i}" placeholder="备注（可空）"></textarea>
+</section>`).join('');
+const picked = (i) => (st[i] && st[i].p) || [];
+const btn = document.getElementById('copy');
+const reset = () => { btn.textContent = '复制我的决定'; btn.classList.remove('done'); };
+function paint() {
+  document.querySelectorAll('.opt').forEach((el) => el.classList.toggle('on', picked(+el.dataset.q).includes(+el.dataset.j)));
+  let done = 0, need = 0;
+  document.getElementById('sum').innerHTML = Q.map((q, i) => {
+    const rec = q.options ? q.options.map((o, j) => o.rec ? `${L[j]} ${esc(o.label)}` : '').filter(Boolean).join('；') : '';
+    const p = picked(i), note = st[i] && st[i].n;
+    if (q.options && !q.multi) { need++; if (p.length) done++; }
+    const mine = p.length ? p.map((j) => L[j]).join('、') + (note ? ' + 备注' : '') : (note ? '备注' : '');
+    return `<tr><td>${i + 1}</td><td>${esc(q.page || '')}</td><td><a href="#q${i + 1}">${esc(q.title)}</a></td><td>${rec || '没有倾向'}</td><td class="${mine ? 'mine' : 'none'}">${mine || '未选'}</td></tr>`;
+  }).join('');
+  document.getElementById('prog').textContent = need ? `单选题已选 ${done} / ${need}` : '';
+}
+function pick(el) {
+  const i = +el.dataset.q, j = +el.dataset.j, q = Q[i];
+  st[i] = st[i] || {}; let p = picked(i);
+  p = q.multi ? (p.includes(j) ? p.filter((x) => x !== j) : [...p, j].sort()) : (p.includes(j) ? [] : [j]);
+  st[i].p = p; save(); paint(); reset();
+}
+const qs = document.getElementById('qs');
+qs.addEventListener('click', (e) => { if (e.target.tagName === 'TEXTAREA') return; const el = e.target.closest('.opt'); if (el) pick(el); });
+qs.addEventListener('keydown', (e) => { const el = e.target.closest('.opt'); if (el && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); pick(el); } });
+document.querySelectorAll('textarea[data-n]').forEach((t) => { const i = +t.dataset.n; t.value = (st[i] && st[i].n) || ''; t.addEventListener('input', () => { st[i] = st[i] || {}; st[i].n = t.value; save(); paint(); reset(); }); });
+document.querySelectorAll('textarea[data-f]').forEach((t) => { const i = +t.dataset.f; t.value = (st[i] && st[i].f) || Q[i].fill; t.addEventListener('input', () => { st[i] = st[i] || {}; st[i].f = t.value; save(); reset(); }); });
+btn.onclick = async () => {
+  const miss = [];
+  const lines = Q.map((q, i) => {
+    const p = picked(i), s = st[i] || {}, parts = [];
+    if (q.options) { if (p.length) parts.push('选 ' + p.map((j) => `${L[j]}（${q.options[j].label}）`).join('、')); else if (!s.n) { miss.push(i + 1); parts.push('未选'); } }
+    if (s.f && s.f.trim() !== String(q.fill || '').trim()) parts.push('填写：\n' + s.f.trim());
+    if (s.n && s.n.trim()) parts.push('备注：' + s.n.trim());
+    if (!q.options && !parts.length) return null;
+    return `${i + 1}.${q.page ? '【' + q.page + '】' : ''}${q.title}：${parts.join('｜')}`;
+  }).filter(Boolean);
+  const text = SPEC.title + ' · 我的决定\n\n' + lines.join('\n') + (miss.length ? `\n\n没选的题：${miss.join('、')}` : '');
+  try { await navigator.clipboard.writeText(text); btn.textContent = '已复制'; btn.classList.add('done'); }
+  catch (e) { prompt('没能自动复制，请全选下面的文字复制', text); }
+};
+paint();
+</script>
+</body>
+</html>

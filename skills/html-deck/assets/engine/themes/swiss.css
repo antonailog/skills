@@ -1,0 +1,9 @@
+/* 瑞士网格：白底黑字、粗线标题、红色只给重点。适合观点型演讲、行业分享 */
+:root {
+  --page: #111; --bg: #fff; --ink: #000; --mute: #6b6b6b; --hair: #d4d4d4; --line: #000;
+  --accent: #e10600; --accent-2: #000; --soft: #f3f3f3;
+  --font-body: "Inter", "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-head: var(--font-body); --head-weight: 800; --title-rule: 6px solid #000;
+  --c1: #e10600; --c2: #111; --c3: #8a8a8a; --c4: #c9c9c9; --c5: #5a5a5a;
+  --transition: fade;
+}
