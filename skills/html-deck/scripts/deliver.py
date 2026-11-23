@@ -145,6 +145,7 @@ class _Tree(HTMLParser):
     def __init__(self, html):
         super().__init__(convert_charrefs=False)
         self.html, self.root, self.comments = html, Node('#root', {}, 0, None), []
+        self.loose = []   # 没写结束标签、被外层结束标签顺带关掉的 <b>、<small> 这类：浏览器会把它在后面的文字上重开，这里的范围就不准了
         self.cur = self.root
         self.lines = [0] + [m.end() for m in re.finditer('\n', html)]
         self.feed(html)
@@ -206,6 +207,8 @@ class _Tree(HTMLParser):
         if n is self.root:      # 多出来的结束标签，不管
             return
         while self.cur is not n:   # 中间没写结束标签的（<p>、<li>），在这里一起结束
+            if self.cur.tag in FORMAT:
+                self.loose.append(self.cur)
             self.cur.end = s
             self.cur = self.cur.parent
         n.end = e
@@ -231,6 +234,14 @@ class _Tree(HTMLParser):
 
 def tree(html: str) -> _Tree:
     return _Tree(html)
+
+
+def unsafe_loose(html: str):
+    """备注、data-web、data-web-shot 写在没关上的格式元素上（<b class="note">… 忘了 </b>）：浏览器会把后面的文字也算进去，
+    这里删不干净。返回 [(行号, 开始标签)]，网站版遇到就停。"""
+    t = tree(html)
+    return [(html.count('\n', 0, n.start) + 1, html[n.start:html.find('>', n.start) + 1]) for n in t.loose
+            if 'note' in n.cls() or 'data-web' in n.attrs or 'data-web-shot' in n.attrs]
 
 
 def online_pages(html: str):

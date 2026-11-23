@@ -60,7 +60,12 @@ def main():
     a = ap.parse_args()
     deck = Path(a.deck).expanduser().resolve()
     out = Path(a.out).expanduser().resolve() if a.out else deck.parent / '交付' / '网站版'
-    html = transform((deck / 'index.html').read_text('utf-8'), a)
+    src = (deck / 'index.html').read_text('utf-8')
+    loose = deliver.unsafe_loose(src)
+    if loose:
+        sys.exit('这几处没写结束标签，浏览器会把后面的文字也算进去，网站版删不干净，没生成。补上结束标签再跑：\n'
+                 + '\n'.join(f'  第 {ln} 行 {tag}' for ln, tag in loose))
+    html = transform(src, a)
     left = [w for w in (p.partition('=')[0] for p in a.replace) if w and w in html]
     if left:
         sys.exit('替换后还有：' + '、'.join(left))
