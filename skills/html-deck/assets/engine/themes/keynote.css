@@ -1,0 +1,32 @@
+/* 暗场发布会：深色底、蓝青渐变强调、发光背景。适合产品演示、发布会、技术分享 */
+:root {
+  --page: #000; --bg: #0b0e14; --ink: #f3f4f7; --mute: #8b93a7; --hair: #262c3a; --line: #3a4256;
+  --bg-art: radial-gradient(900px 520px at 88% -8%, rgba(91,140,255,.22), transparent 62%), radial-gradient(700px 420px at -5% 110%, rgba(0,212,180,.12), transparent 60%), #0b0e14;
+  --accent: #5b8cff; --accent-2: #1e2738; --soft: #151a24;
+  --font-body: "Inter", "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-head: var(--font-body); --head-weight: 800; --title-size: 44px; --title-rule: 0;
+  --c1: #5b8cff; --c2: #00d4b4; --c3: #8b93a7; --c4: #3a4256; --c5: #c084fc;
+  --transition: push;
+}
+h2 { padding-bottom: 0; }
+h2::after { content: ""; display: block; width: 72px; height: 4px; margin-top: 18px; border-radius: 2px; background: linear-gradient(90deg, #5b8cff, #00d4b4); }
+h1 em, h2 em, .big-line em, .t em { background: linear-gradient(90deg, #7aa2ff, #00d4b4); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.cover .hd { border-top: 0; color: var(--mute); }
+.cover .by { border-top-color: var(--hair); }
+.col, .split > :last-child { border-left-color: var(--hair); }
+.lab.r { color: #7aa2ff; }
+ul.k li::before { background: #5b8cff; border-radius: 2px; }
+ul.k li.r::before { background: #00d4b4; }
+.qt { border-left: 2px solid #5b8cff; color: #aab2c5; }
+.chev > div { background: #161b26; color: var(--ink); }
+.chev > div:nth-child(2) { background: #1e2738; color: var(--ink); }
+.chev > div:last-child { background: linear-gradient(90deg, #3d6ef0, #00b89c); }
+.stats > .stat { border-top-color: var(--hair); }
+.stat .v { background: linear-gradient(90deg, #fff, #9db8ff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.stat .v.r { background: linear-gradient(90deg, #7aa2ff, #00d4b4); -webkit-background-clip: text; background-clip: text; }
+.steps > .st, .compare > .side { border-color: var(--line); background: #121722; }
+.compare > .side.after, .steps > .st.r { border-color: #5b8cff; }
+.tabs button { border-color: var(--line); background: #121722; color: var(--ink); }
+.tabs button.cur { background: #5b8cff; color: #fff; border-color: #5b8cff; }
+.panes { border-color: var(--line); }
+table.g td { border-bottom-color: var(--hair); }

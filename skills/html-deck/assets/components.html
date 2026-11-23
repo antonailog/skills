@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>组件样张 · 怎样开好一场 30 分钟的周会</title>
+<link rel="stylesheet" href="engine/fonts.css">
+<link rel="stylesheet" href="engine/deck.css">
+<link rel="stylesheet" href="engine/themes/swiss.css" data-theme-link>
+</head>
+<body>
+<div id="stage">
+
+<!-- 封面：.cover，.hd 是顶上一行场合信息，h1 里的 em 是重点色 -->
+<section class="slide cover">
+  <div class="hd"><span>团队效率分享 · 示例</span><span>30 分钟</span></div>
+  <h1>怎样开好一场<br><em>30 分钟</em>的周会</h1>
+  <div class="by"><b>示例讲者</b><span>组件样张</span><span class="ml">example.com</span></div>
+  <aside class="note"><p>备注写在每页的 aside.note 里，按 N 或在演讲者视图（P）里看。</p></aside>
+</section>
+
+<!-- 目录：.toc，奇数格是编号 -->
+<section class="slide">
+  <h2>今天讲三件事</h2>
+  <div class="toc">
+    <div>01</div><div>为什么周会总是超时</div>
+    <div>02</div><div>一套 30 分钟的议程</div>
+    <div>03</div><div>会后怎么跟进</div>
+  </div>
+  <div class="foot"><span class="pg"></span></div>
+</section>
+
+<!-- 观点 + 原因：.split 左窄右宽；.lab 小标签，.t 观点句，ul.k 要点，.qt 引用带出处 -->
+<section class="slide">
+  <h2>周会超时，问题不在<em>时间</em></h2>
+  <div class="body">
+    <div class="split">
+      <div><div class="lab r">观点</div><div class="t">议程没写清，时间一定不够</div>
+        <ul class="k"><li>会前发议程</li><li>每项写清要的结果</li><li>超时就挪到会后</li></ul></div>
+      <div><div class="lab">原因</div><div class="t">讨论没有终点，就会一直讨论</div>
+        <ul class="k s"><li>没人说这一项要产出什么</li><li>信息同步占掉大半时间</li><li>真正要定的事留到最后几分钟</li></ul>
+        <div class="qt">会议的成本是参会人数乘以时长，一场 8 人一小时的会就是一个人整天的工作量 <i>—— 常见的会议成本算法</i></div></div>
+    </div>
+  </div>
+  <div class="foot"><span class="src">来源：示例</span><span class="pg"></span></div>
+</section>
+
+<!-- 箭头链：.chev 三段递进 + .under 每段要点；data-steps 让后两段按 → 依次出现 -->
+<section class="slide" data-steps=".chev>div:nth-child(2), .under>div:nth-child(2) | .chev>div:nth-child(3), .under>div:nth-child(3)">
+  <h2>一场周会的三个阶段</h2>
+  <div class="body">
+    <div class="chev">
+      <div><b>1</b><div>同步<span>10 分钟</span></div></div>
+      <div><b>2</b><div>讨论<span>15 分钟</span></div></div>
+      <div><b>3</b><div>定事<span>5 分钟</span></div></div>
+    </div>
+    <div class="under">
+      <div><ul class="k s"><li>只说变化，不念进度表</li><li>进度表会前发</li></ul></div>
+      <div><ul class="k s"><li>一次只讨论一件事</li><li>主持人卡时间</li></ul></div>
+      <div><ul class="k s r"><li class="r">每件事写下负责人和截止日</li><li class="r">当场发会议纪要</li></ul></div>
+    </div>
+  </div>
+  <div class="foot"><span class="pg"></span></div>
+</section>
+
+<!-- 流程卡：.steps 里 .st 卡片和 .ar 箭头；元素上写 data-step="2" 也能分步 -->
+<section class="slide">
+  <h2>一个议程项怎么写</h2>
+  <div class="body mid">
+    <div class="steps">
+      <div class="st"><div class="lab">问题</div><div class="t">发布日期要不要推迟</div><ul class="k s"><li>背景两句话</li></ul></div>
+      <div class="ar" data-step="1">→</div>
+      <div class="st" data-step="1"><div class="lab">选项</div><div class="t">按期发 / 推迟一周</div><ul class="k s"><li>各自的代价写清</li></ul></div>
+      <div class="ar" data-step="2">→</div>
+      <div class="st r" data-step="2"><div class="lab r">要的结果</div><div class="t">会上定下来，谁拍板</div><ul class="k s"><li class="r">拍板人：产品负责人</li></ul></div>
+    </div>
+  </div>
+  <div class="foot"><span class="pg"></span></div>
+</section>
+
+<!-- 大数字：.stats（--n 是一行几格），.stat 里 .k 标签、.v 数字（出现时滚动）、.d 一句话、.x 补充 -->
+<section class="slide">
+  <h2>改议程前后的变化</h2>
+  <div class="body">
+    <div class="stats" style="--n:3">
+      <div class="stat"><div class="k">平均时长</div><div class="v">32</div><div class="d">分钟，原来是 58 分钟</div><div class="x">示例数据</div></div>
+      <div class="stat"><div class="k">当场定下的事</div><div class="v r">4.5</div><div class="d">件，原来是 1.2 件</div><div class="x">示例数据</div></div>
+      <div class="stat"><div class="k">会后补开的小会</div><div class="v">-60%</div><div class="d">一个月内</div><div class="x">示例数据</div></div>
+    </div>
+  </div>
+  <div class="foot"><span class="src">示例数据，不是真实调研</span><span class="pg"></span></div>
+</section>
+
+<!-- 前后对比：.compare 里两个 .side，中间 .ar -->
+<section class="slide">
+  <h2>同一个议程项，两种写法</h2>
+  <div class="body">
+    <div class="compare">
+      <div class="side"><div class="lab">原来</div><div class="t">聊一下发布的事</div><ul class="k s"><li>没说要什么结果</li><li>没写谁来定</li></ul></div>
+      <div class="ar">→</div>
+      <div class="side after" data-step="1"><div class="lab r">改后</div><div class="t">发布推迟一周吗？会上由产品负责人定</div><ul class="k s"><li class="r">结果、拍板人都写清</li><li>背景两句话放在下面</li></ul></div>
+    </div>
+  </div>
+  <div class="foot"><span class="pg"></span></div>
+</section>
+
+<!-- 图表：figure.chart，data-type 是 bar / hbar / line / donut，data-hl 标重点；出现时柱子长出来、折线画出来 -->
+<section class="slide">
+  <h2>时间都花在哪了</h2>
+  <div class="body">
+    <div class="cols c2">
+      <div class="col"><div class="lab">每周会议时长（分钟）</div>
+        <figure class="chart" data-type="bar" data-labels="第1周,第2周,第3周,第4周,第5周" data-values="58,51,40,34,32" data-hl="4"></figure></div>
+      <div class="col"><div class="lab">当场定下的事（件）</div>
+        <figure class="chart" data-type="line" data-labels="第1周,第2周,第3周,第4周,第5周" data-values="1.2,2,3.1,4,4.5;1,1.1,1.3,1.2,1.4" data-series="改议程,对照组"></figure></div>
+    </div>
+  </div>
+  <div class="foot"><span class="src">示例数据</span><span class="pg"></span></div>
+</section>
+
+<section class="slide">
+  <h2>30 分钟里各段占多少</h2>
+  <div class="body">
+    <div class="cols c2">
+      <div class="col"><figure class="chart" data-type="donut" data-labels="同步,讨论,定事" data-values="10,15,5"></figure></div>
+      <div class="col"><figure class="chart" data-type="hbar" data-labels="信息同步,临时话题,真正讨论,定事" data-values="24,14,12,8" data-unit=" 分钟" data-hl="3"><figcaption>改之前的一场典型周会</figcaption></figure></div>
+    </div>
+  </div>
+  <div class="foot"><span class="src">示例数据</span><span class="pg"></span></div>
+</section>
+
+<!-- 行列：.rows > .row，每行 标签 | 观点 | 要点，首行文字对齐 -->
+<section class="slide">
+  <h2>会后跟进的三件事</h2>
+  <div class="body">
+    <div class="rows">
+      <div class="row"><div class="rk">纪要</div><div class="t">当场发</div><ul class="k s"><li>只写结论、负责人、截止日</li></ul></div>
+      <div class="row"><div class="rk">提醒</div><div class="t">截止前一天</div><ul class="k s"><li>负责人自己同步进度</li></ul></div>
+      <div class="row"><div class="rk">复盘</div><div class="t">每月一次</div><ul class="k s"><li>看哪类议程总是定不下来</li></ul></div>
+    </div>
+  </div>
+  <div class="foot"><span class="pg"></span></div>
+</section>
+
+<!-- 页签：.tabs 按钮 + .panes 里每个 .pane；.duo 左右两栏，.gal 一列图，pre.code 代码。按 → 会依次切页签 -->
+<section class="slide">
+  <h2>议程模板</h2>
+  <div class="tabs"><button type="button" class="cur">写法</button><button type="button">模板</button></div>
+  <div class="panes">
+    <div class="pane cur"><div class="duo">
+      <div><div class="lab">怎么写</div><ul class="k s"><li>一项一个问题</li><li>写要的结果</li><li>写拍板人</li><li>写预计时长</li></ul></div>
+      <div><div class="lab">例子</div><p>发布推迟一周吗？背景：测试还有 3 个问题。要的结果：定日期。拍板：产品负责人。8 分钟。</p></div>
+    </div></div>
+    <div class="pane"><div class="scroll"><pre class="code">## 议程（周三 10:00，30 分钟）
+1. [8 分钟] 发布推迟一周吗？ —— 拍板：产品负责人
+2. [10 分钟] 新人入职安排 —— 要的结果：定导师
+3. [5 分钟] 本周变化（只说变化）
+## 会后
+- 纪要当场发；截止前一天负责人同步</pre></div></div>
+  </div>
+  <div class="foot"><span class="pg"></span></div>
+</section>
+
+<!-- 表格：table.g -->
+<section class="slide">
+  <h2>三种会，三种开法</h2>
+  <div class="body">
+    <table class="g">
+      <tr><th>会</th><th>目的</th><th>时长</th><th>产出</th></tr>
+      <tr><td><b>周会</b></td><td>同步变化、定小事</td><td>30 分钟</td><td>纪要</td></tr>
+      <tr><td><b>评审会</b></td><td>对一份方案做决定</td><td>45 分钟</td><td>通过 / 不通过和修改点</td></tr>
+      <tr><td><b>头脑风暴</b></td><td>出尽可能多的点子</td><td>60 分钟</td><td>点子清单，会后再筛</td></tr>
+    </table>
+  </div>
+  <div class="foot"><span class="pg"></span></div>
+</section>
+
+<!-- 一句话大字 + data-focus：分步出现时前面的条目变淡，突出当前这条 -->
+<section class="slide" data-focus data-steps="li:nth-child(1) | li:nth-child(2) | li:nth-child(3)">
+  <h2>记住三句话</h2>
+  <div class="body mid">
+    <div class="big-line">会前写清<em>要什么</em>，会上只做<em>决定</em></div>
+    <ul class="k" style="margin-top:28px"><li>议程会前发</li><li>每项写要的结果和拍板人</li><li class="r">纪要当场发</li></ul>
+  </div>
+  <div class="foot"><span class="pg"></span></div>
+</section>
+
+<!-- 嵌入网页：.box 里 iframe 用 data-src（翻到这页才加载），--k 是缩小比例；.shot 是断网时的备用截图 -->
+<section class="slide">
+  <h2>嵌入一个网页</h2>
+  <div class="box" style="--k:.75"><iframe data-src="https://example.com/" title="示例网页"></iframe><img class="shot" src="shots/example-com.jpg" alt=""></div>
+  <div class="foot"><span class="src">来源：example.com</span><span class="pg"></span></div>
+</section>
+
+<!-- 结尾：.end 左边一句话，右边 .qrs；.qr 写 data-qr，二维码由引擎生成 -->
+<section class="slide cover">
+  <div class="hd"></div>
+  <div class="end">
+    <div><h1>谢谢</h1><div class="like">议程模板和这份讲稿都在示例网址里</div></div>
+    <div class="qrs"><figure><div class="qr" data-qr="https://example.com/"></div>示例网址<small>example.com</small></figure></div>
+  </div>
+  <div class="by"><b>示例讲者</b><span>组件样张</span></div>
+</section>
+
+</div><!-- /stage -->
+<script src="engine/qrcode.js"></script>
+<script src="engine/deck.js"></script>
+</body>
+</html>

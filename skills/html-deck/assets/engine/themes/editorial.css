@@ -1,0 +1,28 @@
+/* 编辑书卷：纸色底、衬线标题、细线和斜体引用。适合课程、思想分享、读书会 */
+:root {
+  --page: #2a2622; --bg: #f7f2e8; --ink: #1f1b16; --mute: #7a7066; --hair: #d9d0c1; --line: #1f1b16;
+  --accent: #a63d2a; --accent-2: #1f1b16; --soft: #efe7d8;
+  --font-body: "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-head: "Noto Serif SC", "Songti SC", "STSong", "SimSun", Georgia, serif;
+  --head-weight: 700; --title-size: 40px; --title-rule: 1px solid #1f1b16;
+  --c1: #a63d2a; --c2: #3d3a35; --c3: #b8a88f; --c4: #d9cbb3; --c5: #6b5b45;
+  --step-from: translateY(8px); --transition: fade;
+}
+h2 { padding-bottom: 18px; letter-spacing: 0; }
+.cover .hd { font-weight: 400; letter-spacing: .2em; }
+.cover h1 { line-height: 1.2; letter-spacing: 0; }
+.lab { font-weight: 400; letter-spacing: .25em; }
+ul.k li::before { border-radius: 50%; width: 6px; height: 6px; background: var(--accent); top: 20px; }
+ul.k.s li::before { top: 15px; }
+.qt { border-left: 2px solid var(--accent); font-family: var(--font-head); font-style: italic; }
+.col, .split > :last-child { border-left-color: var(--hair); }
+.chev > div { background: transparent !important; color: var(--ink) !important; clip-path: none !important; margin-right: 0; padding-left: 22px !important; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.chev > div + div { border-left: 1px solid var(--hair); }
+.chev > div:last-child { color: var(--accent) !important; }
+.chev b { font-weight: 400; font-style: italic; }
+.stats > .stat { border-top-width: 1px; }
+.stat .k { font-weight: 400; letter-spacing: .2em; }
+.stat .v { font-weight: 400; font-size: 60px; }
+.steps > .st { border-width: 1px; }
+.tabs button { font-family: var(--font-head); font-weight: 700; }
+table.g th { font-weight: 400; letter-spacing: .2em; }

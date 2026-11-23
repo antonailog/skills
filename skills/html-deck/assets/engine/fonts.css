@@ -1,0 +1,2 @@
+/* 写稿时在线加载开源字体（Google Fonts，SIL OFL）；没网就落到系统字体。打包时 scripts/package.py 会换成只含用到的字的本地字体。字重和 scripts/fontpack.py 的 FAMILIES 一致 */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&family=Noto+Sans+SC:wght@400;700;800;900&family=Noto+Serif+SC:wght@400;700&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400&display=swap");

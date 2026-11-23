@@ -1,0 +1,38 @@
+/* 新野兽派：米黄底、粗黑框加硬阴影、亮色块。适合社区分享、轻松的课、面向年轻听众 */
+:root {
+  --page: #111; --bg: #fff6d8; --ink: #111; --mute: #3a3a3a; --hair: #111; --line: #111;
+  --accent: #ff4f7b; --accent-2: #a0e7e5; --soft: #fff3c4;
+  --font-body: "Space Grotesk", "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-head: var(--font-body); --head-weight: 900; --title-size: 36px; --title-rule: 0;
+  --card: #fff; --card-border: 3px solid #111; --card-shadow: 6px 6px 0 #111; --radius: 0;
+  --c1: #ff4f7b; --c2: #111; --c3: #ffd23f; --c4: #a0e7e5; --c5: #7c3aed;
+  --transition: push;
+}
+h2 { align-self: flex-start; background: #ffd23f; border: 3px solid #111; box-shadow: 6px 6px 0 #111; padding: 6px 20px 10px; }
+h2 em { color: #111; background: #ff8fab; padding: 0 6px; }
+.cover .hd { border-top: 3px solid #111; }
+.cover h1 em { color: #111; background: #ffd23f; padding: 0 12px; border: 3px solid #111; box-shadow: 6px 6px 0 #111; }
+.cover .by { border-top: 3px solid #111; }
+.lab, .lab.r { color: #111; }
+.lab.r { background: #ff8fab; padding: 0 6px; display: inline-block; }
+ul.k li::before { background: #111; width: 10px; height: 10px; top: 17px; }
+.qt { border-left: 4px solid #111; color: #3a3a3a; }
+.col { border-left: 0; }
+.split { gap: 26px; }
+.split > * { border: 3px solid #111 !important; background: #fff; box-shadow: 6px 6px 0 #111; padding: 24px 26px !important; }
+.split > :first-child { background: #ffe1ea; }
+.chev { gap: 20px; }
+.chev > div { clip-path: none !important; margin-right: 0 !important; padding-left: 22px !important; border: 3px solid #111; box-shadow: 6px 6px 0 #111; background: #fff !important; color: #111 !important; }
+.chev > div:nth-child(2) { background: #a0e7e5 !important; }
+.chev > div:last-child { background: #ffd23f !important; }
+.stats { --gap: 18px; }
+.stats > .stat { border: 3px solid #111; padding: 12px 18px; }
+.stats > .stat:nth-child(2n) { background: #e8f8ff; }
+.steps { gap: 0; }
+.steps > .st { border-width: 3px; }
+.compare > .side { border: 3px solid #111; }
+.compare > .side.after { background: #ffd23f; }
+.tabs button { border-width: 3px; }
+.tabs button.cur { background: #ff4f7b; color: #111; }
+.panes { border-width: 3px; }
+table.g th { color: #111; border-bottom-width: 3px; }
